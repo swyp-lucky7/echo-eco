@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import teamseven.echoeco.config.auth.LoginUser;
-import teamseven.echoeco.user.SessionUser;
+import teamseven.echoeco.user.User;
 
 @RequiredArgsConstructor
 @Controller
@@ -13,7 +13,7 @@ public class LoginController {
 
 
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user) {
+    public String index(Model model, @LoginUser User user) {
         if (user != null) {
             model.addAttribute("userName", user.getName());
             System.out.println(user.getRole().name());

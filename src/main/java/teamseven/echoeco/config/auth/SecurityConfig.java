@@ -25,7 +25,7 @@ public class SecurityConfig
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("/**");
+                .requestMatchers("/vendor/**");
     }
 
     @Bean
@@ -34,8 +34,7 @@ public class SecurityConfig
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headerConfig -> headerConfig.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
-                ));
-        http
+                ))
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/user/test"
                         ).permitAll())
