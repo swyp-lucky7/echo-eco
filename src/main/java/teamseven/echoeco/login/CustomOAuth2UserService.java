@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.user.OAuthAttributes;
 import teamseven.echoeco.user.Role;
-import teamseven.echoeco.user.SessionUser;
 import teamseven.echoeco.user.User;
 import teamseven.echoeco.user.UserRepository;
 
@@ -37,7 +36,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
+        httpSession.setAttribute("user", user);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
