@@ -22,6 +22,9 @@ public class Question {
     private QuestionType questionType;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String head;
     @Column(nullable = false)
     private String body;

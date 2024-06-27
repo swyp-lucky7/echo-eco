@@ -38,10 +38,10 @@ public class SecurityConfig
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/user/test"
                         ).permitAll())
-
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/test").hasRole(Role.USER.name()))
-
+                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/"))
                 .formLogin(formLogin -> formLogin.loginPage("/user/login"))
                 .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
