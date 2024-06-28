@@ -95,7 +95,7 @@ const createHelper = {
            document.querySelectorAll('.multiple-checkbox-input').forEach(el => {
                valueList.push({"row": el.value});
            });
-           param['body'] = valueList;
+           param['body'] = JSON.stringify(valueList);
        } else if (document.querySelector('#questionType').value === 'SUBJECTIVE') {
            param['body'] = document.querySelector('#subjectiveInput').value;
        }

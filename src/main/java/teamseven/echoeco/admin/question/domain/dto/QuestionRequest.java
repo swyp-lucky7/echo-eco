@@ -29,7 +29,7 @@ public class QuestionRequest {
                 .questionType(this.questionType)
                 .head(this.head)
                 .body(this.body)
-                .answer(this.body)
+                .answer(this.answer)
                 .makeUser(user)
                 .build();
     }
