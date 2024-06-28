@@ -34,19 +34,25 @@ public class SecurityConfig
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headerConfig -> headerConfig.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
+
                 ));
         http
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/user/test"
                         ).permitAll())
-
+                .authorizeHttpRequests((auth) ->auth
+                        .requestMatchers("/", "/user/login", "/user/test"
+                        ).permitAll())
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/test", "/rr").hasRole(Role.USER.name()))
+                        .requestMatchers("/test").hasRole(Role.USER.name()))
+                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
 
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/"))
                 .formLogin(formLogin -> formLogin.loginPage("/user/login"))
                 .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
                     System.out.println(accessDeniedException.toString());
+
                     response.sendRedirect("/user/login");
                 }))
                 .oauth2Login(Customizer.withDefaults());
