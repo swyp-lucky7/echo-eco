@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<!--<th:block layout:fragment="script">-->
+<!--    <script th:src="@{/js/drawing/create.js}"></script>-->
+<!--</th:block>-->
+<body>
+<div layout:fragment="content">
+    <div class="text-end mb-3" style="margin-left: auto">
+        <button type="button" class="btn btn-l btn-primary" onclick="location.href='/admin/creature/create'"><strong>생성하기</strong></button>
+    </div>
+    <div class="card">
+        <h5 class="card-header">리스트</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>
+                        <input class="form-check-input modal-checkbox" type="checkbox" value=""
+                               id="checkboxAll">
+                        <label class="form-check-label" for="checkboxAll"></label>
+                    </th>
+                    <th>이름</th>
+                    <th>타입</th>
+                    <th>최대 레벨</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                <tr>
+                    <td>
+                        <input class="form-check-input modalDrawingCheckbox" type="checkbox" value="" id="modalCheckboxDrawing${index}">
+                        <label class="form-check-label" for="modalCheckboxDrawing${index}"></label>
+                    </td>
+                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>곰</strong></td>
+                    <td><span class="badge bg-label-primary me-1">동물</span></td>
+                    <td>100</td>
+                    <td>
+                        <button type="button" class="btn btn-l btn-primary" onclick="location.href='/admin/creature/create/1'"><strong>Detail 관리하기</strong></button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

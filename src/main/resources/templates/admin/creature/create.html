@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/creature/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="creatureName" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" value="" id="creatureName">
+                    </div>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="descriptionInput" class="form-label">설명</label>
+                    <textarea class="form-control" id="descriptionInput" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="creatureType" class="form-label">타입</label>
+                    <select id="creatureType" class="form-select">
+                        <option value="ANIMAL" selected>동물</option>
+                        <option value="PLANT">식물</option>
+                    </select>
+                </div>
+                <div class="col"></div>
+                <div class="col">
+                    <label for="maxLevel" class="col-form-label">최대 레벨</label>
+                    <div>
+                        <input class="form-control" type="text" value="" id="maxLevel">
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
