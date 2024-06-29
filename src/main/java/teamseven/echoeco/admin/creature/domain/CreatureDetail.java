@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreatureImage {
+public class CreatureDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "creature_image_id")
@@ -24,7 +24,7 @@ public class CreatureImage {
     private int level;
 
     @Column(nullable = false)
-    private String image_url;
+    private String imageUrl;
 
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();

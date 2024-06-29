@@ -69,23 +69,9 @@ const createHelper = {
 
     },
 
-    rowMultipleCheckbox(index, value) {
-        return `
-                <div class="row demo-vertical-spacing mb-3" id="multipleCheckbox${index}">
-                    <div class="input-group">
-                        <span class="input-group-text">${index}</span>
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0 multiple-checkbox" data-index="${index}" type="checkbox" aria-label="Checkbox for following text input">
-                        </div>
-                        <input type="text" class="form-control multiple-checkbox-input" aria-label="Text input with checkbox" id="multipleInput${index}" value="${value}">
-                    </div>
-                </div>
-            `;
-    },
-
     getParam() {
        let param = {
-           "name": document.querySelector('#questionName').value,
+           "name": document.querySelector('#creatureName').value,
            "questionType": document.querySelector('#questionType').value,
            "head": document.querySelector('#questionHead').value,
            "answer": document.querySelector('#answerInput').value,

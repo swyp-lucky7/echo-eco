@@ -14,21 +14,27 @@ public class Creature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "creature_id")
-    private Long creature;
+    private Long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CreatureType type;
+
     @Column(nullable = false)
     private String name;
 
-    private String explain;
+    private String description;
 
     @Column(nullable = false)
-    private int level;
+    private int maxLevel;
 
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public Creature(Long id) {
+        this.id = id;
+    }
 }
