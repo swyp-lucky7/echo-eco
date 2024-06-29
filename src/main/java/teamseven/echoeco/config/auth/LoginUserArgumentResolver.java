@@ -8,7 +8,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import teamseven.echoeco.user.SessionUser;
+import teamseven.echoeco.user.User;
 
 @RequiredArgsConstructor
 @Component
@@ -19,7 +19,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isUserClass = SessionUser.class.equals(parameter.getParameterType());
+        boolean isUserClass = User.class.equals(parameter.getParameterType());
 
         return isLoginUserAnnotation && isUserClass;
     }

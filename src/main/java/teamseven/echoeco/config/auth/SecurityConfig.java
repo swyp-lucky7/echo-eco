@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import teamseven.echoeco.login.CustomOAuth2UserService;
-import teamseven.echoeco.user.Role;
 
 @Configuration
 @RequiredArgsConstructor
@@ -20,12 +20,13 @@ import teamseven.echoeco.user.Role;
 public class SecurityConfig
 {
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final AutoLoginFilter autoLoginFilter;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("/**");
+                .requestMatchers("/vendor/**");
     }
 
     @Bean
@@ -34,15 +35,9 @@ public class SecurityConfig
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headerConfig -> headerConfig.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
-                ));
-        http
+                ))
                 .authorizeHttpRequests((auth) ->auth
-                        .requestMatchers("/", "/user/login", "/user/test"
-                        ).permitAll())
-
-                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/test").hasRole(Role.USER.name()))
-
+                        .requestMatchers("/", "/user/login", "/user/test", "/admin/**").permitAll())
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/"))
                 .formLogin(formLogin -> formLogin.loginPage("/user/login"))
                 .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
@@ -50,6 +45,10 @@ public class SecurityConfig
                    response.sendRedirect("/user/login");
                 }))
                 .oauth2Login(Customizer.withDefaults());
+
+        // AutoLoginFilter를 SecurityFilterChain에 추가
+        http.addFilterBefore(autoLoginFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
