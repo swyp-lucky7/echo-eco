@@ -2,11 +2,82 @@
 <html xmlns:th="http//www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}" lang="">
-<!--<th:block layout:fragment="script">-->
-<!--    <script th:src="@{/js/drawing/create.js}"></script>-->
-<!--</th:block>-->
+<th:block layout:fragment="script">
+    <script th:href="@{../../static/vendor/css/pages/core.css}"></script>
+    <script th:href="@{../../static/vendor/css/pages/theme-default.css}"></script>
+    <script th:src="@{/js/drawing/create.js}"></script>
+</th:block>
 <body>
 <div layout:fragment="content">
+
+    <hr class="my-5" />
+
+    <div class="card">
+        <h5 class="card-header">Questions</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Questions</th>
+                    <th>Option1</th>
+                    <th>Option2</th>
+                    <th>Option3</th>
+                    <th>Option4</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                <tr>
+                    <td>
+                        <label><input type="checkbox" class="check-delete"></label></td>
+                    <td><strong>question-1</strong></td>
+                    <td>option-1</td>
+                    <td>option-2</td>
+                    <td>option-3</td>
+                    <td>option-4</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label><input type="checkbox" class="check-delete"></label></td>
+                    <td><strong>question-2</strong></td>
+                    <td>option-1</td>
+                    <td>option-2</td>
+                    <td>option-3</td>
+                    <td>option-4</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label><input type="checkbox" class="check-delete"></label></td>
+                    <td><strong>question-2</strong></td>
+                    <td>option-1</td>
+                    <td>option-2</td>
+                    <td>option-3</td>
+                    <td>option-4</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr class="my-5" />
+    <div class="card">
+        <h5 class="card-header">Videos</h5>
+
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+
 
 </div>
 </body>
