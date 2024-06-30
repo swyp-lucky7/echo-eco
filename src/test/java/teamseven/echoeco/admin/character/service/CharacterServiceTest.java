@@ -1,4 +1,4 @@
-package teamseven.echoeco.admin.creature.service;
+package teamseven.echoeco.admin.character.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import teamseven.echoeco.admin.creature.domain.Creature;
-import teamseven.echoeco.admin.creature.domain.CreatureDetail;
-import teamseven.echoeco.admin.creature.domain.CreatureType;
-import teamseven.echoeco.admin.creature.repository.CreatureDetailRepository;
-import teamseven.echoeco.admin.creature.repository.CreatureRepository;
+import teamseven.echoeco.admin.character.domain.Character;
+import teamseven.echoeco.admin.character.domain.CharacterType;
+import teamseven.echoeco.admin.character.repository.CharacterRepository;
 
 import java.util.List;
 
@@ -20,34 +18,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-class CreatureServiceTest {
+class CharacterServiceTest {
     @Autowired
-    private CreatureRepository creatureRepository;
+    private CharacterRepository characterRepository;
 
-    private CreatureService creatureService;
+    private CharacterService characterService;
 
     @BeforeEach
     void setUp() {
-        creatureService = new CreatureService(creatureRepository);
+        characterService = new CharacterService(characterRepository);
     }
 
     @Test
     @DisplayName("받은 생물 엔티티를 저장할 수 있어야 한다.")
     public void givenEntity_whenCreate_thenSave() {
         //given
-        Creature creature = Creature.builder()
+        Character character = Character.builder()
                 .name("볼리베어")
-                .type(CreatureType.ANIMAL)
+                .type(CharacterType.ANIMAL)
                 .maxLevel(100)
                 .description("곰")
                 .build();
 
         //when
-        creatureService.save(creature);
+        characterService.save(character);
 
         //then
-        List<Creature> all = creatureRepository.findAll();
+        List<Character> all = characterRepository.findAll();
         assertEquals(1, all.size());
-        assertEquals(creature.getId(), all.get(0).getId());
+        assertEquals(character.getId(), all.get(0).getId());
     }
 }

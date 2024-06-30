@@ -4,17 +4,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 const readHelper = {
     init() {
-        readHelper.pullCreature();
+        readHelper.pullCharacter();
         readHelper.addEvent();
     },
     addEvent() {
 
     },
 
-    pullCreature() {
+    pullCharacter() {
         $.ajax({
             type: "get",
-            url: "/admin/creature/list",
+            url: "/admin/character/list",
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function (res) {
@@ -32,9 +32,9 @@ const readHelper = {
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/admin/creature/${row.id}/detail"><i class="bx bx-edit-alt me-1"></i> Detail</a>
-                                    <a class="dropdown-item" href="/admin/creature/create/${row.id}"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>
-                                    <a class="dropdown-item" href="/admin/creature/delete/${row.id}"><i class="bx bx-trash me-1"></i> 삭제하기</a>
+                                    <a class="dropdown-item" href="/admin/character/${row.id}/detail"><i class="bx bx-edit-alt me-1"></i> Detail</a>
+                                    <a class="dropdown-item" href="/admin/character/create/${row.id}"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>
+                                    <a class="dropdown-item" href="/admin/character/delete/${row.id}"><i class="bx bx-trash me-1"></i> 삭제하기</a>
                                 </div>
                             </div>
                         </td>
@@ -56,7 +56,7 @@ const readHelper = {
                     index++;
                 }
 
-                document.querySelector('#creatureTBody').innerHTML = html;
+                document.querySelector('#characterTBody').innerHTML = html;
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error:', textStatus, errorThrown);

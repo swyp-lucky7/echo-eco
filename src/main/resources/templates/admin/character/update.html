@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}" lang="">
 <th:block layout:fragment="script">
-    <script th:src="@{/js/admin/creature/create.js}"></script>
+    <script th:src="@{/js/admin/character/create.js}"></script>
 </th:block>
 <body>
 <div layout:fragment="content">
@@ -11,22 +11,22 @@
         <div class="card-body">
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
-                    <label for="creatureName" class="col-form-label">이름</label>
+                    <label for="characterName" class="col-form-label">이름</label>
                     <div>
-                        <input class="form-control" type="text" value="" id="creatureName">
+                        <input class="form-control" type="text" th:value="${character.name}" id="characterName">
                     </div>
                 </div>
             </div>
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
                     <label for="descriptionInput" class="form-label">설명</label>
-                    <textarea class="form-control" id="descriptionInput" rows="3"></textarea>
+                    <textarea class="form-control" id="descriptionInput" th:text="${character.description}" rows="3"></textarea>
                 </div>
             </div>
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
-                    <label for="creatureType" class="form-label">타입</label>
-                    <select id="creatureType" class="form-select">
+                    <label for="characterType" class="form-label">타입</label>
+                    <select id="characterType" class="form-select" th:field="*{character.type}">
                         <option value="ANIMAL" selected>동물</option>
                         <option value="PLANT">식물</option>
                     </select>
@@ -35,7 +35,7 @@
                 <div class="col">
                     <label for="maxLevel" class="col-form-label">최대 레벨</label>
                     <div>
-                        <input class="form-control" type="text" value="" id="maxLevel">
+                        <input class="form-control" type="text" th:value="${character.maxLevel}" id="maxLevel">
                     </div>
                 </div>
                 <div class="col"></div>

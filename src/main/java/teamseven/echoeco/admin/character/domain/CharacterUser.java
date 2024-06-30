@@ -1,4 +1,4 @@
-package teamseven.echoeco.admin.creature.domain;
+package teamseven.echoeco.admin.character.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,15 +10,15 @@ import teamseven.echoeco.user.User;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreatureUser {
+public class CharacterUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "creature_user_id")
+    @Column(name = "character_user_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creature_id")
-    private Creature creature;
+    @JoinColumn(name = "character_id")
+    private Character character;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

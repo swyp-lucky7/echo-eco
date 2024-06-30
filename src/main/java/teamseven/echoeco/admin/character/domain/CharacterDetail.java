@@ -1,4 +1,4 @@
-package teamseven.echoeco.admin.creature.domain;
+package teamseven.echoeco.admin.character.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,35 +10,25 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Creature {
+public class CharacterDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "creature_id")
+    @Column(name = "character_image_id")
     private Long id;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CreatureType type;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "character_id")
+    private Character character;
 
     @Column(nullable = false)
-    private String name;
-
-    private String description;
+    private int level;
 
     @Column(nullable = false)
-    private int maxLevel;
-
-    @Column(nullable = false)
-    @Builder.Default
-    private boolean isPossible = true;
+    private String imageUrl;
 
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
-
-    public Creature(Long id) {
-        this.id = id;
-    }
 }
