@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import teamseven.echoeco.login.CustomOAuth2UserService;
 import teamseven.echoeco.user.Role;
 
@@ -20,6 +21,7 @@ import teamseven.echoeco.user.Role;
 public class SecurityConfig
 {
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final AutoLoginFilter autoLoginFilter;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -34,22 +36,26 @@ public class SecurityConfig
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headerConfig -> headerConfig.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
-                ));
-        http
+                ))
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login",
-                                "/users/**" // 임시로 permitAll 로 열어둠. 변경필요함.
+                                "/users/**", "/admin/**" // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll())
-                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
-                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("test").hasRole(Role.USER.name()))
+                // 권한 설정 주석처리. 변경필요.
+                //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                //       .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
+                //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                //        .requestMatchers("").hasRole(Role.USER.name()))
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/"))
                 .formLogin(formLogin -> formLogin.loginPage("/user/login"))
                 .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.sendRedirect("/user/login");
                 }))
                 .oauth2Login(Customizer.withDefaults());
+
+        // AutoLoginFilter를 SecurityFilterChain에 추가
+        http.addFilterBefore(autoLoginFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
