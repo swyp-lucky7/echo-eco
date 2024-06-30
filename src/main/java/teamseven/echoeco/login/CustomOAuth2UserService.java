@@ -2,6 +2,7 @@ package teamseven.echoeco.login;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -12,8 +13,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.user.OAuthAttributes;
-import teamseven.echoeco.user.Role;
 import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.UserForm;
 import teamseven.echoeco.user.UserRepository;
 
 
@@ -46,10 +47,24 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(),attributes.getPicture(), Role.USER))
                 .map(entity -> entity.update(attributes.getName(),attributes.getPicture(), entity.getRole()))
                 .orElse(attributes.toEntity());
 
         return userRepository.save(user);
     }
+
+    public List<User> findUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findOneById(Long id) {
+        // Optional.get() 실패할 경우 추가 필요
+        return userRepository.findById(id).get();
+    }
+
+        public void updateUserRole(Long userId, UserForm userForm) {
+            User findUser = findOneById(userId);
+            findUser.updateRole(userForm.getRole());
+            userRepository.save(findUser);
+        }
 }

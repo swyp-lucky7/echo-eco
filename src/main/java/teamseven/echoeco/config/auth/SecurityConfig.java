@@ -34,25 +34,19 @@ public class SecurityConfig
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headerConfig -> headerConfig.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::disable
-
                 ));
         http
                 .authorizeHttpRequests((auth) ->auth
-                        .requestMatchers("/", "/user/login", "/user/test"
+                        .requestMatchers("/", "/user/login",
+                                "/users/**" // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll())
-                .authorizeHttpRequests((auth) ->auth
-                        .requestMatchers("/", "/user/login", "/user/test"
-                        ).permitAll())
-                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers("/test").hasRole(Role.USER.name()))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
-
+                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers("test").hasRole(Role.USER.name()))
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/"))
                 .formLogin(formLogin -> formLogin.loginPage("/user/login"))
                 .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
-                    System.out.println(accessDeniedException.toString());
-
                     response.sendRedirect("/user/login");
                 }))
                 .oauth2Login(Customizer.withDefaults());
