@@ -1,11 +1,11 @@
-package teamseven.echoeco.admin.creature.domain;
+package teamseven.echoeco.admin.character.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum CreatureType {
+public enum CharacterType {
     ANIMAL("animal", "동물"),
     PLANT("plant", "식물");
 

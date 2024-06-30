@@ -6,7 +6,7 @@ const createHelper = {
     id: -1,
     init() {
         const url = window.location.href;
-        const match = url.match(/\/admin\/creature\/create\/(\d+)/);
+        const match = url.match(/\/admin\/character\/create\/(\d+)/);
         if (match && match[1]) {
             createHelper.id = parseInt(match[1]);
         }
@@ -16,13 +16,13 @@ const createHelper = {
         document.querySelector('#saveBtn').addEventListener('click', () => {
             $.ajax({
                 type: "POST",
-                url: "/admin/creature/create",
+                url: "/admin/character/create",
                 dataType: "json",
                 data: JSON.stringify(createHelper.getParam()),
                 contentType: 'application/json; charset=utf-8',
                 success: function(res) {
                     alert("성공적으로 생성되었습니다.");
-                    location.href = "/admin/creature";
+                    location.href = "/admin/character";
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error:', textStatus, errorThrown);
@@ -33,8 +33,8 @@ const createHelper = {
 
     getParam() {
         let params = {
-            "name": document.querySelector('#creatureName').value,
-            "type": document.querySelector('#creatureType').value,
+            "name": document.querySelector('#characterName').value,
+            "type": document.querySelector('#characterType').value,
             "description": document.querySelector('#descriptionInput').value,
             "maxLevel": document.querySelector('#maxLevel').value,
         };

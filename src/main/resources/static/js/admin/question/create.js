@@ -71,7 +71,7 @@ const createHelper = {
 
     getParam() {
        let param = {
-           "name": document.querySelector('#creatureName').value,
+           "name": document.querySelector('#characterName').value,
            "questionType": document.querySelector('#questionType').value,
            "head": document.querySelector('#questionHead').value,
            "answer": document.querySelector('#answerInput').value,

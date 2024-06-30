@@ -3,12 +3,12 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}" lang="">
 <th:block layout:fragment="script">
-    <script th:src="@{/js/admin/creature/read.js}"></script>
+    <script th:src="@{/js/admin/character/read.js}"></script>
 </th:block>
 <body>
 <div layout:fragment="content">
     <div class="text-end mb-3" style="margin-left: auto">
-        <button type="button" class="btn btn-l btn-primary" onclick="location.href='/admin/creature/create'"><strong>생성하기</strong></button>
+        <button type="button" class="btn btn-l btn-primary" onclick="location.href='/admin/character/create'"><strong>생성하기</strong></button>
     </div>
     <div class="card">
         <h5 class="card-header">리스트</h5>
@@ -22,7 +22,7 @@
                     <th>액션</th>
                 </tr>
                 </thead>
-                <tbody class="table-border-bottom-0" id="creatureTBody">
+                <tbody class="table-border-bottom-0" id="characterTBody">
 <!--                <tr>-->
 <!--                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>곰</strong></td>-->
 <!--                    <td><span class="badge bg-label-primary me-1">동물</span></td>-->
@@ -33,7 +33,7 @@
 <!--                                <i class="bx bx-dots-vertical-rounded"></i>-->
 <!--                            </button>-->
 <!--                            <div class="dropdown-menu">-->
-<!--                                <a class="dropdown-item" href="/admin/creature/create/1"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>-->
+<!--                                <a class="dropdown-item" href="/admin/character/create/1"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>-->
 <!--                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> 삭제하기</a>-->
 <!--                            </div>-->
 <!--                        </div>-->
