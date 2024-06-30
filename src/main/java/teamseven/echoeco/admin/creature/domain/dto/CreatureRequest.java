@@ -7,6 +7,7 @@ import teamseven.echoeco.admin.creature.domain.CreatureType;
 
 @Data
 public class CreatureRequest {
+    private Long id;
     @NotNull
     private CreatureType type;
     @NotNull
@@ -17,6 +18,7 @@ public class CreatureRequest {
 
     public Creature toEntity() {
         return Creature.builder()
+                .id(id)
                 .type(type)
                 .name(name)
                 .description(description)

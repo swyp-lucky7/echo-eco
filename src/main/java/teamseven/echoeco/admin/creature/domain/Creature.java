@@ -28,6 +28,10 @@ public class Creature {
     @Column(nullable = false)
     private int maxLevel;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean isPossible = true;
+
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 

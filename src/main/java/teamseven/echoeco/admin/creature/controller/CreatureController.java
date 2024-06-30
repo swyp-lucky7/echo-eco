@@ -9,7 +9,6 @@ import teamseven.echoeco.admin.creature.domain.Creature;
 import teamseven.echoeco.admin.creature.domain.CreatureDetail;
 import teamseven.echoeco.admin.creature.domain.dto.CreatureDetailRequest;
 import teamseven.echoeco.admin.creature.domain.dto.CreatureRequest;
-import teamseven.echoeco.admin.creature.repository.CreatureDetailRepository;
 import teamseven.echoeco.admin.creature.service.CreatureDetailService;
 import teamseven.echoeco.admin.creature.service.CreatureService;
 import teamseven.echoeco.config.ApiResponse;
@@ -40,12 +39,27 @@ public class CreatureController {
         return "admin/creature/create";
     }
 
+    @GetMapping("/create/{id}")
+    public String updatePage(@PathVariable Long id, Model model) {
+        Creature creature = creatureService.findOne(id);
+        model.addAttribute("creature", creature);
+        return "admin/creature/update";
+    }
+
     @PostMapping("/create")
     @ResponseBody
-    public ApiResponse<String> create(@Valid @RequestBody CreatureRequest creatureRequest) {
+    public ApiResponse<String> upsert(@Valid @RequestBody CreatureRequest creatureRequest) {
         Creature creature = creatureRequest.toEntity();
         creatureService.save(creature);
         return ApiResponse.success("ok");
+    }
+
+
+    @GetMapping("/{id}/detail")
+    public String detailPage(@PathVariable Long id, Model model) {
+        Creature creature = creatureService.findOne(id);
+        model.addAttribute("creature", creature);
+        return "admin/creature/detail";
     }
 
     @PostMapping("/create/detail")

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/creature/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card accordion-item active mb-4">
+        <h2 class="accordion-header" id="headingOne">
+            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne"
+                    aria-expanded="true" aria-controls="accordionOne">
+                Accordion Item 1
+            </button>
+        </h2>
+
+        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
+            <div class="accordion-body">
+                Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
+                marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
+                soufflé. Wafer gummi bears marshmallow pastry pie.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">리스트</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>타입</th>
+                    <th>최대 레벨</th>
+                    <th>액션</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="creatureTBody">
+                <!--                <tr>-->
+                <!--                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>곰</strong></td>-->
+                <!--                    <td><span class="badge bg-label-primary me-1">동물</span></td>-->
+                <!--                    <td>100</td>-->
+                <!--                    <td>-->
+                <!--                        <div class="dropdown">-->
+                <!--                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">-->
+                <!--                                <i class="bx bx-dots-vertical-rounded"></i>-->
+                <!--                            </button>-->
+                <!--                            <div class="dropdown-menu">-->
+                <!--                                <a class="dropdown-item" href="/admin/creature/create/1"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>-->
+                <!--                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> 삭제하기</a>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </td>-->
+                <!--                </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
