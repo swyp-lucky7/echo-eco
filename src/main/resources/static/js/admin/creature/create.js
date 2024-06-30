@@ -3,8 +3,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const createHelper = {
+    id: -1,
     init() {
-        createHelper.pullCreature();
+        const url = window.location.href;
+        const match = url.match(/\/admin\/creature\/create\/(\d+)/);
+        if (match && match[1]) {
+            createHelper.id = parseInt(match[1]);
+        }
         createHelper.addEvent();
     },
     addEvent() {
@@ -27,30 +32,15 @@ const createHelper = {
     },
 
     getParam() {
-        return {
+        let params = {
             "name": document.querySelector('#creatureName').value,
             "type": document.querySelector('#creatureType').value,
             "description": document.querySelector('#descriptionInput').value,
             "maxLevel": document.querySelector('#maxLevel').value,
         };
+        if (createHelper.id !== -1) {
+            params['id'] = createHelper.id;
+        }
+        return params;
     },
-    pullCreature() {
-        $.ajax({
-            type: "get",
-            url: "/admin/creature/list",
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function (res) {
-                document.querySelector('#beforeDrawingTableBody').innerHTML = createHelper.createModalDrawingTableRow(res.data);
-                document.querySelectorAll('.modalDrawingCheckbox').forEach(checkbox => {
-                    checkbox.addEventListener('change', function () {
-                        document.querySelector('#modalDrawingCheckboxAll').checked = document.querySelectorAll('.modalDrawingCheckbox').length === document.querySelectorAll('.modalDrawingCheckbox:checked').length;
-                    });
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-            }
-        });
-    }
 }

@@ -8,6 +8,7 @@ import teamseven.echoeco.admin.creature.repository.CreatureDetailRepository;
 import teamseven.echoeco.admin.creature.repository.CreatureRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,5 +22,9 @@ public class CreatureService {
 
     public List<Creature> findAll() {
         return creatureRepository.findAll();
+    }
+
+    public Creature findOne(Long id) {
+        return creatureRepository.findById(id).orElseThrow();
     }
 }
