@@ -12,11 +12,11 @@
     <title>Title</title>
 </head>
 <body>
-<form role="form" th:object="${userForm}" method="post">
-    <div th:text="${userForm.name}"></div>
-    <div th:text="${userForm.email}"></div>
+<form role="form" th:object="${userDto}" method="post">
+    <div th:text="${userDto.name}"></div>
+    <div th:text="${userDto.email}"></div>
     <div>
-        <img th:src="@{${userForm.picture}}" width="70" height="70">
+        <img th:src="@{${userDto.picture}}" width="70" height="70">
     </div>
 
     <div class="form-group">

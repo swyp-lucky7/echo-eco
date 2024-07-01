@@ -1,11 +1,14 @@
-package teamseven.echoeco.user;
+package teamseven.echoeco.user.domain.Dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import teamseven.echoeco.user.domain.Role;
+import teamseven.echoeco.user.domain.User;
 
 @Getter
 @Setter
-public class UserForm {
+public class UserDto {
 
     private String name;
 
@@ -13,6 +16,7 @@ public class UserForm {
 
     private String picture;
 
+    @NotNull
     private Role role;
 
     public void updateUserForm(User user) {

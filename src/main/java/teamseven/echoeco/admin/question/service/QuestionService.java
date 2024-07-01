@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.admin.question.domain.Question;
 import teamseven.echoeco.admin.question.repository.QuestionRepository;
-import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.domain.User;
 
 import java.util.List;
 

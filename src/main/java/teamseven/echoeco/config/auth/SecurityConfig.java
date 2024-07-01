@@ -12,8 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import teamseven.echoeco.login.CustomOAuth2UserService;
-import teamseven.echoeco.user.Role;
+import teamseven.echoeco.user.service.CustomOAuth2UserService;
 
 @Configuration
 @RequiredArgsConstructor

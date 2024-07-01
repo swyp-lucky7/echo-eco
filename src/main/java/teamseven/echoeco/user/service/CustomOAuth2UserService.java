@@ -1,4 +1,4 @@
-package teamseven.echoeco.login;
+package teamseven.echoeco.user.service;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.Collections;
@@ -12,10 +12,10 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.user.OAuthAttributes;
-import teamseven.echoeco.user.User;
-import teamseven.echoeco.user.UserForm;
-import teamseven.echoeco.user.UserRepository;
+import teamseven.echoeco.user.domain.OAuthAttributes;
+import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.domain.Dto.UserDto;
+import teamseven.echoeco.user.repository.UserRepository;
 
 
 @RequiredArgsConstructor
@@ -62,9 +62,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return userRepository.findById(id).get();
     }
 
-        public void updateUserRole(Long userId, UserForm userForm) {
-            User findUser = findOneById(userId);
-            findUser.updateRole(userForm.getRole());
-            userRepository.save(findUser);
-        }
+    public void updateUserRole(Long userId, UserDto userDto) {
+        User findUser = findOneById(userId);
+        findUser.updateRole(userDto.getRole());
+        userRepository.save(findUser);
+    }
 }

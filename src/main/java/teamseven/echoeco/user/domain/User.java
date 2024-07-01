@@ -1,4 +1,4 @@
-package teamseven.echoeco.user;
+package teamseven.echoeco.user.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;

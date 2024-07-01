@@ -1,4 +1,4 @@
-package teamseven.echoeco.user;
+package teamseven.echoeco.user.domain;
 
 import java.util.Arrays;
 import java.util.List;
