@@ -17,10 +17,30 @@
                     </div>
                 </div>
             </div>
-            <div class="row demo-vertical-spacing mb-3">
-                <div class="col">
-                    <label for="descriptionInput" class="form-label">설명</label>
-                    <textarea class="form-control" id="descriptionInput" th:text="${character.description}" rows="3"></textarea>
+            <div id="descriptionFrame">
+                <p class="col-form-label">설명</p>
+                <div id="descriptionInputBox">
+                    <div th:each="description, iterStat : ${character.descriptions}" class="row demo-vertical-spacing mb-3"
+                         th:id="'descriptionCheckbox' + ${iterStat.index + 1}">
+                        <div class="input-group">
+                            <span class="input-group-text" th:text="${iterStat.index + 1}">1</span>
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0 description-checkbox"
+                                       th:data-index="${iterStat.index + 1}" type="checkbox" aria-label="Checkbox for following text input">
+                            </div>
+                            <input type="text" class="form-control description-checkbox-input" aria-label="Text input with checkbox"
+                                   th:id="'descriptionInput' + ${iterStat.index + 1}" th:value="${description.step}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row demo-vertical-spacing mb-3">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" id="addButton">+</button>
+                    </div>
+                    <div class="col text-end">
+                        <input class="btn btn-primary" type="button" value="삭제" id="removeBtn">
+                    </div>
                 </div>
             </div>
             <div class="row demo-vertical-spacing mb-3">
@@ -31,7 +51,13 @@
                         <option value="PLANT">식물</option>
                     </select>
                 </div>
-                <div class="col"></div>
+                <div class="col">
+                    <label for="isPossible" class="form-label">사용 가능 여부</label>
+                    <select id="isPossible" class="form-select" th:field="*{character.isPossible}">
+                        <option value="true" selected>사용가능</option>
+                        <option value="false">사용불가능</option>
+                    </select>
+                </div>
                 <div class="col">
                     <label for="maxLevel" class="col-form-label">최대 레벨</label>
                     <div>

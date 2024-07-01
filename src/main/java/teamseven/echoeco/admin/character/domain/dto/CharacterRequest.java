@@ -12,17 +12,19 @@ public class CharacterRequest {
     private CharacterType type;
     @NotNull
     private String name;
-    private String description;
+    private String descriptions;
     @NotNull
     private int maxLevel;
+    private boolean isPossible;
 
     public Character toEntity() {
         return Character.builder()
                 .id(id)
                 .type(type)
                 .name(name)
-                .description(description)
+                .descriptions(descriptions)
                 .maxLevel(maxLevel)
+                .isPossible(isPossible)
                 .build();
     }
 }

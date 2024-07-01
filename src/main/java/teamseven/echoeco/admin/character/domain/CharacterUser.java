@@ -27,11 +27,6 @@ public class CharacterUser {
     @Column(nullable = false)
     private int level;
 
-    // 사용 X
-    @ColumnDefault("1")
-    @Builder.Default
-    private int exp = 1;
-
     private String name;
 
     private Boolean isUse;

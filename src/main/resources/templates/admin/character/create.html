@@ -13,29 +13,43 @@
                 <div class="col">
                     <label for="characterName" class="col-form-label">이름</label>
                     <div>
-                        <input class="form-control" type="text" value="" id="characterName">
+                        <input class="form-control" type="text" th:value="${character.name}" id="characterName">
+                    </div>
+                </div>
+            </div>
+            <div id="descriptionFrame" th:data-json="${character.descriptions}">
+                <p class="col-form-label">설명</p>
+                <div id="descriptionInputBox">
+
+                </div>
+                <div class="row demo-vertical-spacing mb-3">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" id="addButton">+</button>
+                    </div>
+                    <div class="col text-end">
+                        <input class="btn btn-primary" type="button" value="삭제" id="removeBtn">
                     </div>
                 </div>
             </div>
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
-                    <label for="descriptionInput" class="form-label">설명</label>
-                    <textarea class="form-control" id="descriptionInput" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="row demo-vertical-spacing mb-3">
-                <div class="col">
                     <label for="characterType" class="form-label">타입</label>
-                    <select id="characterType" class="form-select">
+                    <select id="characterType" class="form-select" th:field="*{character.type}">
                         <option value="ANIMAL" selected>동물</option>
                         <option value="PLANT">식물</option>
                     </select>
                 </div>
-                <div class="col"></div>
+                <div class="col">
+                    <label for="isPossible" class="form-label">사용 가능 여부</label>
+                    <select id="isPossible" class="form-select">
+                        <option value="true" th:selected="${character.isPossible}">사용가능</option>
+                        <option value="false" th:selected="${!character.isPossible}">사용불가능</option>
+                    </select>
+                </div>
                 <div class="col">
                     <label for="maxLevel" class="col-form-label">최대 레벨</label>
                     <div>
-                        <input class="form-control" type="text" value="" id="maxLevel">
+                        <input class="form-control" type="text" th:value="${character.maxLevel}" id="maxLevel">
                     </div>
                 </div>
                 <div class="col"></div>

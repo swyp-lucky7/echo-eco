@@ -10,15 +10,17 @@ import teamseven.echoeco.admin.character.domain.CharacterType;
 public class CharacterResponse {
     private CharacterType type;
     private String name;
-    private String description;
+    private String descriptions;
     private int maxLevel;
+    private boolean isPossible;
 
     public static CharacterResponse fromEntity(Character character) {
         return CharacterResponse.builder()
                 .type(character.getType())
                 .name(character.getName())
-                .description(character.getDescription())
+                .descriptions(character.getDescriptions())
                 .maxLevel(character.getMaxLevel())
+                .isPossible(character.isPossible())
                 .build();
     }
 }
