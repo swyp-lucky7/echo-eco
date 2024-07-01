@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>EchoEco</title>
+</head>
+<body>
+<div th:if = "${userName != null}">
+    <div th:text="|안녕하세요 ${userName}님|"></div>
+    <form action="/logout" method="post">
+        <button type="submit">로그아웃</button>
+    </form>
+    <button onclick="location.href='/users'" style="font-size: 17px">
+        유저 리스트
+    </button>
+    <button onclick="location.href='/admin'" style="font-size: 17px">
+        어드민 화면으로
+    </button>
+</div>
+<div th:if = "${userName == null}">
+    <button onclick="location.href='/user/login'" style="font-size: 17px">
+        로그인
+    </button>
+</div>
+
+
+</body>
+</html>

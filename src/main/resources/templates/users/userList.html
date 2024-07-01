@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+    img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<body>
+
+<div class="container">
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>사진</th>
+                <th>권한</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <img th:src="@{${user.picture}}" width="70" height="70">
+                </td>
+                <td th:text="${user.role.title}">
+                </td>
+                <td>
+                    <a href="#" th:href="@{/users/{id}/edit (id=${user.id})}" role="button">수정하기</a>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button onclick="location.href='/'" style="font-size: 17px">
+        로그인 화면으로
+    </button>
+</div> <!-- /container -->
+
+</body>
+</html>

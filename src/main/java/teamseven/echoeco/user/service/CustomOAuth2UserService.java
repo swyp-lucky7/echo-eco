@@ -1,6 +1,8 @@
-package teamseven.echoeco.login;
+package teamseven.echoeco.user.service;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -10,12 +12,10 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.user.OAuthAttributes;
-import teamseven.echoeco.user.Role;
-import teamseven.echoeco.user.User;
-import teamseven.echoeco.user.UserRepository;
-
-import java.util.Collections;
+import teamseven.echoeco.user.domain.OAuthAttributes;
+import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.domain.Dto.UserDto;
+import teamseven.echoeco.user.repository.UserRepository;
 
 
 @RequiredArgsConstructor
@@ -51,5 +51,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity());
 
         return userRepository.save(user);
+    }
+
+    public List<User> findUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findOneById(Long id) {
+        // Optional.get() 실패할 경우 추가 필요
+        return userRepository.findById(id).get();
+    }
+
+    public void updateUserRole(Long userId, UserDto userDto) {
+        User findUser = findOneById(userId);
+        findUser.updateRole(userDto.getRole());
+        userRepository.save(findUser);
     }
 }

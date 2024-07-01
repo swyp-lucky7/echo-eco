@@ -10,7 +10,7 @@ import teamseven.echoeco.admin.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.admin.question.service.QuestionService;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.config.auth.LoginUser;
-import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.domain.User;
 
 @Controller
 @RequiredArgsConstructor

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import teamseven.echoeco.admin.question.domain.Question;
 import teamseven.echoeco.admin.question.domain.QuestionType;
-import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.domain.User;
 
 @Data
 @Getter

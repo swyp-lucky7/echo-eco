@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<style>
+    img{
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form role="form" th:object="${userDto}" method="post">
+    <div th:text="${userDto.name}"></div>
+    <div th:text="${userDto.email}"></div>
+    <div>
+        <img th:src="@{${userDto.picture}}" width="70" height="70">
+    </div>
+
+    <div class="form-group">
+        <label th:for="role">User Role</label>
+        <select name="role" id="category" class="form-control">
+            <option th:each="role : ${roles}"
+                    th:value="${role}"
+                    th:field="*{role}"
+                    th:text="${role.title}" />
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<button onclick="location.href='/users'" style="font-size: 17px">
+    유저 리스트
+</button>
+
+</body>
+</html>

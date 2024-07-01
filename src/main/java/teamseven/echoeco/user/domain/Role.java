@@ -1,5 +1,7 @@
-package teamseven.echoeco.user;
+package teamseven.echoeco.user.domain;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,4 +14,8 @@ public enum Role {
 
     private final String key;
     private final String title;
+
+    public static List<Role> getAll() {
+        return Arrays.stream(Role.values()).toList();
+    }
 }
