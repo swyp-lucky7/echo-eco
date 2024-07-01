@@ -38,11 +38,11 @@ public class AutoLoginFilter extends OncePerRequestFilter {
                 .password("admin")
                 .roles("ADMIN")
                 .build();
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("user")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(admin, user);
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("user")
+//                .roles("USER")
+//                .build();
+        return new InMemoryUserDetailsManager(admin);
     }
 }

@@ -35,7 +35,8 @@ public class CharacterController {
     }
 
     @GetMapping("/create")
-    public String createPage() {
+    public String createPage(Model model) {
+        model.addAttribute("character", Character.empty());
         return "admin/character/create";
     }
 
@@ -43,7 +44,7 @@ public class CharacterController {
     public String updatePage(@PathVariable Long id, Model model) {
         Character character = characterService.findOne(id);
         model.addAttribute("character", character);
-        return "admin/character/update";
+        return "admin/character/create";
     }
 
     @PostMapping("/create")

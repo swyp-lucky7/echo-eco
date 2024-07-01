@@ -71,7 +71,7 @@ const createHelper = {
 
     getParam() {
        let param = {
-           "name": document.querySelector('#characterName').value,
+           "name": document.querySelector('#questionName').value,
            "questionType": document.querySelector('#questionType').value,
            "head": document.querySelector('#questionHead').value,
            "answer": document.querySelector('#answerInput').value,
@@ -85,8 +85,21 @@ const createHelper = {
        } else if (document.querySelector('#questionType').value === 'SUBJECTIVE') {
            param['body'] = document.querySelector('#subjectiveInput').value;
        }
-       console.log(param);
-       console.log(JSON.stringify(param));
+
        return param;
+    },
+
+    rowMultipleCheckbox(index, value) {
+        return `
+                <div class="row demo-vertical-spacing mb-3" id="multipleCheckbox${index}">
+                    <div class="input-group">
+                        <span class="input-group-text">${index}</span>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0 multiple-checkbox" data-index="${index}" type="checkbox" aria-label="Checkbox for following text input">
+                        </div>
+                        <input type="text" class="form-control multiple-checkbox-input" aria-label="Text input with checkbox" id="multipleInput${index}" value="${value}">
+                    </div>
+                </div>
+            `;
     },
 }

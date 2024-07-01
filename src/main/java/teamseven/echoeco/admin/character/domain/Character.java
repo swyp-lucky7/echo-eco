@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "Characters")
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Character {
     @Column(nullable = false)
     private String name;
 
-    private String description;
+    private String descriptions;
 
     @Column(nullable = false)
     private int maxLevel;
@@ -40,5 +41,14 @@ public class Character {
 
     public Character(Long id) {
         this.id = id;
+    }
+
+    public static Character empty() {
+        return Character.builder()
+                .name("")
+                .descriptions("")
+                .maxLevel(100)
+                .isPossible(true)
+                .build();
     }
 }
