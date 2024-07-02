@@ -1,0 +1,15 @@
+###
+POST http://localhost:8080/file/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="yes.png"
+Content-Type: image/png
+
+< /Users/sejun/Project/echo-eco/http/images/yes.png
+--WebAppBoundary--
+
+###
+
+GET http://localhost:8080/file/download?fileName=yes.png
+Accept: application/json

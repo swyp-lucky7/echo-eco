@@ -37,7 +37,7 @@ public class SecurityConfig
                         HeadersConfigurer.FrameOptionsConfig::disable
                 ))
                 .authorizeHttpRequests((auth) ->auth
-                        .requestMatchers("/", "/user/login",
+                        .requestMatchers("/", "/user/login", "/file/**",
                                 "/users/**", "/admin/**" // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll())
                 // 권한 설정 주석처리. 변경필요.
