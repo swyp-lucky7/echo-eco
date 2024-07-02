@@ -3,37 +3,30 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}" lang="">
 <th:block layout:fragment="script">
-    <script th:src="@{/js/admin/character/create.js}"></script>
+    <script th:src="@{/js/admin/character/detail.js}"></script>
 </th:block>
 <body>
 <div layout:fragment="content">
-    <div class="card accordion-item active mb-4">
-        <h2 class="accordion-header" id="headingOne">
-            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne"
-                    aria-expanded="true" aria-controls="accordionOne">
-                Accordion Item 1
-            </button>
-        </h2>
-
-        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
-            <div class="accordion-body">
-                Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing
-                marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping
-                soufflé. Wafer gummi bears marshmallow pastry pie.
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalToggle">
+                        <strong>Detail 추가하기</strong>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <h5 class="card-header">리스트</h5>
+    <div class="card mb-4">
+        <h5 class="card-header" th:text="${character.name} + ' 의 Detail 리스트'">리스트</h5>
         <div class="table-responsive text-nowrap">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>이름</th>
-                    <th>타입</th>
-                    <th>최대 레벨</th>
-                    <th>액션</th>
+                    <th>레벨</th>
+                    <th>이미지</th>
                 </tr>
                 </thead>
                 <tbody class="table-border-bottom-0" id="characterTBody">
@@ -63,6 +56,49 @@
             <button type="button" class="btn btn-primary" id="saveBtn">
                 <strong>저장하기</strong>
             </button>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <!-- Modal 1-->
+        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1"
+             style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalToggleLabel">Detail 추가하기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                <img src="/images/vendor/icons/unicons/chart.png" alt="" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+                                <div class="button-wrapper">
+                                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                        <span class="d-none d-sm-block">Upload new photo</span>
+                                        <i class="bx bx-upload d-block d-sm-none"></i>
+                                        <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+                                    </label>
+                                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="maxLevel" class="col-form-label">최대 레벨</label>
+                                <div>
+                                    <input class="form-control" type="text" th:value="${character.maxLevel}" id="maxLevel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <strong>닫기</strong>
+                        </button>
+                        <button type="button" class="btn btn-primary" id="modalToPageBtn"><strong>저장</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
