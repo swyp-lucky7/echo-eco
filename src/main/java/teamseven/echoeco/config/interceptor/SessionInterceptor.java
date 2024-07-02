@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.domain.User;
 
 public class SessionInterceptor implements HandlerInterceptor {
     @Override

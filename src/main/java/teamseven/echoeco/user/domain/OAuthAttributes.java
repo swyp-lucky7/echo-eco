@@ -1,4 +1,4 @@
-package teamseven.echoeco.user;
+package teamseven.echoeco.user.domain;
 
 import java.util.Map;
 import lombok.Builder;
@@ -29,6 +29,9 @@ public class OAuthAttributes {
         if("naver".equals(registrationId)) {
             return ofNaver("id", attributes);
         }
+        if("kakao".equals(registrationId)) {
+            return ofKakao("id", attributes);
+        }
         return ofGoogle(userNameAttributeName, attributes);
     }
 
@@ -56,6 +59,20 @@ public class OAuthAttributes {
                 .build();
     }
 
+    private static OAuthAttributes ofKakao(String userNameAttributeName,
+                                           Map<String, Object> attributes) {
+        Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
+        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+
+        System.out.println(kakaoProfile.toString());
+        return OAuthAttributes.builder()
+                .name((String) kakaoProfile.get("nickname"))
+                .picture((String) kakaoProfile.get("profile_image_url"))
+                .email("null") // 카카오는 이메일 정보 받으려면 비즈니스 심사를 받아야해 임시로 null로 저장 변경 필요.
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
 
     public User toEntity() {
         return User.builder()

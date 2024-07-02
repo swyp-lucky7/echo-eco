@@ -10,9 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.admin.question.domain.Question;
 import teamseven.echoeco.admin.question.domain.QuestionType;
 import teamseven.echoeco.admin.question.repository.QuestionRepository;
-import teamseven.echoeco.user.Role;
-import teamseven.echoeco.user.User;
-import teamseven.echoeco.user.UserRepository;
+import teamseven.echoeco.user.domain.Role;
+import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.repository.UserRepository;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package teamseven.echoeco.admin.question.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDateTime;
 

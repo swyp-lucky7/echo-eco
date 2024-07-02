@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import teamseven.echoeco.login.CustomOAuth2UserService;
+import teamseven.echoeco.user.service.CustomOAuth2UserService;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,12 +37,18 @@ public class SecurityConfig
                         HeadersConfigurer.FrameOptionsConfig::disable
                 ))
                 .authorizeHttpRequests((auth) ->auth
-                        .requestMatchers("/", "/user/login", "/user/test", "/admin/**").permitAll())
+                        .requestMatchers("/", "/user/login",
+                                "/users/**", "/admin/**" // 임시로 permitAll 로 열어둠. 변경필요함.
+                        ).permitAll())
+                // 권한 설정 주석처리. 변경필요.
+                //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                //       .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
+                //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                //        .requestMatchers("").hasRole(Role.USER.name()))
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/"))
                 .formLogin(formLogin -> formLogin.loginPage("/user/login"))
                 .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
-                    System.out.println(accessDeniedException.toString());
-                   response.sendRedirect("/user/login");
+                    response.sendRedirect("/user/login");
                 }))
                 .oauth2Login(Customizer.withDefaults());
 

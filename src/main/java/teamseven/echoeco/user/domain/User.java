@@ -1,4 +1,4 @@
-package teamseven.echoeco.user;
+package teamseven.echoeco.user.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -42,6 +42,10 @@ public class User extends BaseTimeEntity {
         this.role = role;
 
         return this;
+    }
+
+    public void updateRole(Role role) {
+        this.role = role;
     }
 
     public String getRoleKey() {
