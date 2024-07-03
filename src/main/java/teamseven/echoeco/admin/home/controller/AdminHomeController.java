@@ -16,4 +16,8 @@ public class AdminHomeController {
 
     //GetMapping 으로 /question 만들어서 진행해주세요
     // todo 다빈님
+    @GetMapping("")
+    public String question() {
+        return "admin/question";
+    }
 }

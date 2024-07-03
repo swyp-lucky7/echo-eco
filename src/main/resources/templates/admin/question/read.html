@@ -2,12 +2,99 @@
 <html xmlns:th="http//www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}" lang="">
-<!--<th:block layout:fragment="script">-->
-<!--    <script th:src="@{/js/drawing/create.js}"></script>-->
-<!--</th:block>-->
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/read.js}"></script>
+</th:block>
 <body>
 <div layout:fragment="content">
-
+    <div class="card mb-4">
+        <h5 class="card-header">문제</h5>
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col text-end">
+                    <label for="removeBtn" class="col-form-label"></label>
+                    <div>
+                        <input class="btn btn-primary" type="button" value="삭제" id="removeBtn">
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>질문</th>
+                        <th>옵션 1</th>
+                        <th>옵션 2</th>
+                        <th>옵션 3</th>
+                        <th>옵션 4</th>
+                        <th>정답</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><label><input type="checkbox" class="check-delete"></label></td>
+                        <td>질문</td>
+                        <td>옵션 1</td>
+                        <td>옵션 2</td>
+                        <td>옵션 3</td>
+                        <td>옵션 4</td>
+                        <td>정답</td>
+                    </tr>
+                    <tr>
+                        <td><label><input type="checkbox" class="check-delete"></label></td>
+                        <td>북극의 해빙 감소가 전 세계 기후에 미치는 영향 중 옳지 않은 것은 무엇입니까?</td>
+                        <td>북극 해빙 감소는 해수면 상승에 직접적인 영향을 미친다.</td>
+                        <td>해빙 감소로 인해 북극의 반사율(알베도)이 감소하여 더 많은 태양 에너지가 흡수된다.</td>
+                        <td>해빙 감소는 북극 지역의 기온 상승을 가속화시킨다.</td>
+                        <td>해빙 감소는 전 세계 해양 순환 패턴에 영향을 줄 수 있다.</td>
+                        <td>정답</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item prev">
+                        <a class="page-link" href="#"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">4</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">5</a>
+                    </li>
+                    <li class="page-item next">
+                        <a class="page-link" href="#"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <h5 class="card-header">영상</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label"></label>
+                <input class="form-control" type="file" id="formFileMultiple" multiple>
+            </div>
+            <div class="mb-3 row">
+                <label for="html5-url-input" class="col-md-2 col-form-label">URL</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="url" value="https://themeselection.com" id="html5-url-input" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

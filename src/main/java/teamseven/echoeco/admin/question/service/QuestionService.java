@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.admin.question.domain.Question;
+import teamseven.echoeco.admin.question.domain.dto.QuestionResponse;
 import teamseven.echoeco.admin.question.repository.QuestionRepository;
 import teamseven.echoeco.user.domain.User;
 
@@ -29,5 +30,11 @@ public class QuestionService {
 
     public List<Question> findByUser(User user) {
         return questionRepository.findByMakeUser_Id(user.getId());
+    }
+
+    public QuestionResponse update(Long id) {
+        Question entity = questionRepository.findById(id).orElseThrow();
+
+        return new QuestionResponse(entity);
     }
 }
