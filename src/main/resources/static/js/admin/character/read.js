@@ -43,7 +43,7 @@ const readHelper = {
                     index++;
                 }
                 // 드롭다운 문제로 추가로 생성
-                while (index < 4) {
+                for (let i = 0; i < 4; i++) {
                     html += `<tr>
                         <td><i class="fab fa-angular fa-lg me-3"></i></td>
                         <td></td>

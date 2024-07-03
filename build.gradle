@@ -31,9 +31,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+
 	implementation 'org.testcontainers:localstack'
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.749'
+	// aws-java-sdk-s3 의존해서 설치 :: 설치 안할시 워닝 뜸
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
 
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'mysql:mysql-connector-java:8.0.32'

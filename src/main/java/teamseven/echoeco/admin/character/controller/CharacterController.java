@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import teamseven.echoeco.admin.character.domain.Character;
 import teamseven.echoeco.admin.character.domain.CharacterDetail;
-import teamseven.echoeco.admin.character.domain.dto.CharacterDetailRequest;
+import teamseven.echoeco.admin.character.domain.dto.CharacterDetailDto;
 import teamseven.echoeco.admin.character.domain.dto.CharacterRequest;
 import teamseven.echoeco.admin.character.service.CharacterDetailService;
 import teamseven.echoeco.admin.character.service.CharacterService;
@@ -55,7 +55,9 @@ public class CharacterController {
         return ApiResponse.success("ok");
     }
 
-
+    // --------------------------------------------------------
+    // ----------------------  detail -------------------------
+    // --------------------------------------------------------
     @GetMapping("/{id}/detail")
     public String detailPage(@PathVariable Long id, Model model) {
         Character character = characterService.findOne(id);
@@ -63,9 +65,24 @@ public class CharacterController {
         return "admin/character/detail";
     }
 
-    @PostMapping("/create/detail")
+    @GetMapping("/detail")
     @ResponseBody
-    public ApiResponse<String> createDetail(@Valid @RequestBody CharacterDetailRequest characterDetailRequest) {
+    public ApiResponse<CharacterDetailDto> detail(@RequestParam("id") Long id) {
+        CharacterDetail characterDetail = characterDetailService.findById(id);
+        return ApiResponse.success(CharacterDetailDto.fromDto(characterDetail));
+    }
+
+    @GetMapping("/detail/list")
+    @ResponseBody
+    public ApiResponse<List<CharacterDetailDto>> detailListPage(@RequestParam("id") Long id) {
+        List<CharacterDetail> list = characterDetailService.findByCharacterId(id);
+        List<CharacterDetailDto> dtoList = list.stream().map(CharacterDetailDto::fromDto).toList();
+        return ApiResponse.success(dtoList);
+    }
+
+    @PostMapping("/detail/create")
+    @ResponseBody
+    public ApiResponse<String> createDetail(@Valid @RequestBody CharacterDetailDto characterDetailRequest) {
         CharacterDetail characterDetail = characterDetailRequest.toEntity();
         characterDetailService.save(characterDetail);
         return ApiResponse.success("ok");

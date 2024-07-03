@@ -2,8 +2,7 @@ package teamseven.echoeco.admin.character.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import teamseven.echoeco.user.User;
+import teamseven.echoeco.user.domain.User;
 
 @Entity
 @Getter

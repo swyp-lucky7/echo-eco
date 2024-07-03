@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import teamseven.echoeco.config.ApiResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,10 +39,10 @@ public class S3Controller {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> upload(@RequestParam MultipartFile file) {
+    public ApiResponse<String> upload(@RequestParam MultipartFile file) {
         File uploadFile = convert(file);
-        uploadToS3(uploadFile);
-        return ResponseEntity.ok(null);
+        String url = uploadToS3(uploadFile);
+        return ApiResponse.success(url);
     }
 
     private File convert(MultipartFile multipartFile) {
@@ -54,9 +55,10 @@ public class S3Controller {
         return file;
     }
 
-    private void uploadToS3(File uploadFile) {
+    private String uploadToS3(File uploadFile) {
         try {
             amazonS3.putObject(BUCKET_NAME, uploadFile.getName(), uploadFile);
+            return amazonS3.getUrl(BUCKET_NAME, uploadFile.getName()).toString();
         } catch (SdkClientException e) {
             throw e;
         } finally {
