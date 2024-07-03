@@ -1,10 +1,10 @@
-package teamseven.echoeco.question.service;
+package teamseven.echoeco.admin.question.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.question.domain.Question;
-import teamseven.echoeco.question.repository.QuestionRepository;
+import teamseven.echoeco.admin.question.domain.Question;
+import teamseven.echoeco.admin.question.repository.QuestionRepository;
 import teamseven.echoeco.user.domain.User;
 
 import java.util.List;
@@ -29,5 +29,11 @@ public class QuestionService {
 
     public List<Question> findByUser(User user) {
         return questionRepository.findByMakeUser_Id(user.getId());
+    }
+
+    public QuestionResponse update(Long id) {
+        Question entity = questionRepository.findById(id).orElseThrow();
+
+        return new QuestionResponse(entity);
     }
 }
