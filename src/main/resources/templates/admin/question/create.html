@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="questionName" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" value="" id="questionName">
+                    </div>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="questionType" class="form-label">타입</label>
+                    <select id="questionType" class="form-select">
+                        <option value="MULTIPLE_CHOICE" selected>객관식</option>
+                        <option value="SUBJECTIVE">주관식</option>
+                    </select>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col text-end">
+                    <label for="removeBtn" class="col-form-label"></label>
+                    <div>
+                        <input class="btn btn-primary" type="button" value="삭제" id="removeBtn">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="questionHead" class="col-form-label">질문</label>
+                    <div>
+                        <input class="form-control" type="text" value="" id="questionHead">
+                    </div>
+                </div>
+            </div>
+            <div id="multipleChoiceDiv">
+                <p class="col-form-label">객관식</p>
+                <div id="multipleChoiceBox">
+
+                </div>
+                <div class="row demo-vertical-spacing mb-3">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" id="addButton">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3" id="subjectiveDiv" style="display: none">
+                <div class="col">
+                    <label for="subjectiveInput" class="form-label">주관식</label>
+                    <textarea class="form-control" id="subjectiveInput" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="answerInput" class="form-label">정답</label>
+                    <textarea class="form-control" id="answerInput" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
