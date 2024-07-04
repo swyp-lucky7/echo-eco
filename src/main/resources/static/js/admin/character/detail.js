@@ -179,7 +179,7 @@ const detailHelper = {
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="javascript:void(0);" onclick="detailHelper.pullDetail(${row.id});" data-bs-toggle="modal" data-bs-target="#updateModalToggle"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>
-                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> 삭제하기</a>
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="detailHelper.deleteDetail(${row.id});"><i class="bx bx-trash me-1"></i> 삭제하기</a>
                         </div>
                     </div>
                 </td>
@@ -202,6 +202,22 @@ const detailHelper = {
                 document.querySelector('#updateUploadImage').src = res.data.imageUrl;
                 document.querySelector('#updateLevel').value = res.data.level;
                 document.querySelector('#updateModalSaveBtn').setAttribute('data-id', id);
+            }, error(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        });
+    },
+
+    deleteDetail(id) {
+        $.ajax({
+            type: "POST",
+            url: `/admin/character/detail/delete`,
+            data: JSON.stringify({"id": id}),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success(res) {
+                alert("삭제되었습니다.");
+                location.reload();
             }, error(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR, textStatus, errorThrown);
             }

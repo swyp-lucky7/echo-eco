@@ -25,4 +25,8 @@ public class CharacterService {
     public Character findOne(Long id) {
         return characterRepository.findById(id).orElseThrow();
     }
+
+    public void delete(Long id) {
+        characterRepository.deleteById(id);
+    }
 }

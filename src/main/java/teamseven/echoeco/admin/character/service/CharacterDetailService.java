@@ -20,10 +20,14 @@ public class CharacterDetailService {
     }
 
     public List<CharacterDetail> findByCharacterId(Long characterId) {
-        return characterDetailRepository.findByCharacter_Id(characterId);
+        return characterDetailRepository.findByCharacter_IdOrderByLevelAsc(characterId);
     }
 
     public CharacterDetail findById(Long id) {
         return characterDetailRepository.findById(id).orElseThrow(() -> new NotFoundException("Character Detail Not Found"));
+    }
+
+    public void delete(Long id) {
+        characterDetailRepository.deleteById(id);
     }
 }

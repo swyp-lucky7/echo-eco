@@ -14,6 +14,7 @@ import teamseven.echoeco.admin.character.service.CharacterService;
 import teamseven.echoeco.config.ApiResponse;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,11 +56,19 @@ public class CharacterController {
         return ApiResponse.success("ok");
     }
 
+    @PostMapping("/delete")
+    @ResponseBody
+    public ApiResponse<String> deleteCharacter(@RequestBody Map<String, Long> map) {
+        characterService.delete(map.get("id"));
+        return ApiResponse.success("ok");
+    }
+
     // --------------------------------------------------------
     // ----------------------  detail -------------------------
     // --------------------------------------------------------
     @GetMapping("/{id}/detail")
     public String detailPage(@PathVariable Long id, Model model) {
+
         Character character = characterService.findOne(id);
         model.addAttribute("character", character);
         return "admin/character/detail";
@@ -70,6 +79,13 @@ public class CharacterController {
     public ApiResponse<CharacterDetailDto> detail(@RequestParam("id") Long id) {
         CharacterDetail characterDetail = characterDetailService.findById(id);
         return ApiResponse.success(CharacterDetailDto.fromDto(characterDetail));
+    }
+
+    @PostMapping("/detail/delete")
+    @ResponseBody
+    public ApiResponse<String> deleteDetail(@RequestBody Map<String, Long> map) {
+        characterDetailService.delete(map.get("id"));
+        return ApiResponse.success("ok");
     }
 
     @GetMapping("/detail/list")

@@ -2,6 +2,8 @@ package teamseven.echoeco.admin.character.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +20,7 @@ public class CharacterDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Character character;
 
     @Column(nullable = false)

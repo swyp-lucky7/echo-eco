@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CharacterDetailRepository extends JpaRepository<CharacterDetail, Long> {
-    List<CharacterDetail> findByCharacter_Id(Long characterId);
+    List<CharacterDetail> findByCharacter_IdOrderByLevelAsc(Long characterId);
 }

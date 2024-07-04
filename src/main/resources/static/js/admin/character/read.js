@@ -34,7 +34,7 @@ const readHelper = {
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/admin/character/${row.id}/detail"><i class="bx bx-edit-alt me-1"></i> Detail</a>
                                     <a class="dropdown-item" href="/admin/character/create/${row.id}"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>
-                                    <a class="dropdown-item" href="/admin/character/delete/${row.id}"><i class="bx bx-trash me-1"></i> 삭제하기</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="readHelper.deleteCharacter(${row.id});"><i class="bx bx-trash me-1"></i> 삭제하기</a>
                                 </div>
                             </div>
                         </td>
@@ -71,5 +71,24 @@ const readHelper = {
             }
             return "";
         }
-    }
+    },
+
+    deleteCharacter(id) {
+        if (!confirm("정말로 삭제하시겠습니까?")) {
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: `/admin/character/delete`,
+            data: JSON.stringify({"id": id}),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success(res) {
+                alert("삭제되었습니다.");
+                location.reload();
+            }, error(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        });
+    },
 }
