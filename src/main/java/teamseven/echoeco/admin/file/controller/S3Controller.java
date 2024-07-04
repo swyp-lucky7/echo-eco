@@ -12,13 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 import teamseven.echoeco.config.ApiResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static teamseven.echoeco.config.aws.S3LocalConfig.BUCKET_NAME;
 
 @RequiredArgsConstructor
 @RequestMapping("/file")
@@ -26,9 +26,12 @@ import static teamseven.echoeco.config.aws.S3LocalConfig.BUCKET_NAME;
 public class S3Controller {
     private final AmazonS3 amazonS3;
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
     @GetMapping("/download")
     public ResponseEntity<byte[]> get(@RequestParam String fileName) throws IOException {
-        S3Object s3Object = amazonS3.getObject(BUCKET_NAME, fileName);
+        S3Object s3Object = amazonS3.getObject(bucket, fileName);
         S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
         byte[] bytes = IOUtils.toByteArray(objectInputStream);
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -57,8 +60,8 @@ public class S3Controller {
 
     private String uploadToS3(File uploadFile) {
         try {
-            amazonS3.putObject(BUCKET_NAME, uploadFile.getName(), uploadFile);
-            return amazonS3.getUrl(BUCKET_NAME, uploadFile.getName()).toString();
+            amazonS3.putObject(bucket, uploadFile.getName(), uploadFile);
+            return amazonS3.getUrl(bucket, uploadFile.getName()).toString();
         } catch (SdkClientException e) {
             throw e;
         } finally {

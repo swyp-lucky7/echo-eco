@@ -43,7 +43,7 @@ class CharacterDetailServiceTest {
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
                 .maxLevel(100)
-                .description("곰")
+                .descriptions("곰")
                 .build();
         characterRepository.save(character);
 
