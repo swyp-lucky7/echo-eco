@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/character/read.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="text-end mb-3" style="margin-left: auto">
+        <button type="button" class="btn btn-l btn-primary" onclick="location.href='/admin/character/create'"><strong>생성하기</strong></button>
+    </div>
+    <div class="card">
+        <h5 class="card-header">리스트</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>타입</th>
+                    <th>최대 레벨</th>
+                    <th>액션</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="characterTBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -9,7 +9,6 @@ import teamseven.echoeco.admin.question.domain.QuestionType;
 import teamseven.echoeco.user.domain.User;
 
 @Data
-@Getter
 @Builder
 public class QuestionRequest {
     @NotNull

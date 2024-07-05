@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/character/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="characterName" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${character.name}" id="characterName">
+                    </div>
+                </div>
+            </div>
+            <div id="descriptionFrame" th:data-json="${character.descriptions}">
+                <p class="col-form-label">설명</p>
+                <div id="descriptionInputBox">
+
+                </div>
+                <div class="row demo-vertical-spacing mb-3">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" id="addButton">+</button>
+                    </div>
+                    <div class="col text-end">
+                        <input class="btn btn-primary" type="button" value="삭제" id="removeBtn">
+                    </div>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="characterType" class="form-label">타입</label>
+                    <select id="characterType" class="form-select" th:field="*{character.type}">
+                        <option value="ANIMAL" selected>동물</option>
+                        <option value="PLANT">식물</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="isPossible" class="form-label">사용 가능 여부</label>
+                    <select id="isPossible" class="form-select">
+                        <option value="true" th:selected="${character.isPossible}">사용가능</option>
+                        <option value="false" th:selected="${!character.isPossible}">사용불가능</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="maxLevel" class="col-form-label">최대 레벨</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${character.maxLevel}" id="maxLevel">
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
