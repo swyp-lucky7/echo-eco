@@ -29,6 +29,9 @@ public class CharacterDetail {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
+    private Environment environment;
+
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
