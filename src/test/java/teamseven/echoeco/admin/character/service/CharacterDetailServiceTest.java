@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.admin.character.domain.Character;
 import teamseven.echoeco.admin.character.domain.CharacterDetail;
 import teamseven.echoeco.admin.character.domain.CharacterType;
+import teamseven.echoeco.admin.character.domain.Environment;
 import teamseven.echoeco.admin.character.repository.CharacterDetailRepository;
 import teamseven.echoeco.admin.character.repository.CharacterRepository;
 
@@ -42,6 +43,8 @@ class CharacterDetailServiceTest {
         Character character = Character.builder()
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
+                .frameImage("http://")
+                .pickImage("http://")
                 .maxLevel(100)
                 .descriptions("곰")
                 .build();
@@ -51,6 +54,7 @@ class CharacterDetailServiceTest {
                 .character(character)
                 .level(30)
                 .imageUrl("http://image.url")
+                .environment(Environment.CLEAN)
                 .build();
         //when
         characterDetailService.save(characterDetail);
