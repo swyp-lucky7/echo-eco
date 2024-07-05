@@ -31,12 +31,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'org.testcontainers:localstack'
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.749'
+	// aws-java-sdk-s3 의존해서 설치 :: 설치 안할시 워닝 뜸
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+
+
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'mysql:mysql-connector-java:8.0.32'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'com.h2database:h2'
+	testImplementation 'cloud.localstack:localstack-utils:0.2.20'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
