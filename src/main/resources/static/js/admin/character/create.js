@@ -68,13 +68,11 @@ const createHelper = {
         });
 
         document.querySelector('#upload').addEventListener('change', () => {
-            const fileInput = document.querySelector('#upload');
-            createHelper.fileUpload(fileInput, 'uploadImage');
+            createHelper.fileUpload('upload', 'uploadImage');
         });
 
         document.querySelector('#frameUpload').addEventListener('change', () => {
-            const fileInput = document.querySelector('#frameUpload');
-            createHelper.fileUpload(fileInput, 'frameUploadImage');
+            createHelper.fileUpload('frameUpload', 'frameUploadImage');
         });
     },
 
@@ -155,7 +153,8 @@ const createHelper = {
         return true;
     },
 
-    fileUpload(fileInput, uploadImageId) {
+    fileUpload(fileInputId, uploadImageId) {
+        const fileInput = document.querySelector(`#${fileInputId}`);
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
         $.ajax({
