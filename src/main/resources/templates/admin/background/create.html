@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/background/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <span class="col-form-label">Frame 이미지</span>
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img th:src="${character.frameImage}" alt="" class="d-block rounded" height="100" width="100" id="frameUploadImage">
+                <div class="button-wrapper">
+                    <label for="frameUpload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input type="file" id="frameUpload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+                    </label>
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                </div>
+            </div>
+            <div id="descriptionFrame" th:data-json="${character.descriptions}">
+                <p class="col-form-label">환경</p>
+                <div id="descriptionInputBox">
+
+                </div>
+                <div class="row demo-vertical-spacing mb-3">
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" id="addButton">+</button>
+                    </div>
+                    <div class="col text-end">
+                        <input class="btn btn-primary" type="button" value="삭제" id="removeBtn">
+                    </div>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="characterType" class="form-label">환경</label>
+                    <select id="characterType" class="form-select" th:field="*{character.type}">
+                        <option value="ANIMAL" selected>동물</option>
+                        <option value="PLANT">식물</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="maxLevel" class="col-form-label">레벨</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${character.maxLevel}" id="maxLevel">
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
