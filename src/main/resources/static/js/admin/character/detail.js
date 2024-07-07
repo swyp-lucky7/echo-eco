@@ -61,7 +61,8 @@ const detailHelper = {
         document.querySelector('#modalSaveBtn').addEventListener('click', (event) => {
             const src = document.querySelector('#uploadImage').src;
             const level = document.querySelector('#level').value;
-            detailHelper.save('', src, level);
+            const environment = document.querySelector('#environment').value;
+            detailHelper.save('', src, level, environment);
         });
 
         document.querySelector('#backBtn').addEventListener('click', () => {
@@ -76,7 +77,8 @@ const detailHelper = {
             const id = document.querySelector('#updateModalSaveBtn').getAttribute('data-id');
             const src = document.querySelector('#updateUploadImage').src;
             const level = document.querySelector('#updateLevel').value;
-            detailHelper.save(id, src, level);
+            const environment = document.querySelector('#updateEnvironment').value;
+            detailHelper.save(id, src, level, environment);
         });
     },
 
@@ -111,7 +113,7 @@ const detailHelper = {
                 </div>
             `;
     },
-    save(id = '', src, level) {
+    save(id = '', src, level, environment) {
         const url = new URL(src);
         if (url.pathname === detailHelper.baseImageUrl) {
             alert("이미지를 업로드해주세요.");
@@ -124,7 +126,8 @@ const detailHelper = {
         const param = {
             "characterId": detailHelper.characterId,
             "imageUrl": src,
-            "level": level
+            "level": level,
+            "environment": environment
         }
         if (id !== '') {
             param['id'] = id;
@@ -172,6 +175,7 @@ const detailHelper = {
                 <td>
                     <img src="${row.imageUrl}" alt="" class="d-block rounded" height="50" width="50" id="rowImage${index}">
                 </td>
+                <td><i class="fab fa-angular fa-lg text-danger me-3"></i>${environment[row.environment]}</td>
                 <td>
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -202,6 +206,7 @@ const detailHelper = {
                 document.querySelector('#updateUploadImage').src = res.data.imageUrl;
                 document.querySelector('#updateLevel').value = res.data.level;
                 document.querySelector('#updateModalSaveBtn').setAttribute('data-id', id);
+                document.querySelector('#updateEnvironment').value = res.data.environment;
             }, error(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR, textStatus, errorThrown);
             }
@@ -231,6 +236,7 @@ const detailHelper = {
                 <td><i class="fab fa-angular fa-lg text-danger me-3"></i></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             `;
         }
@@ -240,4 +246,9 @@ const detailHelper = {
         document.querySelector('#uploadImage').src = imageUrl;
         document.querySelector('#level').value = level;
     },
+}
+
+environment = {
+    "TRASH": "쓰레기",
+    "CLEAN": "꺠긋"
 }

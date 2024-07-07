@@ -15,6 +15,8 @@ public class CharacterRequest {
     private String descriptions;
     @NotNull
     private int maxLevel;
+    private String pickImage;
+    private String frameImage;
     private boolean isPossible;
 
     public Character toEntity() {
@@ -24,6 +26,8 @@ public class CharacterRequest {
                 .name(name)
                 .descriptions(descriptions)
                 .maxLevel(maxLevel)
+                .pickImage(pickImage)
+                .frameImage(frameImage)
                 .isPossible(isPossible)
                 .build();
     }

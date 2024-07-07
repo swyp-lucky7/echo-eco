@@ -27,25 +27,12 @@
                 <tr>
                     <th>레벨</th>
                     <th>이미지</th>
+                    <th>환경</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody class="table-border-bottom-0" id="characterTBody">
-                    <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>곰</strong></td>
-                        <td>100</td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/admin/character/create/1"><i class="bx bx-edit-alt me-1"></i> 수정하기</a>
-                                    <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> 삭제하기</a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+
                 </tbody>
             </table>
         </div>
@@ -88,6 +75,13 @@
                                     <input class="form-control" type="text" id="level">
                                 </div>
                             </div>
+                            <div class="col">
+                                <label for="environment" class="form-label">환경</label>
+                                <select id="environment" class="form-select">
+                                    <option value="CLEAN" selected>깨끗</option>
+                                    <option value="TRASH">쓰레기</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -126,6 +120,13 @@
                                 <div>
                                     <input class="form-control" type="text" id="updateLevel">
                                 </div>
+                            </div>
+                            <div class="col">
+                                <label for="updateEnvironment" class="form-label">환경</label>
+                                <select id="updateEnvironment" class="form-select">
+                                    <option value="CLEAN" selected>깨끗</option>
+                                    <option value="TRASH">쓰레기</option>
+                                </select>
                             </div>
                         </div>
                     </div>

@@ -33,6 +33,12 @@ public class Character {
     @Builder.Default
     private boolean isPossible = true;
 
+    @Column(nullable = false)
+    private String pickImage;
+
+    @Column(nullable = false)
+    private String frameImage;
+
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -46,6 +52,8 @@ public class Character {
     public static Character empty() {
         return Character.builder()
                 .name("")
+                .pickImage("/images/vendor/icons/unicons/chart.png")
+                .frameImage("/images/vendor/icons/unicons/chart.png")
                 .descriptions("")
                 .maxLevel(100)
                 .isPossible(true)

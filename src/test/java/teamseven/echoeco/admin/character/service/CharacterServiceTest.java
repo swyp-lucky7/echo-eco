@@ -36,6 +36,8 @@ class CharacterServiceTest {
         Character character = Character.builder()
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
+                .frameImage("http://")
+                .pickImage("http://")
                 .maxLevel(100)
                 .descriptions("곰")
                 .build();

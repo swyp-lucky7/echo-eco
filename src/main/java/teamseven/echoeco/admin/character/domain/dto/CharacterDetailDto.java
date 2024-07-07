@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import teamseven.echoeco.admin.character.domain.Character;
 import teamseven.echoeco.admin.character.domain.CharacterDetail;
+import teamseven.echoeco.admin.character.domain.Environment;
 
 @Data
 @Builder
@@ -16,6 +17,7 @@ public class CharacterDetailDto {
     private int level;
     @NotNull
     private String imageUrl;
+    private Environment environment;
 
     public CharacterDetail toEntity() {
         return CharacterDetail.builder()
@@ -23,6 +25,7 @@ public class CharacterDetailDto {
                 .character(new Character(this.characterId))
                 .imageUrl(this.imageUrl)
                 .level(this.level)
+                .environment(this.environment)
                 .build();
     }
 
@@ -31,6 +34,7 @@ public class CharacterDetailDto {
                 .id(characterDetail.getId())
                 .level(characterDetail.getLevel())
                 .imageUrl(characterDetail.getImageUrl())
+                .environment(characterDetail.getEnvironment())
                 .build();
     }
 }
