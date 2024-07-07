@@ -38,6 +38,11 @@ dependencies {
 	// aws-java-sdk-s3 의존해서 설치 :: 설치 안할시 워닝 뜸
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
 
+	//JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'mysql:mysql-connector-java:8.0.32'
