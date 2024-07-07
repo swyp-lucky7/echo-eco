@@ -21,7 +21,7 @@ public class Background {
     private String name;
 
     @Column(nullable = false)
-    private String backgroundImage;
+    private String image;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -39,7 +39,7 @@ public class Background {
     public static Background empty() {
         return Background.builder()
                 .name("")
-                .backgroundImage("/images/vendor/icons/unicons/chart.png")
+                .image("/images/vendor/icons/unicons/chart.png")
                 .environment(Environment.CLEAN)
                 .level(0)
                 .build();

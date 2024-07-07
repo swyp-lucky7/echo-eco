@@ -25,7 +25,7 @@ const backgroundRead = {
                     html += `
                     <tr>
                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong>${row.name}</strong></td>
-                        <td><img src="${row.backgroundImage}" alt="" class="d-block rounded" height="50" width="50" id="rowImage${index}"></td>
+                        <td><img src="${row.image}" alt="" class="d-block rounded" height="50" width="50" id="rowImage${index}"></td>
                         <td><span class="badge bg-label-primary me-1">${getEnvironmentType(row.environment)}</span></td>
                         <td><span class="badge bg-label-primary me-1">${row.level}</span></td>
                         <td>

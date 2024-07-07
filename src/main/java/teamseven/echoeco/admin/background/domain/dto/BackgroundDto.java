@@ -13,7 +13,7 @@ public class BackgroundDto {
     private String name;
 
     @NotNull
-    private String backgroundImage;
+    private String image;
     @NotNull
     private Environment environment;
     @NotNull
@@ -23,7 +23,7 @@ public class BackgroundDto {
         return Background.builder()
                 .id(this.id)
                 .name(this.name)
-                .backgroundImage(this.backgroundImage)
+                .image(this.image)
                 .environment(this.environment)
                 .level(this.level)
                 .build();
