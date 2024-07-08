@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 const backgroundRead = {
     init() {
-        backgroundRead.addEvent();
         backgroundRead.search();
+        backgroundRead.addEvent();
     },
 
     addEvent() {
@@ -27,7 +27,7 @@ const backgroundRead = {
                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong>${row.name}</strong></td>
                         <td><img src="${row.image}" alt="" class="d-block rounded" height="50" width="50" id="rowImage${index}"></td>
                         <td><span class="badge bg-label-primary me-1">${getEnvironmentType(row.environment)}</span></td>
-                        <td><span class="badge bg-label-primary me-1">${row.level}</span></td>
+                        <td>${row.level}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"  aria-expanded="false">
@@ -47,6 +47,7 @@ const backgroundRead = {
                 for (let i = 0; i < 4; i++) {
                     html += `<tr>
                         <td><i class="fab fa-angular fa-lg me-3"></i></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>
@@ -75,6 +76,9 @@ const backgroundRead = {
     },
 
     deleteBackground(id) {
+        if (!confirm('정말로 삭제하시겠습니까?')) {
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "/admin/background/delete",
@@ -83,7 +87,7 @@ const backgroundRead = {
             contentType: 'application/json; charset=utf-8',
             success: function(res) {
                 alert("성공적으로 삭제되었습니다.");
-                location.href = "/admin/background";
+                location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error:', textStatus, errorThrown);

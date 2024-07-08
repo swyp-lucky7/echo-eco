@@ -23,4 +23,8 @@ public class BackgroundService {
     public Background findById(Long id) {
         return backgroundRepository.findById(id).orElseThrow();
     }
+
+    public void deleteById(Long id) {
+        backgroundRepository.deleteById(id);
+    }
 }

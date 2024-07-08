@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.testcontainers.shaded.org.bouncycastle.math.raw.Mod;
 import teamseven.echoeco.admin.background.domain.Background;
 import teamseven.echoeco.admin.background.domain.dto.BackgroundDto;
 import teamseven.echoeco.admin.background.service.BackgroundService;
 import teamseven.echoeco.config.ApiResponse;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,6 +49,14 @@ public class BackgroundController {
     public ApiResponse<String> upsert(@Valid @RequestBody BackgroundDto backgroundDto) {
         Background entity = backgroundDto.toEntity();
         backgroundService.save(entity);
+        return ApiResponse.success("ok");
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ApiResponse<String> delete(@RequestBody Map<String, Long> map) {
+        Long id = map.get("id");
+        backgroundService.deleteById(id);
         return ApiResponse.success("ok");
     }
 }

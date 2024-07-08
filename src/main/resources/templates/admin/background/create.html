@@ -23,18 +23,33 @@
             </div>
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
+                    <label for="level" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${background.name}" id="name">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
                     <label for="environment" class="form-label">환경</label>
                     <select id="environment" class="form-select" th:field="*{background.environment}">
-                        <option value="CLEAN" selected>동물</option>
-                        <option value="TRASH">식물</option>
+                        <option value="CLEAN" selected>깨끗</option>
+                        <option value="TRASH">쓰레기</option>
                     </select>
                 </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
                     <label for="level" class="col-form-label">레벨</label>
                     <div>
                         <input class="form-control" type="text" th:value="${background.level}" id="level">
                     </div>
                 </div>
+                <div class="col"></div>
                 <div class="col"></div>
             </div>
         </div>

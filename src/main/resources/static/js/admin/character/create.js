@@ -111,7 +111,6 @@ const createHelper = {
     },
     initUpdate() {
         const descriptions = JSON.parse(document.querySelector('#descriptionFrame').getAttribute('data-json'));
-        console.log(descriptions);
         let html = '';
         let index = 0;
         for (const description of descriptions) {
