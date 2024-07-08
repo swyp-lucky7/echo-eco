@@ -35,7 +35,7 @@ class BackgroundServiceTest {
         Background background = Background.builder()
                 .name("name1")
                 .level(10)
-                .backgroundUrl("http")
+                .image("http")
                 .environment(Environment.CLEAN)
                 .build();
 
@@ -54,13 +54,13 @@ class BackgroundServiceTest {
         Background background1 = Background.builder()
                 .name("name1")
                 .level(10)
-                .backgroundUrl("http")
+                .image("http")
                 .environment(Environment.CLEAN)
                 .build();
         Background background2 = Background.builder()
                 .name("name2")
                 .level(20)
-                .backgroundUrl("http")
+                .image("http")
                 .environment(Environment.TRASH)
                 .build();
 
@@ -82,13 +82,13 @@ class BackgroundServiceTest {
         Background background1 = Background.builder()
                 .name("name1")
                 .level(10)
-                .backgroundUrl("http")
+                .image("http")
                 .environment(Environment.CLEAN)
                 .build();
         Background background2 = Background.builder()
                 .name("name2")
                 .level(20)
-                .backgroundUrl("http")
+                .image("http")
                 .environment(Environment.TRASH)
                 .build();
 
