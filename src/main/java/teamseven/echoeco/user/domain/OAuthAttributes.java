@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class OAuthAttributes {
     private Map<String, Object> attributes;
-    private String nameAttributeKey;
+    private String nameAttributeKey; // registerId 를 받기 위한 키 (google, naver, kakao)
     private String name;
     private String email;
     private String picture;
@@ -64,7 +64,6 @@ public class OAuthAttributes {
         Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 
-        System.out.println(kakaoProfile.toString());
         return OAuthAttributes.builder()
                 .name((String) kakaoProfile.get("nickname"))
                 .picture((String) kakaoProfile.get("profile_image_url"))
