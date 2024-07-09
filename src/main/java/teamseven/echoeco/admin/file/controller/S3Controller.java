@@ -30,7 +30,7 @@ public class S3Controller {
     private String bucket;
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> get(@RequestParam String fileName) throws IOException {
+    public ResponseEntity<byte[]> get(@RequestParam("fileName") String fileName) throws IOException {
         S3Object s3Object = amazonS3.getObject(bucket, fileName);
         S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
         byte[] bytes = IOUtils.toByteArray(objectInputStream);
@@ -42,7 +42,7 @@ public class S3Controller {
     }
 
     @PostMapping("/upload")
-    public ApiResponse<String> upload(@RequestParam MultipartFile file) {
+    public ApiResponse<String> upload(@RequestParam("file") MultipartFile file) {
         File uploadFile = convert(file);
         String url = uploadToS3(uploadFile);
         return ApiResponse.success(url);

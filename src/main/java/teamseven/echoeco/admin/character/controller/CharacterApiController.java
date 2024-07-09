@@ -25,7 +25,8 @@ public class CharacterApiController {
     private final BackgroundService backgroundService;
 
     @GetMapping("/character/list")
-    public ApiResponse<List<CharacterResponse>> characterPickList(@RequestParam(required = false) CharacterType type, @RequestParam(required = false) Boolean isPossible) {
+    public ApiResponse<List<CharacterResponse>> characterPickList(@RequestParam(required = false, defaultValue = "ALL", name = "type") CharacterType type,
+                                                                  @RequestParam(required = false, name = "isPossible") Boolean isPossible) {
         return ApiResponse.success(characterService.pickList(type, isPossible));
     }
 }

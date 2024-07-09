@@ -5,6 +5,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 import teamseven.echoeco.admin.character.domain.Character;
 
-@Repository
-public interface CharacterRepository extends JpaRepository<Character, Long> {
+public interface CharacterRepository extends JpaRepository<Character, Long>, CharacterCustomRepository {
 }

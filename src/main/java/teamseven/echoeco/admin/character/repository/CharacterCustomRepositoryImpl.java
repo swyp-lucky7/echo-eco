@@ -4,9 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 import teamseven.echoeco.admin.character.domain.CharacterType;
-import teamseven.echoeco.admin.character.domain.dto.CharacterPickListCondition;
 import teamseven.echoeco.admin.character.domain.dto.CharacterResponse;
 import teamseven.echoeco.admin.character.domain.dto.QCharacterResponse;
 
@@ -40,7 +38,10 @@ public class CharacterCustomRepositoryImpl implements CharacterCustomRepository 
     }
 
     private BooleanExpression characterTypeEq(CharacterType type) {
-        return type != null ? character.type.eq(type) : null;
+        if (type == null || type.name().equals("ALL")) {
+            return null;
+        }
+        return character.type.eq(type);
     }
     private BooleanExpression isPossibleEq(Boolean isPossible) {
         return isPossible != null ? character.isPossible.eq(isPossible) : null;

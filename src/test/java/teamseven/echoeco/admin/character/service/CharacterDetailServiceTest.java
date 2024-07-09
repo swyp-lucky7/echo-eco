@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.admin.character.domain.Character;
 import teamseven.echoeco.admin.character.domain.CharacterDetail;
@@ -13,6 +14,7 @@ import teamseven.echoeco.admin.character.domain.CharacterType;
 import teamseven.echoeco.admin.character.domain.Environment;
 import teamseven.echoeco.admin.character.repository.CharacterDetailRepository;
 import teamseven.echoeco.admin.character.repository.CharacterRepository;
+import teamseven.echoeco.config.QuerydslConfiguration;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
+@Import(QuerydslConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class CharacterDetailServiceTest {
 

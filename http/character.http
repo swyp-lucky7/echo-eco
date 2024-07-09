@@ -1,4 +1,4 @@
-GET http://localhost:8080/character/list
+GET http://localhost:8080/character/list?type=ANIMAL&isPossible=false
 Accept: application/json
 
 ###
