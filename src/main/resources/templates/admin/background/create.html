@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/background/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <span class="col-form-label">이미지</span>
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img th:src="${background.image}" alt="" class="d-block rounded" height="100" width="100" id="uploadImage">
+                <div class="button-wrapper">
+                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+                    </label>
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="level" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${background.name}" id="name">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="environment" class="form-label">환경</label>
+                    <select id="environment" class="form-select" th:field="*{background.environment}">
+                        <option value="CLEAN" selected>깨끗</option>
+                        <option value="TRASH">쓰레기</option>
+                    </select>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="level" class="col-form-label">레벨</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${background.level}" id="level">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

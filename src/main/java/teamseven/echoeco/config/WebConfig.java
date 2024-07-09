@@ -1,6 +1,5 @@
 package teamseven.echoeco.config;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -8,6 +7,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import teamseven.echoeco.config.auth.LoginUserArgumentResolver;
+
+import java.util.List;
 import teamseven.echoeco.config.interceptor.SessionInterceptor;
 
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        WebMvcConfigurer.super.addInterceptors(registry);
         registry.addInterceptor(new SessionInterceptor());
     }
 

@@ -67,7 +67,7 @@ public class OAuthAttributes {
         return OAuthAttributes.builder()
                 .name((String) kakaoProfile.get("nickname"))
                 .picture((String) kakaoProfile.get("profile_image_url"))
-                .email("null") // 카카오는 이메일 정보 받으려면 비즈니스 심사를 받아야해 임시로 null로 저장 변경 필요.
+                .email((String) kakaoAccount.get("email"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
