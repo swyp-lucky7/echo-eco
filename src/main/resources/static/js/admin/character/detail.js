@@ -100,19 +100,6 @@ const detailHelper = {
         return params;
     },
 
-    stepDescriptionInput(index, value) {
-        return `
-                <div class="row demo-vertical-spacing mb-3" id="descriptionCheckbox${index}">
-                    <div class="input-group">
-                        <span class="input-group-text">${index}</span>
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0 description-checkbox" data-index="${index}" type="checkbox" aria-label="Checkbox for following text input">
-                        </div>
-                        <input type="text" class="form-control description-checkbox-input" aria-label="Text input with checkbox" id="descriptionInput${index}" value="${value}">
-                    </div>
-                </div>
-            `;
-    },
     save(id = '', src, level, environment) {
         const url = new URL(src);
         if (url.pathname === detailHelper.baseImageUrl) {
