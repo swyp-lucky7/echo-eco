@@ -19,7 +19,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/character")
-public class CharacterController {
+public class CharacterAdminController {
 
     private final CharacterService characterService;
     private final CharacterDetailService characterDetailService;

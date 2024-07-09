@@ -1,5 +1,6 @@
 package teamseven.echoeco.admin.background.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.admin.background.domain.Background;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BackgroundService {
     private final BackgroundRepository backgroundRepository;
 

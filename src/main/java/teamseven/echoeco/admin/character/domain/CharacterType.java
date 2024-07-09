@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum CharacterType {
+    ALL("all", "전체"),
     ANIMAL("animal", "동물"),
     PLANT("plant", "식물");
 
