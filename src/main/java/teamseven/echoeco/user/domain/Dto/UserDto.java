@@ -19,6 +19,16 @@ public class UserDto {
     @NotNull
     private Role role;
 
+    public static UserDto from(User user) {
+        UserDto userDto = new UserDto();
+        userDto.name = user.getName();
+        userDto.email = user.getEmail();
+        userDto.picture = user.getPicture();
+        userDto.role = user.getRole();
+
+        return userDto;
+    }
+
     public void updateUserForm(User user) {
         this.name = user.getName();
         this.email = user.getEmail();
