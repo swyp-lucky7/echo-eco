@@ -1,13 +1,14 @@
 package teamseven.echoeco.admin.question.domain.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.A;
 import teamseven.echoeco.admin.question.domain.Question;
 import teamseven.echoeco.admin.question.domain.QuestionType;
 import teamseven.echoeco.user.domain.User;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class QuestionRequest {
