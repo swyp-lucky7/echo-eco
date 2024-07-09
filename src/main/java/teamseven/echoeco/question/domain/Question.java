@@ -2,6 +2,7 @@ package teamseven.echoeco.question.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import teamseven.echoeco.admin.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDateTime;
@@ -26,8 +27,10 @@ public class Question {
 
     @Column(nullable = false)
     private String head;
+
     @Column(nullable = false)
     private String body;
+
     @Column(nullable = false)
     private String answer;
 
@@ -40,4 +43,12 @@ public class Question {
 
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public void update(QuestionRequest questionRequest) {
+        this.name = questionRequest.getName();
+        this.questionType = questionRequest.getQuestionType();
+        this.head = questionRequest.getHead();
+        this.body = questionRequest.getBody();
+        this.answer = questionRequest.getAnswer();
+    }
 }

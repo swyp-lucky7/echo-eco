@@ -1,4 +1,4 @@
-package teamseven.echoeco.question.service;
+package teamseven.echoeco.admin.question.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import teamseven.echoeco.question.domain.Question;
-import teamseven.echoeco.question.domain.QuestionType;
-import teamseven.echoeco.question.repository.QuestionRepository;
-import teamseven.echoeco.config.QuerydslConfiguration;
-import teamseven.echoeco.question.service.QuestionService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import teamseven.echoeco.admin.question.domain.Question;
+import teamseven.echoeco.admin.question.domain.QuestionType;
+import teamseven.echoeco.admin.question.repository.QuestionRepository;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.repository.UserRepository;
@@ -21,13 +22,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DataJpaTest
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(QuerydslConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class QuestionServiceTest {
 
+    @Autowired
+    protected MockMvc mockMvc;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -135,4 +141,30 @@ class QuestionServiceTest {
         assertTrue(byUser.contains(question2));
     }
 
+//    @Test
+//    @DisplayName("read() 메서드를 실행하면 질문 테이블을 볼 수 있어야 한다.")
+//    public void read() throws Exception {
+//        // given
+//        final String url = "/read/question";
+//        final String head = "head";
+//        final String body = "body";
+//        final String answer = "answer";
+//
+//        questionRepository.save(Question.builder()
+//                .head(head)
+//                .body(body)
+//                .answer(answer)
+//                .build());
+//
+//        // when
+//        final ResultActions resultActions = mockMvc.perform(get(url)
+//                .accept(MediaType.APPLICATION_JSON));
+//
+//        // then
+//        resultActions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$[0].head").value(head))
+//                .andExpect(jsonPath("$[0].body").value(body))
+//                .andExpect(jsonPath("$[0].answer").value(answer));
+//    }
 }

@@ -1,9 +1,13 @@
 package teamseven.echoeco.admin.question.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 import teamseven.echoeco.admin.question.domain.Question;
+import teamseven.echoeco.admin.question.domain.dto.QuestionRequest;
+import teamseven.echoeco.admin.question.domain.dto.QuestionResponse;
 import teamseven.echoeco.admin.question.repository.QuestionRepository;
 import teamseven.echoeco.user.domain.User;
 
@@ -31,9 +35,17 @@ public class QuestionService {
         return questionRepository.findByMakeUser_Id(user.getId());
     }
 
-    public QuestionResponse update(Long id) {
-        Question entity = questionRepository.findById(id).orElseThrow();
+    public void delete(Long id) {
+        questionRepository.deleteById(id);
+    }
 
-        return new QuestionResponse(entity);
+    @Transactional
+    public Question update(Long id, QuestionRequest questionRequest) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+
+        question.update(questionRequest);
+
+        return question;
     }
 }
