@@ -8,10 +8,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import teamseven.echoeco.admin.question.domain.Question;
-import teamseven.echoeco.admin.question.domain.QuestionType;
-import teamseven.echoeco.admin.question.repository.QuestionRepository;
+import teamseven.echoeco.question.domain.Question;
+import teamseven.echoeco.question.domain.QuestionType;
+import teamseven.echoeco.question.repository.QuestionRepository;
 import teamseven.echoeco.config.QuerydslConfiguration;
+import teamseven.echoeco.question.service.QuestionService;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.repository.UserRepository;

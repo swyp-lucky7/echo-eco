@@ -1,3 +1,11 @@
+POST http://localhost:8080/character/pick
+Content-Type: application/json
+
+{
+  "characterId": 2
+}
+
+###
 GET http://localhost:8080/character/list?type=ANIMAL&isPossible=false
 Accept: application/json
 
