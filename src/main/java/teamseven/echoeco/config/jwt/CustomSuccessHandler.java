@@ -5,15 +5,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import teamseven.echoeco.user.domain.Dto.UserDto;
-import teamseven.echoeco.user.domain.Oauth2UserImpl;
+import teamseven.echoeco.user.domain.OAuth2.Oauth2UserImpl;
 import teamseven.echoeco.user.repository.UserRepository;
 
 @Component
