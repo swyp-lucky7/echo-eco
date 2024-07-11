@@ -48,4 +48,12 @@ public class User extends BaseTimeEntity {
         this.role = role;
     }
 
+    //test
+    public User(Long id, String name, String email, String picture, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.role = role;
+    }
 }

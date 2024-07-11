@@ -32,6 +32,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
+	//query dsl
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	implementation 'org.testcontainers:localstack'
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.749'
@@ -42,7 +48,6 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-
 
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'mysql:mysql-connector-java:8.0.32'
@@ -56,4 +61,29 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', 'src/main/generated']
+		}
+	}
+}
+
+tasks.register('generateQueryDSL', JavaCompile) {
+	source = sourceSets.main.java
+	classpath = configurations.compileClasspath
+	options.annotationProcessorPath = configurations.annotationProcessor
+	destinationDir = file("src/main/generated")
+	options.compilerArgs = [
+			"-proc:only",
+			"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+	]
+}
+
+compileJava.dependsOn tasks.named('generateQueryDSL')
+
+clean {
+	delete fileTree("src/main/generated")
 }
