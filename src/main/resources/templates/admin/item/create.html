@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/item/create.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <span class="col-form-label">이미지</span>
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+
+
+                <img th:src="${item.imageUrl}" alt="" class="d-block rounded" height="100" width="100" id="uploadImage">
+                <div class="button-wrapper">
+                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
+                    </label>
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                </div>
+            </div>
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="name" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" th:value="${item.name}" id="name">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="description" class="form-label">설명</label>
+                    <input class="form-control" type="text" th:value="${item.name}" id="description">
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="price" class="col-form-label">가격</label>
+                    <div>
+                        <input class="form-control" type="number" th:value="${item.price}" id="price">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="levelUp" class="col-form-label">레벨 업</label>
+                    <div>
+                        <input class="form-control" type="number" th:value="${item.levelUp}" id="levelUp">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="isUse" class="col-form-label">사용 가능 여부</label>
+                    <select id="isUse" class="form-select">
+                        <option value="true" th:selected="${item.isUse}">사용가능</option>
+                        <option value="false" th:selected="${item.isUse}">사용불가능</option>
+                    </select>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="submit" class="btn btn-primary" id="saveBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

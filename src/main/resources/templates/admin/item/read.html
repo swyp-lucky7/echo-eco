@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<!--
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/background/read.js}"></script>
+</th:block>
+-->
+<body>
+<div layout:fragment="content">
+    <div class="text-end mb-3" style="margin-left: auto">
+        <button type="button" class="btn btn-l btn-primary" onclick="location.href='/admin/item/create'"><strong>생성하기</strong></button>
+    </div>
+
+    <div class="card">
+        <h5 class="card-header">아이템 리스트</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>이미지</th>
+                    <th>설명</th>
+                    <th>가격</th>
+                    <th>레벨 업</th>
+                    <th>사용 여부</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.name}"></td>
+                    <td>
+                        <img th:src="@{${item.picture}}" width="70" height="70">
+                    </td>
+                    <td th:text="${item.description}"></td>
+
+                    <td th:text="${item.price}"></td>
+                    <td th:text="${item.levelUp}"></td>
+                    <td th:text="${item.isUse}"></td>
+                    <td>
+                        <a href="#" th:href="@{/item/{id}/edit (id=${item.id})}" role="button">수정하기</a>
+                    </td>
+                    <td>
+                        <a href="#" th:href="@{/item/{id}/delete (id=${item.id})}" role="button">삭제하기</a>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
