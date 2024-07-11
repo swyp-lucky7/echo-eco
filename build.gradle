@@ -66,24 +66,30 @@ tasks.named('test') {
 sourceSets {
 	main {
 		java {
-			srcDirs = ['src/main/java', 'src/main/generated']
+			srcDirs = ['src/main/java']
+		}
+		resources {
+			srcDirs = ['src/main/resources']
+		}
+	}
+	generated {
+		java {
+			srcDirs = ['build/generated']
 		}
 	}
 }
 
 tasks.register('generateQueryDSL', JavaCompile) {
-	source = sourceSets.main.java
+	source = sourceSets.main.java.srcDirs
 	classpath = configurations.compileClasspath
 	options.annotationProcessorPath = configurations.annotationProcessor
-	destinationDir = file("src/main/generated")
+	destinationDirectory.set(file("build/generated"))
 	options.compilerArgs = [
 			"-proc:only",
 			"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
 	]
 }
 
-compileJava.dependsOn tasks.named('generateQueryDSL')
-
 clean {
-	delete fileTree("src/main/generated")
+	delete fileTree("build/generated")
 }
