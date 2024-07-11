@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.user.domain.OAuthAttributes;
-import teamseven.echoeco.user.domain.Oauth2UserImpl;
+import teamseven.echoeco.user.domain.OAuth2.OAuthAttributes;
+import teamseven.echoeco.user.domain.OAuth2.Oauth2UserImpl;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.Dto.UserDto;
 import teamseven.echoeco.user.repository.UserRepository;
@@ -35,7 +35,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
-
         return new Oauth2UserImpl(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())),
                 attributes.getAttributes(),

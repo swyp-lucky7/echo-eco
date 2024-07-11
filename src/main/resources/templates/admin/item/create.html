@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}" lang="">
 <th:block layout:fragment="script">
-    <script th:src="@{/js/admin/background/create.js}"></script>
+    <script th:src="@{/js/admin/item/create.js}"></script>
 </th:block>
 <body>
 <div layout:fragment="content">
@@ -11,7 +11,9 @@
         <div class="card-body">
             <span class="col-form-label">이미지</span>
             <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img th:src="${background.image}" alt="" class="d-block rounded" height="100" width="100" id="uploadImage">
+
+
+                <img th:src="${item.imageUrl}" alt="" class="d-block rounded" height="100" width="100" id="uploadImage">
                 <div class="button-wrapper">
                     <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                         <span class="d-none d-sm-block">Upload new photo</span>
@@ -21,11 +23,12 @@
                     <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
                 </div>
             </div>
+
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
                     <label for="name" class="col-form-label">이름</label>
                     <div>
-                        <input class="form-control" type="text" th:value="${background.name}" id="name">
+                        <input class="form-control" type="text" th:value="${item.name}" id="name">
                     </div>
                 </div>
                 <div class="col"></div>
@@ -33,35 +36,60 @@
             </div>
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
-                    <label for="environment" class="form-label">환경</label>
-                    <select id="environment" class="form-select" th:field="*{background.environment}">
-                        <option value="CLEAN" selected>깨끗</option>
-                        <option value="TRASH">쓰레기</option>
+                    <label for="description" class="form-label">설명</label>
+                    <input class="form-control" type="text" th:value="${item.description}" id="description">
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="price" class="col-form-label">가격</label>
+                    <div>
+                        <input class="form-control" type="number" th:value="${item.price}" id="price">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="levelUp" class="col-form-label">레벨 업</label>
+                    <div>
+                        <input class="form-control" type="number" th:value="${item.levelUp}" id="levelUp">
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="isUse" class="col-form-label">사용 가능 여부</label>
+                    <select id="isUse" class="form-select">
+                        <option value="true" th:selected="${item.isUse}">사용가능</option>
+                        <option value="false" th:selected="${!item.isUse}">사용불가능</option>
                     </select>
                 </div>
                 <div class="col"></div>
                 <div class="col"></div>
             </div>
-            <div class="row demo-vertical-spacing mb-3">
-                <div class="col">
-                    <label for="level" class="col-form-label">레벨</label>
-                    <div>
-                        <input class="form-control" type="text" th:value="${background.level}" id="level">
-                    </div>
-                </div>
-                <div class="col"></div>
-                <div class="col"></div>
-            </div>
+
+
         </div>
     </div>
 
     <div class="demo-vertical-spacing">
         <div class="col">
-            <button type="button" class="btn btn-primary" id="saveBtn">
+            <button type="submit" class="btn btn-primary" id="saveBtn">
                 <strong>저장하기</strong>
             </button>
         </div>
     </div>
 </div>
+
 </body>
 </html>
