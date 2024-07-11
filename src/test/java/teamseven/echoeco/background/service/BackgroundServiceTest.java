@@ -1,4 +1,4 @@
-package teamseven.echoeco.admin.background.service;
+package teamseven.echoeco.background.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
