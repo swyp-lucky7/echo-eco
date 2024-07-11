@@ -6,10 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import teamseven.echoeco.admin.character.domain.Environment;
-import teamseven.echoeco.admin.background.domain.Background;
-import teamseven.echoeco.admin.background.repository.BackgroundRepository;
+import teamseven.echoeco.character.domain.Environment;
+import teamseven.echoeco.background.domain.Background;
+import teamseven.echoeco.background.repository.BackgroundRepository;
+import teamseven.echoeco.background.service.BackgroundService;
+import teamseven.echoeco.config.QuerydslConfiguration;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
+@Import(QuerydslConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class BackgroundServiceTest {
     @Autowired
