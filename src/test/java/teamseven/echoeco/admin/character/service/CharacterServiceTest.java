@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.repository.BackgroundRepository;
+import teamseven.echoeco.background.repository.TrashUserRepository;
 import teamseven.echoeco.background.service.BackgroundService;
+import teamseven.echoeco.background.service.TrashUserService;
 import teamseven.echoeco.character.domain.*;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.dto.CharacterResponse;
@@ -47,6 +49,10 @@ class CharacterServiceTest {
     @Autowired
     private CharacterDetailRepository characterDetailRepository;
 
+    @Autowired
+    private TrashUserRepository trashUserRepository;
+    private TrashUserService trashUserService;
+
     private BackgroundService backgroundService;
     private CharacterDetailService characterDetailService;
     private CharacterService characterService;
@@ -55,7 +61,8 @@ class CharacterServiceTest {
     void setUp() {
         backgroundService = new BackgroundService(backgroundRepository);
         characterDetailService = new CharacterDetailService(characterDetailRepository);
-        characterService = new CharacterService(characterRepository, characterUserRepository, characterDetailService, backgroundService);
+        trashUserService = new TrashUserService(trashUserRepository);
+        characterService = new CharacterService(characterRepository, characterUserRepository, characterDetailService, backgroundService, trashUserService);
     }
 
     @Test
@@ -185,7 +192,7 @@ class CharacterServiceTest {
         CharacterUser characterUser = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(0).build();
         characterUserRepository.save(characterUser);
 
-        Background background = Background.builder().image("https://").level(0).environment(Environment.CLEAN).build();
+        Background background = Background.builder().image("https://").level(0).environment(Environment.TRASH).build();
         backgroundRepository.save(background);
 
         //when
@@ -205,10 +212,10 @@ class CharacterServiceTest {
         CharacterUser characterUser = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(0).build();
         characterUserRepository.save(characterUser);
 
-        Background background = Background.builder().image("https://").level(0).environment(Environment.CLEAN).build();
+        Background background = Background.builder().image("https://").level(0).environment(Environment.TRASH).build();
         backgroundRepository.save(background);
 
-        CharacterDetail characterDetail = CharacterDetail.builder().character(characters.get(0)).imageUrl("https://character1").environment(Environment.CLEAN).level(0).build();
+        CharacterDetail characterDetail = CharacterDetail.builder().character(characters.get(0)).imageUrl("https://character1").environment(Environment.TRASH).level(0).build();
         characterDetailRepository.save(characterDetail);
 
         //when

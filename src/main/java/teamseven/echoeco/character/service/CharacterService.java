@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.service.BackgroundService;
+import teamseven.echoeco.background.service.TrashUserService;
 import teamseven.echoeco.character.domain.*;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.dto.CharacterResponse;
@@ -25,6 +26,7 @@ public class CharacterService {
     private final CharacterUserRepository characterUserRepository;
     private final CharacterDetailService characterDetailService;
     private final BackgroundService backgroundService;
+    private final TrashUserService trashUserService;
 
     public void save(Character character) {
         characterRepository.save(character);
@@ -69,7 +71,7 @@ public class CharacterService {
             throw new NotFoundCharacterUserException();
         }
 
-        Environment environment = Environment.CLEAN;
+        Environment environment = trashUserService.getEnvironment(user);
         Background background = backgroundService.findByLevelAndEnvironment(characterUser.getLevel(), environment);
         CharacterDetail characterDetail = characterDetailService.findByLevelAndEnvironment(characterUser.getLevel(), environment);
         return CharacterUserResponse.fromEntity(characterUser, environment, background.getImage(), characterDetail.getImageUrl());
