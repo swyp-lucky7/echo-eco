@@ -1,4 +1,4 @@
-package teamseven.echoeco.admin.question.service;
+package teamseven.echoeco.question.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

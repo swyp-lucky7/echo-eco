@@ -1,11 +1,12 @@
-package teamseven.echoeco.background.service;
+package teamseven.echoeco.trash.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.background.domain.TrashUser;
-import teamseven.echoeco.background.repository.TrashUserRepository;
+import teamseven.echoeco.trash.domain.TrashUser;
+import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.character.domain.Environment;
+import teamseven.echoeco.config.exception.AlreadyCleanTrashException;
 import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDate;
@@ -21,7 +22,7 @@ public class TrashUserService {
         trashUserRepository.save(trashUser);
     }
 
-    public boolean isClearTheTrash(User user) {
+    public boolean isTodayCleanTrash(User user) {
         Optional<TrashUser> optionalTrashUser = trashUserRepository.findByUser_Id(user.getId());
         if (optionalTrashUser.isEmpty()) {
             return false;
@@ -33,9 +34,21 @@ public class TrashUserService {
     }
 
     public Environment getEnvironment(User user) {
-        if (isClearTheTrash(user)) {
+        if (isTodayCleanTrash(user)) {
             return Environment.CLEAN;
         }
         return Environment.TRASH;
+    }
+
+    public void cleanTrash(User user) throws AlreadyCleanTrashException {
+        if (isTodayCleanTrash(user)) {
+            throw new AlreadyCleanTrashException();
+        }
+        Optional<TrashUser> optionalTrashUser = trashUserRepository.findByUser_Id(user.getId());
+        TrashUser trashUser = optionalTrashUser.orElseGet(() -> TrashUser.builder()
+                .user(user)
+                .build());
+
+        trashUserRepository.save(trashUser);
     }
 }

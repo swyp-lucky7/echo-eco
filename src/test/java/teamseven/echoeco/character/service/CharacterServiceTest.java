@@ -1,4 +1,4 @@
-package teamseven.echoeco.admin.character.service;
+package teamseven.echoeco.character.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.repository.BackgroundRepository;
-import teamseven.echoeco.background.repository.TrashUserRepository;
+import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.background.service.BackgroundService;
-import teamseven.echoeco.background.service.TrashUserService;
+import teamseven.echoeco.trash.service.TrashUserService;
 import teamseven.echoeco.character.domain.*;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.dto.CharacterResponse;

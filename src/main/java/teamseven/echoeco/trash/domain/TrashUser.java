@@ -1,4 +1,4 @@
-package teamseven.echoeco.background.domain;
+package teamseven.echoeco.trash.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

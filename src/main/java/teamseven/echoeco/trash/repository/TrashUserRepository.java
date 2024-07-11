@@ -1,7 +1,7 @@
-package teamseven.echoeco.background.repository;
+package teamseven.echoeco.trash.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import teamseven.echoeco.background.domain.TrashUser;
+import teamseven.echoeco.trash.domain.TrashUser;
 
 import java.util.Optional;
 

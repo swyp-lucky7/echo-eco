@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.service.BackgroundService;
-import teamseven.echoeco.background.service.TrashUserService;
+import teamseven.echoeco.trash.service.TrashUserService;
 import teamseven.echoeco.character.domain.*;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.dto.CharacterResponse;
