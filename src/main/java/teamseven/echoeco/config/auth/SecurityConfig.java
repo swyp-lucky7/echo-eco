@@ -73,7 +73,7 @@ public class SecurityConfig
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
-                        "/character/**"
+                        "/character/**", "/trash/**"
                 ).hasRole(Role.USER.name()))
 
                 // 권한 설정 주석처리. 변경필요.
