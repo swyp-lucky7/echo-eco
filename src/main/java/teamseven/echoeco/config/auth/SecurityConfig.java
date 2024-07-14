@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import teamseven.echoeco.config.jwt.CustomSuccessHandler;
 import teamseven.echoeco.config.jwt.JwtFilter;
 import teamseven.echoeco.config.jwt.JwtUtil;
+import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.service.CustomOAuth2UserService;
 
 @Configuration
@@ -71,6 +72,9 @@ public class SecurityConfig
                                 "/users/**", "/admin/**", "/test" // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll()
                 )
+                .authorizeHttpRequests((auth) -> auth.requestMatchers(
+                        "/character/**", "/trash/**"
+                ).hasRole(Role.USER.name()))
 
                 // 권한 설정 주석처리. 변경필요.
                 //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
