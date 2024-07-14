@@ -29,6 +29,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorization = null;
         Cookie[] cookies = request.getCookies();
         boolean checkUser = request.getRequestURL().toString().contains("/user/check");
+        System.out.println(checkUser);
+        System.out.println(request.getRequestURL().toString());
         boolean updateToken = request.getRequestURL().toString().contains("/user/token/update");
 
 
