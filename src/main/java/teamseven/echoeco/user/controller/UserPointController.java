@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.domain.UserPoint;
 import teamseven.echoeco.user.service.UserPointService;
 import teamseven.echoeco.user.service.UserService;
 
@@ -20,9 +21,9 @@ public class UserPointController {
 
     // 테스트를 위해 작성, UserPoint 증가 후 아이템 구매 테스트 진행하기 위함.
     @PostMapping("/item/point/add")
-    public ApiResponse<String> addUserPoint(Authentication authentication, @RequestParam int add_point) {
+    public ApiResponse<UserPoint> addUserPoint(Authentication authentication, @RequestParam int add_point) {
         User user = userService.getUser(authentication);
-        userPointService.updateUserPoint(user, add_point);
-        return ApiResponse.success("ok");
+        UserPoint userPoint = userPointService.addUserPoint(user, add_point);
+        return ApiResponse.success(userPoint);
     }
 }

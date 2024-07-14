@@ -53,14 +53,19 @@ public class ItemApiController {
     public ApiResponse<ItemPickResponse> itemPick(@RequestBody @Valid ItemRequest itemRequest,
                                                   Authentication authentication) {
         long itemId = itemRequest.getItem_id();
-        Item byId = itemService.findById(itemId);
-        ItemResponse itemResponse = ItemResponse.fromEntity(byId);
+        Item userItem = itemService.findById(itemId);
+        ItemResponse itemResponse = ItemResponse.fromEntity(userItem);
 
         User user = userService.getUser(authentication);
-        UserPoint userPoint = userPointService.updateUserPoint(user, -byId.getPrice());
-        CharacterUser characterUser = characterService.updateUserCharacter(user, byId.getLevelUp());
+        try {
+            UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
+            CharacterUser characterUser = characterService.updateUserCharacter(user, userItem.getLevelUp());
 
-        ItemPickResponse itemPickResponse = ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
-        return ApiResponse.success(itemPickResponse);
+            ItemPickResponse itemPickResponse = ItemPickResponse.makeItemPickResponse(itemResponse,
+                    userPoint.getUserPoint(), characterUser.getLevel());
+            return ApiResponse.success(itemPickResponse);
+        } catch (Exception e) {
+            return ApiResponse.res(202, "아이템 구매를 진행할 수 업습니다.", ItemPickResponse.makeItemPickResponse(itemResponse, 0, 0));
+        }
     }
 }

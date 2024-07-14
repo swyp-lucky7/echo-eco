@@ -15,8 +15,17 @@ public class UserPointService {
         return userPointRepository.findByUser(user);
     }
 
-    // userPoint 업데이트 서비스, 이 서비스롤 addUserPoint , minusUserPoint 두개로 나눌 필요 있을지?
-    public UserPoint updateUserPoint(User user, int updatePoint) {
+    public UserPoint subtractUserPoint(User user, int updatePoint) {
+        UserPoint userPoint = findByUser(user);
+        if (userPoint.getUserPoint() < updatePoint) {
+            throw new IllegalStateException("구매를 진행할 수 없습니다.");
+        }
+        userPoint.updatePoint(-updatePoint);
+        userPointRepository.save(userPoint);
+        return userPoint;
+    }
+
+    public UserPoint addUserPoint(User user, int updatePoint) {
         UserPoint userPoint = findByUser(user);
         userPoint.updatePoint(updatePoint);
         userPointRepository.save(userPoint);
