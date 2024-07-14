@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import teamseven.echoeco.user.domain.CustomOauth2User;
+import teamseven.echoeco.user.domain.OAuth2.CustomOauth2User;
 import teamseven.echoeco.user.domain.Dto.UserDto;
 import teamseven.echoeco.user.domain.Role;
 
@@ -19,7 +19,7 @@ import teamseven.echoeco.user.domain.Role;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private static final String TOKEN_NAME = "Authorization";
-    private static final String NO_JWT_TOKEN_REDIRECT_URI = "/user/login";
+    private static final String REDIRECT_URI_TO_LOGIN = "/user/login";
 
     private final JwtUtil jwtUtil;
 
@@ -30,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
 
         if (request.getCookies() == null) {
-            response.sendRedirect(NO_JWT_TOKEN_REDIRECT_URI);
+            response.sendRedirect(REDIRECT_URI_TO_LOGIN);
             return;
         }
 
@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = authorization;
 
         if (jwtUtil.isExpired(token)) {
-            filterChain.doFilter(request, response);
+            response.sendRedirect(REDIRECT_URI_TO_LOGIN);
             return;
         }
         String name = jwtUtil.getName(token);

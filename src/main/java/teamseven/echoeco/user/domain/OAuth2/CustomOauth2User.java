@@ -1,4 +1,4 @@
-package teamseven.echoeco.user.domain;
+package teamseven.echoeco.user.domain.OAuth2;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,5 +1,7 @@
 package teamseven.echoeco.character.domain;
 
+import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -52,8 +54,8 @@ public class Character {
     public static Character empty() {
         return Character.builder()
                 .name("")
-                .pickImage("/images/vendor/icons/unicons/chart.png")
-                .frameImage("/images/vendor/icons/unicons/chart.png")
+                .pickImage(DEFAULT_IMAGE_URL)
+                .frameImage(DEFAULT_IMAGE_URL)
                 .descriptions("")
                 .maxLevel(100)
                 .isPossible(true)

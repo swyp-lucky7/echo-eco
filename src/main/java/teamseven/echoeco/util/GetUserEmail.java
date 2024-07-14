@@ -1,7 +1,7 @@
 package teamseven.echoeco.util;
 
 import org.springframework.security.core.Authentication;
-import teamseven.echoeco.user.domain.CustomOauth2User;
+import teamseven.echoeco.user.domain.OAuth2.CustomOauth2User;
 
 public class GetUserEmail {
 
