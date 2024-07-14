@@ -18,7 +18,7 @@ import teamseven.echoeco.user.domain.Role;
 // 쿠키에 있는 JWT 토큰을 세션에 저장
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private static final String TOKEN_NAME = "Authorization";
+    public static final String TOKEN_NAME = "Authorization";
     private static final String REDIRECT_URI_TO_LOGIN = "/user/login";
 
     private final JwtUtil jwtUtil;
@@ -28,9 +28,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authorization = null;
         Cookie[] cookies = request.getCookies();
+        boolean checkUser = request.getRequestURL().toString().contains("/user/check");
+        boolean updateToken = request.getRequestURL().toString().contains("/user/token/update");
 
-        if (request.getCookies() == null) {
-            response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+
+        if (request.getCookies() == null && !updateToken) {
+            addCheckResultFotUserCheck(request, response, filterChain, checkUser, "쿠키 없음");
+            if (!checkUser) {
+                response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+            }
             return;
         }
 
@@ -40,34 +46,60 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        if (authorization == null) {
-            filterChain.doFilter(request, response);
+        if (authorization == null && !updateToken) {
+            addCheckResultFotUserCheck(request, response, filterChain, checkUser, "토큰 없음");
+            if (!checkUser) {
+                response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+            }
             return;
         }
 
         String token = authorization;
-
-        if (jwtUtil.isExpired(token)) {
-            response.sendRedirect(REDIRECT_URI_TO_LOGIN);
-            return;
+        if (!updateToken) {
+            if (jwtUtil.isExpired(token)) {
+                addCheckResultFotUserCheck(request, response, filterChain, checkUser, "토큰 만료");
+                if (!checkUser) {
+                    response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+                }
+                return;
+            }
         }
-        String name = jwtUtil.getName(token);
-        String email = jwtUtil.getEmail(token);
-        Role role = jwtUtil.getRole(token);
 
+        if (checkUser) {
+            request.setAttribute("userCheck", true);
+            request.setAttribute("userCheckDetail", "검증 완료");
+        }
 
-        UserDto userDTO = new UserDto();
-        userDTO.setName(name);
-        userDTO.setRole(role);
-        userDTO.setEmail(email);
+        if (updateToken) {
+            request.setAttribute("token", token);
+        }
 
-        CustomOauth2User oAuth2User = new CustomOauth2User(userDTO);
-        // 스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(oAuth2User, null,
-                oAuth2User.getAuthorities());
-        // 세션에 저장
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        if (!updateToken) {
+            String name = jwtUtil.getName(token);
+            String email = jwtUtil.getEmail(token);
+            Role role = jwtUtil.getRole(token);
 
+            UserDto userDTO = new UserDto();
+            userDTO.setName(name);
+            userDTO.setRole(role);
+            userDTO.setEmail(email);
+
+            CustomOauth2User oAuth2User = new CustomOauth2User(userDTO);
+            // 스프링 시큐리티 인증 토큰 생성
+            Authentication authToken = new UsernamePasswordAuthenticationToken(oAuth2User, null,
+                    oAuth2User.getAuthorities());
+            // 세션에 저장
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
         filterChain.doFilter(request, response);
+    }
+
+    private static void addCheckResultFotUserCheck(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain,
+                                  boolean checkUser, String checkResult) throws IOException, ServletException {
+        if (checkUser) {
+            request.setAttribute("userCheck", false);
+            request.setAttribute("userCheckDetail", checkResult);
+            filterChain.doFilter(request, response);
+        }
     }
 }
