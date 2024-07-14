@@ -32,6 +32,9 @@ public class LoginApiController {
     @GetMapping("/user/token/update")
     public ApiResponse<UserTokenUpdateResultDto> updateUserToken(HttpServletRequest request, HttpServletResponse response) {
         String token = (String) request.getAttribute("token");
+
+        //ToDo
+        //Refresh Token 구현 후 JWT 토큰 연장 로직 구현 필요.
 //        String name = jwtUtil.getName(token);
 //        String email = jwtUtil.getEmail(token);
 //        String role = jwtUtil.getRole(token).name();
