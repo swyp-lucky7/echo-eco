@@ -76,4 +76,12 @@ public class CharacterService {
         CharacterDetail characterDetail = characterDetailService.findByLevelAndEnvironment(characterUser.getLevel(), environment);
         return CharacterUserResponse.fromEntity(characterUser, environment, background.getImage(), characterDetail.getImageUrl());
     }
+
+    // 아이템 구매에 따른 캐릭터 레벨 증가를 위해 추가함.
+    public CharacterUser updateUserCharacter(User user, int level) {
+        CharacterUser byUser = characterUserRepository.findByUser(user);
+        CharacterUser characterUser = byUser.updateLevel(level);
+        characterUserRepository.save(characterUser);
+        return characterUser;
+    }
 }
