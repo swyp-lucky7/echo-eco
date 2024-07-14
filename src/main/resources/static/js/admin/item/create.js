@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const backgroundCreate = {
-    baseImageUrl: '/images/yes.png',
+    baseImageUrl: '/images/vendor/icons/unicons/chart.png',
     id: -1,
     isUpdateMode: false,
     init() {

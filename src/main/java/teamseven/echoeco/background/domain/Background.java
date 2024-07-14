@@ -1,5 +1,7 @@
 package teamseven.echoeco.background.domain;
 
+import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
+
 import jakarta.persistence.*;
 import lombok.*;
 import teamseven.echoeco.character.domain.Environment;
@@ -39,7 +41,7 @@ public class Background {
     public static Background empty() {
         return Background.builder()
                 .name("")
-                .image("/images/vendor/icons/unicons/chart.png")
+                .image(DEFAULT_IMAGE_URL)
                 .environment(Environment.CLEAN)
                 .level(0)
                 .build();

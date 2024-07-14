@@ -1,5 +1,7 @@
 package teamseven.echoeco.item.domain;
 
+import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,7 +53,7 @@ public class Item {
     public static Item empty() {
         return Item.builder()
                 .name("")
-                .imageUrl("/images/yes.png")
+                .imageUrl(DEFAULT_IMAGE_URL)
                 .description("")
                 .price(1)
                 .levelUp(1)

@@ -7,6 +7,7 @@
     <script th:src="@{/js/admin/background/read.js}"></script>
 </th:block>
 -->
+
 <body>
 <div layout:fragment="content">
     <div class="text-end mb-3" style="margin-left: auto">
@@ -42,6 +43,12 @@
                         <a href="#" th:href="@{/admin/item/{id}/edit (id=${item.id})}" role="button">수정하기</a>
                     </td>
                     <td>
+                        <form th:action="|@{/admin/item/{id}/delete (id=${item.id})}|">
+                            <button formmethod="post" type="submit"
+                                    class="btn btn-primary" id="deleteBtn">
+                                <strong>삭제하기</strong>
+                            </button>
+                        </form>
                         <a href="#" th:href="@{/admin/item/{id}/delete (id=${item.id})}" role="button">삭제하기</a>
                     </td>
                     <td>

@@ -60,8 +60,9 @@ public class ItemController {
 
     }
 
-    @GetMapping("{id}/delete")
+    @PostMapping("{id}/delete")
     public String deleteItem(@PathVariable Long id, Model model) {
+        System.out.println("id: "+ id);
         itemService.deleteById(id);
         model.addAttribute("items", itemService.findAllItems());
         return "admin/item/read";
