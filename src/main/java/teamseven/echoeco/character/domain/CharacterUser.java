@@ -29,4 +29,10 @@ public class CharacterUser {
     private String name;
 
     private Boolean isUse;
+
+    // 아이템 구매에 따른 캐릭터 레벨 증가를 위해 추가함.
+    public CharacterUser updateLevel(int level) {
+        this.level += level;
+        return this;
+    }
 }

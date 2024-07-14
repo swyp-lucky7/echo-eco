@@ -14,6 +14,8 @@ import teamseven.echoeco.user.domain.OAuth2.OAuthAttributes;
 import teamseven.echoeco.user.domain.OAuth2.Oauth2UserImpl;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.Dto.UserDto;
+import teamseven.echoeco.user.domain.UserPoint;
+import teamseven.echoeco.user.repository.UserPointRepository;
 import teamseven.echoeco.user.repository.UserRepository;
 
 
@@ -21,6 +23,7 @@ import teamseven.echoeco.user.repository.UserRepository;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;
+    private final UserPointRepository userPointRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -45,7 +48,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(),attributes.getPicture(), entity.getRole()))
                 .orElseGet(attributes::toEntity);
-
+        UserPoint userPoint = userPointRepository.findByUser(user);
+        if (userPoint == null) {
+            // user 첫 등록시 userPoint 생성
+            userPointRepository.save(UserPoint.fromUser(user));
+        }
         return userRepository.save(user);
     }
 
