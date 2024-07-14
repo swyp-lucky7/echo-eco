@@ -1,8 +1,10 @@
-package teamseven.echoeco.user.domain;
+package teamseven.echoeco.user.domain.OAuth2;
 
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
+import teamseven.echoeco.user.domain.Role;
+import teamseven.echoeco.user.domain.User;
 
 @Getter
 public class OAuthAttributes {

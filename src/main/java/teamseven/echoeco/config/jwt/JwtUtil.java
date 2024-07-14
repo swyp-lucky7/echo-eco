@@ -1,22 +1,16 @@
 package teamseven.echoeco.config.jwt;
 
-import com.nimbusds.jwt.proc.JWTProcessor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Optional;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import teamseven.echoeco.user.domain.Role;
-import teamseven.echoeco.user.domain.User;
-import teamseven.echoeco.user.repository.UserRepository;
 
 @Component
 public class JwtUtil {

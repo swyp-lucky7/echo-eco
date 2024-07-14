@@ -1,4 +1,4 @@
-package teamseven.echoeco.user.domain;
+package teamseven.echoeco.user.domain.OAuth2;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
