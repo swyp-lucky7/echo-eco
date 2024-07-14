@@ -5,12 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.item.domain.Item;
@@ -39,7 +37,6 @@ public class ItemController {
     @PostMapping("/create")
     @ResponseBody
     public ApiResponse<String> createItem(@Valid @RequestBody ItemDto itemDto) {
-        System.out.println("test" + itemDto);
         Item item = itemDto.toEntity();
         itemService.saveItem(item);
         return ApiResponse.success("ok");
@@ -62,7 +59,6 @@ public class ItemController {
 
     @PostMapping("{id}/delete")
     public String deleteItem(@PathVariable Long id, Model model) {
-        System.out.println("id: "+ id);
         itemService.deleteById(id);
         model.addAttribute("items", itemService.findAllItems());
         return "admin/item/read";
