@@ -13,9 +13,4 @@ public class AdminHomeController {
     public String home() {
         return "admin/home";
     }
-
-    @GetMapping("/question")
-    public String question() {
-        return "admin/question";
-    }
 }

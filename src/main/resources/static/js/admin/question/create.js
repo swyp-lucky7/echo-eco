@@ -60,7 +60,7 @@ const createHelper = {
                 success: function(res) {
                     alert("성공적으로 생성되었습니다.");
                     // todo 페이지 이동
-                    location.href('/admin/question.read');
+                    location.href('/admin/question/read');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error:', textStatus, errorThrown);
