@@ -6,7 +6,6 @@ import teamseven.echoeco.video.domain.Video;
 
 @Data
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

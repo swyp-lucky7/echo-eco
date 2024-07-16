@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", (event) => {
+    console.log("DOM fully loaded and parsed");
     readHelper.init();
 });
 
@@ -23,12 +24,12 @@ const readHelper = {
                 for (const row of res.data) {
                     html += `
                     <tr>
-                        <td><strong>${row.name}</strong></td>
-                        <td><span class="badge bg-label-primary me-1">${row.questionType}</span></td>
+                        <td class="text-nowrap"><strong>${row.name}</strong></td>
+                        <td class="text-nowrap"><span class="badge bg-label-primary me-1">${row.questionType}</span></td>
                         <td>${row.head}</td>
                         <td>${row.body}</td>
-                        <td>${row.answer}</td>
-                        <td>
+                        <td class="text-nowrap">${row.answer}</td>
+                        <td class="text-nowrap">
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"  aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded"></i>
@@ -44,9 +45,9 @@ const readHelper = {
                     index++;
                 }
                 // 드롭다운 문제로 추가로 생성
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 2; i++) {
                     html += `<tr>
-                        <td></td>
+                        <td><i class="fab fa-angular fa-lg me-3"></i></td>
                         <td></td>
                         <td></td>
                         <td></td>

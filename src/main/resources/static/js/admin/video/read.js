@@ -42,17 +42,17 @@ const readHelper = {
                     index++;
                 }
                 // 드롭다운 문제로 추가로 생성
-                // for (let i = 0; i < 4; i++) {
-                //     html += `<tr>
-                //         <td></td>
-                //         <td></td>
-                //         <td>
-                //             <div class="dropdown-menu">
-                //
-                //             </div>
-                //         </tr>`;
-                //     index++;
-                // }
+                for (let i = 0; i < 2; i++) {
+                    html += `<tr>
+                        <td><i class="fab fa-angular fa-lg me-3"></i></td>
+                        <td></td>
+                        <td>
+                            <div class="dropdown-menu">
+
+                            </div>
+                        </tr>`;
+                    index++;
+                }
 
                 document.querySelector('#videoTBody').innerHTML = html;
             },

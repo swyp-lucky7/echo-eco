@@ -44,11 +44,12 @@ public class Question {
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-//    public void update(QuestionRequest questionRequest) {
-//        this.name = questionRequest.getName();
-//        this.questionType = questionRequest.getQuestionType();
-//        this.head = questionRequest.getHead();
-//        this.body = questionRequest.getBody();
-//        this.answer = questionRequest.getAnswer();
-//    }
+    public void update(QuestionRequest questionRequest) {
+        this.name = questionRequest.getName();
+        this.questionType = questionRequest.getQuestionType();
+        this.head = questionRequest.getHead();
+        this.body = questionRequest.getBody();
+        this.answer = questionRequest.getAnswer();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

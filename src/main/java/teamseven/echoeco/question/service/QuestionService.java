@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.question.domain.Question;
+import teamseven.echoeco.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.question.repository.QuestionRepository;
 import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.video.domain.Video;
+import teamseven.echoeco.video.domain.dto.VideoRequest;
 
 import java.util.List;
 
@@ -33,5 +36,13 @@ public class QuestionService {
 
     public void delete(Long id) {
         questionRepository.deleteById(id);
+    }
+
+    // 추가
+    public Question update(Long id, QuestionRequest questionRequest) {
+        Question question = questionRepository.findById(id).orElseThrow();
+        question.update(questionRequest);
+        save(question);
+        return question;
     }
 }

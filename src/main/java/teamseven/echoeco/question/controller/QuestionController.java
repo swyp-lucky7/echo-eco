@@ -2,21 +2,20 @@ package teamseven.echoeco.question.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.question.domain.Question;
 import teamseven.echoeco.question.domain.dto.QuestionRequest;
-import teamseven.echoeco.question.domain.dto.QuestionResponse;
 import teamseven.echoeco.question.service.QuestionService;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.repository.UserRepository;
 import teamseven.echoeco.util.GetUserEmail;
+import teamseven.echoeco.video.domain.Video;
+import teamseven.echoeco.video.domain.dto.VideoRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -29,24 +28,6 @@ public class QuestionController {
     private final QuestionService questionService;
     private final UserRepository userRepository;
 
-    @GetMapping("/create")
-    public String createPage() {
-        return "admin/question/create";
-    }
-
-    @PostMapping("/create")
-    @ResponseBody
-    public ApiResponse<String> create(@Valid @RequestParam QuestionRequest questionRequest,
-                                      Authentication authentication) {
-        String userEmail = GetUserEmail.get(authentication);
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("잘못된 유저 이메일 입니다."));
-
-        Question entity = questionRequest.toEntity(user);
-        questionService.save(entity);
-        return ApiResponse.success("ok");
-    }
-
-
     @GetMapping("")
     public String readPage(Model model) {
         return "admin/question/read";
@@ -54,28 +35,35 @@ public class QuestionController {
 
     @GetMapping("/list")
     @ResponseBody
-    public ApiResponse<List<Question>> list() {
-        return ApiResponse.success(questionService.findAll());
+    public ApiResponse<List<Question>> list() { return ApiResponse.success(questionService.findAll()); }
+
+    @GetMapping("/create")
+    public String createPage() {
+        return "admin/question/create";
     }
 
-//    @GetMapping("")
-//    public String read(Model model) {
-//        List<QuestionResponse> questionResponse = questionService.findAll()
-//                .stream()
-//                .map(QuestionResponse::new)
-//                .toList();
-//        model.addAttribute("questionResponse", questionResponse);
-//
-//        return "admin/question/read";
-//    }
+    @PostMapping("/create")
+    @ResponseBody
+    public ApiResponse<String> create(@Valid @RequestBody QuestionRequest questionRequest) {
+        Question question = questionRequest.toEntity();
+        questionService.save(question);
+        return ApiResponse.success("ok");
+    }
 
-//    @GetMapping("/read/{id}")
-//    public ResponseEntity<QuestionResponse> readEach(@PathVariable("id") Long id) {
-//        Question question = questionService.findById(id);
-//
-//        return ResponseEntity.ok()
-//                .body(new QuestionResponse(question));
-//    }
+    @GetMapping("/create/{id}")
+    public String updatePage(@PathVariable(value = "id") Long id, Model model) {
+        Question question = questionService.findById(id);
+        model.addAttribute("question", question);
+        return "admin/question/update";
+    }
+
+    @PostMapping("/create/{id}")
+    @ResponseBody
+    public ApiResponse<String> update(@PathVariable(value = "id") Long id,
+                                      @RequestBody QuestionRequest questionRequest) {
+        questionService.update(id, questionRequest);
+        return ApiResponse.success("ok");
+    }
 
     @PostMapping("/delete")
     @ResponseBody
