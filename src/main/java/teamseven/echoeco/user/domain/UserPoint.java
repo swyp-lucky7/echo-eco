@@ -38,7 +38,11 @@ public class UserPoint {
                 .build();
     }
 
-    public void updatePoint(int updatePoint) {
-        this.userPoint += updatePoint;
+    public void addPoint(int addPoint) {
+        this.userPoint += addPoint;
+    }
+
+    public void subtractPoint(int subtractPoint) {
+        this.userPoint -= subtractPoint;
     }
 }
