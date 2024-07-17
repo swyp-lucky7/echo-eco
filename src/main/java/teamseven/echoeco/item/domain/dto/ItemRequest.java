@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class ItemRequest {
     @NotNull
-    private long item_id;
+    private long itemId;
 }

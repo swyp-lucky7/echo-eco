@@ -11,8 +11,8 @@ public class ItemResponse {
     private String name;
     private String description;
     private int price;
-    private int level_up;
-    private String image_url;
+    private int levelUp;
+    private String imageUrl;
 
     public static ItemResponse fromEntity(Item item) {
         return ItemResponse.builder()
@@ -20,8 +20,8 @@ public class ItemResponse {
                 .name(item.getName())
                 .description(item.getDescription())
                 .price(item.getPrice())
-                .level_up(item.getLevelUp())
-                .image_url(item.getImageUrl())
+                .levelUp(item.getLevelUp())
+                .imageUrl(item.getImageUrl())
                 .build();
     }
 }

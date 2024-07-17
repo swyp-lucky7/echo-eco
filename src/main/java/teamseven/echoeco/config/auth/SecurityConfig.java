@@ -69,7 +69,7 @@ public class SecurityConfig
 
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/file/**",
-                                "/users/**", "/admin/**", "/test", "user/check", "user/token/update" // 임시로 permitAll 로 열어둠. 변경필요함.
+                                "/users/**", "/admin/**", "/test", "user/**"  // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
