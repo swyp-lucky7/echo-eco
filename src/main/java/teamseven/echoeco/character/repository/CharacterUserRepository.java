@@ -13,4 +13,6 @@ public interface CharacterUserRepository extends JpaRepository<CharacterUser, Lo
 
     @Query("SELECT cu FROM CharacterUser cu WHERE cu.user = :user AND cu.isUse = true")
     CharacterUser findByUserWithUse(User user);
+
+    CharacterUser findByUser(User user);
 }

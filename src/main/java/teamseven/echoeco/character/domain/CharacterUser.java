@@ -29,4 +29,8 @@ public class CharacterUser {
     private String name;
 
     private Boolean isUse;
+
+    public void addLevel(int level) {
+        this.level += level;
+    }
 }

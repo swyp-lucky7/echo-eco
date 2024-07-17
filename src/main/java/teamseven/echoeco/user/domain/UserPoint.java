@@ -30,4 +30,15 @@ public class UserPoint {
 
     @Column(nullable = false)
     private int userPoint;
+
+    public static UserPoint fromUser(User user) {
+        return UserPoint.builder()
+                .user(user)
+                .userPoint(0)
+                .build();
+    }
+
+    public void updatePoint(int updatePoint) {
+        this.userPoint += updatePoint;
+    }
 }

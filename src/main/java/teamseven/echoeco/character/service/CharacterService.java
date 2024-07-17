@@ -50,7 +50,7 @@ public class CharacterService {
 
     public Character pick(Long characterId, User user) throws Exception {
         Character character = characterRepository.findById(characterId).orElseThrow();
-        boolean isUse = characterUserRepository.IsUse(user);
+        boolean isUse = false;
         if (isUse) {
             throw new IllegalArgumentException("이미 사용중인 캐릭터가 있습니다.");
         }
@@ -75,5 +75,12 @@ public class CharacterService {
         Background background = backgroundService.findByLevelAndEnvironment(characterUser.getLevel(), environment);
         CharacterDetail characterDetail = characterDetailService.findByLevelAndEnvironment(characterUser.getLevel(), environment);
         return CharacterUserResponse.fromEntity(characterUser, environment, background.getImage(), characterDetail.getImageUrl());
+    }
+
+    public CharacterUser addUserCharacter(User user, int level) {
+        CharacterUser characterUser = characterUserRepository.findByUser(user);
+        characterUser.addLevel(level);
+        characterUserRepository.save(characterUser);
+        return characterUser;
     }
 }
