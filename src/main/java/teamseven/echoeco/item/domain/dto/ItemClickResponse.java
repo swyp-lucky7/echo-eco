@@ -7,15 +7,15 @@ import lombok.Data;
 @Builder
 public class ItemClickResponse {
     private ItemResponse itemResponse;
-    private int user_point;
-    private boolean available_buy;
+    private int userPoint;
+    private boolean availableBuy;
 
-    public static ItemClickResponse makeItemClickResponse(ItemResponse itemResponse, int user_point,
-                                                          boolean available_buy) {
+    public static ItemClickResponse makeItemClickResponse(ItemResponse itemResponse, int userPoint,
+                                                          boolean availableBuy) {
         return ItemClickResponse.builder()
                 .itemResponse(itemResponse)
-                .user_point(user_point)
-                .available_buy(available_buy)
+                .userPoint(userPoint)
+                .availableBuy(availableBuy)
                 .build();
     }
 

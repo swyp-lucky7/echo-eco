@@ -14,6 +14,5 @@ public interface CharacterUserRepository extends JpaRepository<CharacterUser, Lo
     @Query("SELECT cu FROM CharacterUser cu WHERE cu.user = :user AND cu.isUse = true")
     CharacterUser findByUserWithUse(User user);
 
-    // 아이템 구매에 따른 캐릭터 레벨 증가를 위해 추가함.
     CharacterUser findByUser(User user);
 }

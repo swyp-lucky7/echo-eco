@@ -2,7 +2,6 @@ package teamseven.echoeco.item.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.item.domain.Item;
@@ -53,7 +52,7 @@ public class ItemService {
         return itemResponses;
     }
 
-    public ItemClickResponse itemClickResponse(Long itemId, User user) {
+    public ItemClickResponse buyItem(Long itemId, User user) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이템 아이디 입니다."));
 

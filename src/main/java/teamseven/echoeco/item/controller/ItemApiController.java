@@ -38,34 +38,27 @@ public class ItemApiController {
         return ApiResponse.success(itemService.findByIsUse());
     }
 
-    @GetMapping("/item/click")
+    @GetMapping("/item/detail")
     public ApiResponse<ItemClickResponse> itemClick(@RequestBody @Valid ItemRequest itemRequest,
                                                     Authentication authentication) {
-        long itemId = itemRequest.getItem_id();
+        long itemId = itemRequest.getItemId();
         User user = userService.getUser(authentication);
-        ItemClickResponse itemClickResponse = itemService.itemClickResponse((long) itemId, user);
+        ItemClickResponse itemClickResponse = itemService.buyItem(itemId, user);
         return ApiResponse.success(itemClickResponse);
     }
 
-    // 데이터베이스 설계시 UserItem 을 설계했으나, 사용하지 않고 기능 구현 가능해보임.
-    // UserItem 의 기능은 이전 기록 저장(audit) 이라 생각드는데, 없이 구현해도 괜찮을까요?
-    @PostMapping("/item/pick")
+    @PostMapping("/item/buy")
     public ApiResponse<ItemPickResponse> itemPick(@RequestBody @Valid ItemRequest itemRequest,
                                                   Authentication authentication) {
-        long itemId = itemRequest.getItem_id();
+        long itemId = itemRequest.getItemId();
         Item userItem = itemService.findById(itemId);
         ItemResponse itemResponse = ItemResponse.fromEntity(userItem);
 
         User user = userService.getUser(authentication);
-        try {
-            UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
-            CharacterUser characterUser = characterService.updateUserCharacter(user, userItem.getLevelUp());
-
-            ItemPickResponse itemPickResponse = ItemPickResponse.makeItemPickResponse(itemResponse,
-                    userPoint.getUserPoint(), characterUser.getLevel());
-            return ApiResponse.success(itemPickResponse);
-        } catch (Exception e) {
-            return ApiResponse.res(202, "아이템 구매를 진행할 수 업습니다.", ItemPickResponse.makeItemPickResponse(itemResponse, 0, 0));
-        }
+        UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
+        CharacterUser characterUser = characterService.addUserCharacter(user, userItem.getLevelUp());
+        ItemPickResponse itemPickResponse = ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
+        return ApiResponse.success(itemPickResponse);
     }
+
 }

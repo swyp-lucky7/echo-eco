@@ -18,7 +18,7 @@ public class UserPointService {
     public UserPoint subtractUserPoint(User user, int updatePoint) {
         UserPoint userPoint = findByUser(user);
         if (userPoint.getUserPoint() < updatePoint) {
-            throw new IllegalStateException("구매를 진행할 수 없습니다.");
+            throw new IllegalArgumentException("구매를 진행힐 포인트가 부족합니다.");
         }
         userPoint.updatePoint(-updatePoint);
         userPointRepository.save(userPoint);
