@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class UserTokenUpdateResultDto {
-    private boolean update_statue;
+    private boolean updateStatue;
 }

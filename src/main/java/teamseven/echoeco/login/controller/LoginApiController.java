@@ -23,7 +23,7 @@ public class LoginApiController {
     @GetMapping("/user/check")
     public ApiResponse<UserCheckDto> checkUser(HttpServletRequest request) {
         UserCheckDto userCheckDto = new UserCheckDto();
-        userCheckDto.setCheck_status((boolean) request.getAttribute("userCheck"));
+        userCheckDto.setCheckStatus((boolean) request.getAttribute("userCheck"));
         userCheckDto.setDetail((String) request.getAttribute("userCheckDetail"));
 
         return ApiResponse.success(userCheckDto);
@@ -46,7 +46,7 @@ public class LoginApiController {
 //            }
 //        }
         UserTokenUpdateResultDto userTokenUpdateResultDto = new UserTokenUpdateResultDto();
-        userTokenUpdateResultDto.setUpdate_statue(true);
+        userTokenUpdateResultDto.setUpdateStatue(true);
         return ApiResponse.success(userTokenUpdateResultDto);
     }
 }
