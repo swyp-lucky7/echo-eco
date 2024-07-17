@@ -69,11 +69,11 @@ public class SecurityConfig
 
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/file/**",
-                                "/users/**", "/admin/**", "/test", "user/check", "user/token/update" // 임시로 permitAll 로 열어둠. 변경필요함.
+                                "/admin/**", "/user/**"  // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
-                        "/character/**", "/trash/**"
+                        "/character/**", "/trash/**", "/item/**"
                 ).hasRole(Role.USER.name()))
 
                 // 권한 설정 주석처리. 변경필요.

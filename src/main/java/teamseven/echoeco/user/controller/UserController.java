@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import teamseven.echoeco.user.service.CustomOAuth2UserService;
 import teamseven.echoeco.user.domain.Dto.UserDto;
 import teamseven.echoeco.user.domain.Role;
@@ -15,6 +16,7 @@ import teamseven.echoeco.user.domain.User;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/admin")
 public class UserController {
 
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -40,7 +42,7 @@ public class UserController {
     public String updateUserRole(@PathVariable("userId") Long userId,
                                  @Valid @ModelAttribute("userDto") UserDto userDto) {
         customOAuth2UserService.updateUserRole(userId, userDto);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
 }
