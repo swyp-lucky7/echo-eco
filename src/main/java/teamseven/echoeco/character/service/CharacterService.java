@@ -50,7 +50,7 @@ public class CharacterService {
 
     public Character pick(Long characterId, User user) throws Exception {
         Character character = characterRepository.findById(characterId).orElseThrow();
-        boolean isUse = false;
+        boolean isUse = characterUserRepository.IsUse(user);
         if (isUse) {
             throw new IllegalArgumentException("이미 사용중인 캐릭터가 있습니다.");
         }
@@ -77,7 +77,8 @@ public class CharacterService {
         return CharacterUserResponse.fromEntity(characterUser, environment, background.getImage(), characterDetail.getImageUrl());
     }
 
-    public CharacterUser addUserCharacter(User user, int level) {
+    // 아이템 구매에 따른 캐릭터 레벨 증가를 위해 추가함.
+    public CharacterUser updateUserCharacter(User user, int level) {
         CharacterUser characterUser = characterUserRepository.findByUser(user);
         characterUser.addLevel(level);
         characterUserRepository.save(characterUser);
