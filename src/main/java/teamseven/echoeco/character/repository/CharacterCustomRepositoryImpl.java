@@ -19,7 +19,7 @@ public class CharacterCustomRepositoryImpl implements CharacterCustomRepository 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CharacterResponse> searchPickList(CharacterType type, Boolean isPossible) {
+    public List<CharacterResponse> searchPickList(Boolean isPossible) {
         return queryFactory
                 .select(new QCharacterResponse(
                         character.id,
@@ -31,7 +31,6 @@ public class CharacterCustomRepositoryImpl implements CharacterCustomRepository 
                 ))
                 .from(character)
                 .where(
-                        characterTypeEq(type),
                         isPossibleEq(isPossible)
                 ).limit(20L)
                 .offset(0L)

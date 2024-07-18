@@ -17,7 +17,8 @@ public class CharacterRequest {
     private int maxLevel;
     private String pickImage;
     private String frameImage;
-    private boolean isPossible;
+    private Boolean isPossible;
+    private String completeMessages;
 
     public Character toEntity() {
         return Character.builder()
@@ -29,6 +30,7 @@ public class CharacterRequest {
                 .pickImage(pickImage)
                 .frameImage(frameImage)
                 .isPossible(isPossible)
+                .completeMessages(completeMessages)
                 .build();
     }
 }

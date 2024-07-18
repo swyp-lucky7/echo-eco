@@ -3,11 +3,15 @@ package teamseven.echoeco.trash.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import teamseven.echoeco.character.service.CharacterService;
 import teamseven.echoeco.trash.domain.TrashUser;
+import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.character.domain.Environment;
 import teamseven.echoeco.config.exception.AlreadyCleanTrashException;
 import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.domain.UserPoint;
+import teamseven.echoeco.user.service.UserPointService;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -17,6 +21,7 @@ import java.util.Optional;
 @Transactional
 public class TrashUserService {
     private final TrashUserRepository trashUserRepository;
+    private final UserPointService userPointService;
 
     public void save(TrashUser trashUser) {
         trashUserRepository.save(trashUser);
@@ -40,7 +45,7 @@ public class TrashUserService {
         return Environment.TRASH;
     }
 
-    public void cleanTrash(User user) throws AlreadyCleanTrashException {
+    public UserPoint cleanTrash(User user) throws AlreadyCleanTrashException {
         if (isTodayCleanTrash(user)) {
             throw new AlreadyCleanTrashException();
         }
@@ -50,5 +55,10 @@ public class TrashUserService {
                 .build());
 
         trashUserRepository.save(trashUser);
+        return userPointService.addUserPoint(user, 20);
+    }
+
+    public TrashStatusDto trashStatus(User user) {
+        return TrashStatusDto.builder().isClean(isTodayCleanTrash(user)).build();
     }
 }

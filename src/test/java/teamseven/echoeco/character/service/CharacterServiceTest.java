@@ -1,5 +1,8 @@
 package teamseven.echoeco.character.service;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.repository.BackgroundRepository;
+import teamseven.echoeco.character.domain.dto.CharacterCompleteMessagesDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.background.service.BackgroundService;
 import teamseven.echoeco.trash.service.TrashUserService;
@@ -25,9 +29,14 @@ import teamseven.echoeco.character.service.CharacterService;
 import teamseven.echoeco.config.QuerydslConfiguration;
 import teamseven.echoeco.config.exception.NotAdminSettingException;
 import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
+import teamseven.echoeco.user.domain.Dto.UserPointDto;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.domain.UserPoint;
+import teamseven.echoeco.user.repository.UserPointRepository;
 import teamseven.echoeco.user.repository.UserRepository;
+import teamseven.echoeco.user.service.UserPointService;
+import teamseven.echoeco.user.service.UserService;
 
 import java.util.List;
 
@@ -48,21 +57,21 @@ class CharacterServiceTest {
     private UserRepository userRepository;
     @Autowired
     private CharacterDetailRepository characterDetailRepository;
-
     @Autowired
     private TrashUserRepository trashUserRepository;
-    private TrashUserService trashUserService;
+    @Autowired
+    private UserPointRepository userPointRepository;
 
-    private BackgroundService backgroundService;
-    private CharacterDetailService characterDetailService;
     private CharacterService characterService;
+
 
     @BeforeEach
     void setUp() {
-        backgroundService = new BackgroundService(backgroundRepository);
-        characterDetailService = new CharacterDetailService(characterDetailRepository);
-        trashUserService = new TrashUserService(trashUserRepository);
-        characterService = new CharacterService(characterRepository, characterUserRepository, characterDetailService, backgroundService, trashUserService);
+        UserPointService userPointService = new UserPointService(userPointRepository);
+        BackgroundService backgroundService = new BackgroundService(backgroundRepository);
+        CharacterDetailService characterDetailService = new CharacterDetailService(characterDetailRepository);
+        TrashUserService trashUserService = new TrashUserService(trashUserRepository, userPointService);
+        characterService = new CharacterService(characterRepository, characterUserRepository, characterDetailService, backgroundService, trashUserService, userPointService);
     }
 
     @Test
@@ -76,6 +85,7 @@ class CharacterServiceTest {
                 .pickImage("http://")
                 .maxLevel(100)
                 .descriptions("곰")
+                .completeMessages("")
                 .build();
 
         //when
@@ -88,32 +98,14 @@ class CharacterServiceTest {
     }
 
     @Test
-    @DisplayName("pick list api 를 사용했을때 type 이 없고, isPossible 이 null 이면 모든 데이터르 들고와야 한다.")
+    @DisplayName("pick list api 를 사용했을때 isPossible 이 null 이면 모든 데이터를 들고와야 한다.")
     void givenGetRequest_whenPickListApi_thenReturnAll() {
         saveDefaultCharacter();
 
         //when
-        List<CharacterResponse> characterResponses = characterService.pickList(null, null);
+        List<CharacterResponse> characterResponses = characterService.pickList(null);
         assertEquals(2, characterResponses.size());
         assertEquals("볼리베어", characterResponses.get(0).getName());
-        assertEquals("식물", characterResponses.get(1).getName());
-    }
-
-    @Test
-    @DisplayName("pick list api 를 사용했을때 type 이 있을때 맞는 type 데이터를 들고와야 한다.")
-    void givenType_whenPickListApi_thenReturnCorrectData() {
-        saveDefaultCharacter();
-
-        //when
-        List<CharacterResponse> plantResponse = characterService.pickList(CharacterType.PLANT, null);
-        List<CharacterResponse> animalResponse = characterService.pickList(CharacterType.ANIMAL, null);
-
-        //then
-        assertEquals(1, plantResponse.size());
-        assertEquals(CharacterType.PLANT, plantResponse.get(0).getType());
-
-        assertEquals(1, animalResponse.size());
-        assertEquals(CharacterType.ANIMAL, animalResponse.get(0).getType());
     }
 
     @Test
@@ -122,8 +114,8 @@ class CharacterServiceTest {
         saveDefaultCharacter();
 
         //when
-        List<CharacterResponse> trueResponse = characterService.pickList(null, true);
-        List<CharacterResponse> falseResponse = characterService.pickList(null, false);
+        List<CharacterResponse> trueResponse = characterService.pickList(true);
+        List<CharacterResponse> falseResponse = characterService.pickList(false);
 
         //then
         assertEquals(1, trueResponse.size());
@@ -133,20 +125,6 @@ class CharacterServiceTest {
         assertEquals(1, falseResponse.size());
         assertEquals("식물", falseResponse.get(0).getName());
         assertFalse(falseResponse.get(0).isPossible());
-    }
-
-    @Test
-    @DisplayName("pick list api 를 사용했을때 type 과 isPossible 이 있을때 맞는 데이터를 들고와야 한다.")
-    void givenTypeAndIsPossible_whenPickListApi_thenReturnCorrectData() {
-        saveDefaultCharacter();
-
-        //when
-        List<CharacterResponse> response = characterService.pickList(CharacterType.ANIMAL, true);
-
-        //then
-        assertEquals(1, response.size());
-        assertEquals(CharacterType.ANIMAL, response.get(0).getType());
-        assertTrue(response.get(0).isPossible());
     }
 
     @Test
@@ -192,7 +170,7 @@ class CharacterServiceTest {
         CharacterUser characterUser = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(0).build();
         characterUserRepository.save(characterUser);
 
-        Background background = Background.builder().image("https://").level(0).environment(Environment.TRASH).build();
+        Background background = Background.builder().image("https://").level(0).environment(Environment.CLEAN).build();
         backgroundRepository.save(background);
 
         //when
@@ -208,14 +186,16 @@ class CharacterServiceTest {
         List<Character> characters = saveDefaultCharacter();
         User user = new User("user1", "email1", "picture1", Role.ADMIN);
         userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
 
         CharacterUser characterUser = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(0).build();
         characterUserRepository.save(characterUser);
 
-        Background background = Background.builder().image("https://").level(0).environment(Environment.TRASH).build();
+        Background background = Background.builder().image("https://").level(0).environment(Environment.CLEAN).build();
         backgroundRepository.save(background);
 
-        CharacterDetail characterDetail = CharacterDetail.builder().character(characters.get(0)).imageUrl("https://character1").environment(Environment.TRASH).level(0).build();
+        CharacterDetail characterDetail = CharacterDetail.builder().character(characters.get(0)).imageUrl("https://character1").environment(Environment.CLEAN).level(0).build();
         characterDetailRepository.save(characterDetail);
 
         //when
@@ -227,6 +207,91 @@ class CharacterServiceTest {
         assertEquals(characterDetail.getImageUrl(), characterUserResponse.getCharacterImage());
     }
 
+    @Test
+    @DisplayName("pick 할때 이미 사용하고 있는 캐릭터가 존재하면 에러를 발생한다.")
+    void givenAlreadyPickCharacter_whenPick_thenError() {
+        List<Character> characters = saveDefaultCharacter();
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(0).build();
+        characterUserRepository.save(characterUser);
+
+        //when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> characterService.pick(characters.get(0).getId(), user));
+
+        //then
+        assertEquals("이미 사용중인 캐릭터가 있습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("pick 할때 캐릭터를 잘 선택했으면 픽한 캐릭터 데이터를 넘겨준다.")
+    void givenFirstPickCharacter_whenPick_thenReturnCharacter() {
+        List<Character> characters = saveDefaultCharacter();
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+
+        //when
+        Character pick = characterService.pick(characters.get(0).getId(), user);
+
+        //then
+        assertEquals(characters.get(0), pick);
+    }
+
+
+    @Test
+    @DisplayName("complete messages api 를 사용했을때 유저가 사용하고 있는 캐릭터가 없으면 에러가 발생해야 한다.")
+    void givenNotExistCharacterUser_whenCompleteMessagesApi_thenReturnError() {
+        List<Character> characters = saveDefaultCharacter();
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+
+        //when
+        NotFoundCharacterUserException exception = assertThrows(NotFoundCharacterUserException.class, () -> characterService.completeMessages(user));
+
+        //then
+        assertEquals(exception.getClass(), NotFoundCharacterUserException.class);
+        assertEquals(exception.getMessage(), "해당 유저가 사용하고 있는 캐릭터가 없습니다.");
+    }
+
+    @Test
+    @DisplayName("complete messages api 를 사용했을때 유저가 사용하고 있는 캐릭터가 있으면 완료 메세지를 반환해야 한다.")
+    void givenCharacterUser_whenCompleteMessageApi_thenReturnError() throws NotFoundCharacterUserException, JSONException {
+        Character character1 = Character.builder()
+                .name("볼리베어")
+                .type(CharacterType.ANIMAL)
+                .frameImage("http://")
+                .pickImage("http://")
+                .maxLevel(100)
+                .descriptions("곰")
+                .isPossible(true)
+                .completeMessages("[{\"step\":\"축하1\"},{\"step\":\"축하2\"}]")
+                .build();
+        characterRepository.save(character1);
+
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character1).isUse(true).level(0).build();
+        characterUserRepository.save(characterUser);
+
+        //when
+        CharacterCompleteMessagesDto characterCompleteMessagesDto = characterService.completeMessages(user);
+
+        //then
+        JSONArray jsonArray = new JSONArray(characterCompleteMessagesDto.getCompleteMessages());
+        assertEquals(2, jsonArray.length());
+
+        JSONObject jsonObject =  (JSONObject) jsonArray.get(0);
+        assertEquals("축하1", jsonObject.get("step"));
+
+        JSONObject jsonObject2 =  (JSONObject) jsonArray.get(1);
+        assertEquals("축하2", jsonObject2.get("step"));
+
+    }
 
     private List<Character> saveDefaultCharacter() {
         Character character1 = Character.builder()
@@ -237,6 +302,7 @@ class CharacterServiceTest {
                 .maxLevel(100)
                 .descriptions("곰")
                 .isPossible(true)
+                .completeMessages("")
                 .build();
         Character character2 = Character.builder()
                 .name("식물")
@@ -246,6 +312,7 @@ class CharacterServiceTest {
                 .maxLevel(25)
                 .descriptions("꽃")
                 .isPossible(false)
+                .completeMessages("")
                 .build();
 
         characterService.save(character1);
