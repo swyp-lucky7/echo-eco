@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (request.getCookies() == null && !updateToken) {
             addCheckResultFotUserCheck(request, response, filterChain, checkUser, "쿠키 없음");
             if (!checkUser) {
-                response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+   //             response.sendRedirect(REDIRECT_URI_TO_LOGIN);
             }
             return;
         }
@@ -49,7 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authorization == null && !updateToken) {
             addCheckResultFotUserCheck(request, response, filterChain, checkUser, "토큰 없음");
             if (!checkUser) {
-                response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+    //            response.sendRedirect(REDIRECT_URI_TO_LOGIN);
             }
             return;
         }
@@ -59,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwtUtil.isExpired(token)) {
                 addCheckResultFotUserCheck(request, response, filterChain, checkUser, "토큰 만료");
                 if (!checkUser) {
-                    response.sendRedirect(REDIRECT_URI_TO_LOGIN);
+      //              response.sendRedirect(REDIRECT_URI_TO_LOGIN);
                 }
                 return;
             }
