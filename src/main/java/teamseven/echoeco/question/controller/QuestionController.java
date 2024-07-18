@@ -14,8 +14,6 @@ import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.repository.UserRepository;
 import teamseven.echoeco.util.GetUserEmail;
-import teamseven.echoeco.video.domain.Video;
-import teamseven.echoeco.video.domain.dto.VideoRequest;
 
 import java.util.List;
 import java.util.Map;

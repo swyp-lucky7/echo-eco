@@ -5,7 +5,6 @@ import lombok.*;
 import teamseven.echoeco.video.domain.Video;
 
 @Data
-@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

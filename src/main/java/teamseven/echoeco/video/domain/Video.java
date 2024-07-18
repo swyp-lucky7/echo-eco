@@ -12,13 +12,13 @@ import teamseven.echoeco.video.domain.dto.VideoRequest;
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "video_id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "url", nullable = false)
+    @Column(nullable = false)
     private String url;
 
     public void update(VideoRequest videoRequest) {
