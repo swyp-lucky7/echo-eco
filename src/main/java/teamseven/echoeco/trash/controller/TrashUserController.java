@@ -17,6 +17,7 @@ import teamseven.echoeco.config.exception.NotAdminSettingException;
 import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
 import teamseven.echoeco.trash.service.TrashUserService;
+import teamseven.echoeco.user.domain.Dto.UserPointDto;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.UserPoint;
 import teamseven.echoeco.user.repository.UserRepository;
@@ -33,12 +34,11 @@ public class TrashUserController {
     private final UserService userService;
 
     @PostMapping("/trash/clear")
-    public ApiResponse<UserPoint> clearTrash(Authentication authentication) throws AlreadyCleanTrashException, NotAdminSettingException, NotFoundCharacterUserException {
+    public ApiResponse<UserPointDto> clearTrash(Authentication authentication) throws AlreadyCleanTrashException, NotAdminSettingException, NotFoundCharacterUserException {
         String userEmail = GetUserEmail.get(authentication);
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("잘못된 유저 이메일 입니다."));
 
-        UserPoint userPoint = trashUserService.cleanTrash(user);
-        return ApiResponse.success(userPoint);
+        return ApiResponse.success(trashUserService.cleanTrash(user));
     }
 
     @GetMapping("/trash/status")

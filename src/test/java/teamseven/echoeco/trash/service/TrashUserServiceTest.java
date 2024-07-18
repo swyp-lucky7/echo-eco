@@ -15,6 +15,7 @@ import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.character.domain.Environment;
 import teamseven.echoeco.config.QuerydslConfiguration;
 import teamseven.echoeco.config.exception.NotAdminSettingException;
+import teamseven.echoeco.user.domain.Dto.UserPointDto;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.UserPoint;
@@ -114,12 +115,14 @@ class TrashUserServiceTest {
         trashUserRepository.save(trashUser);
 
         //when
-        trashUserService.cleanTrash(user);
+        UserPointDto userPointDto = trashUserService.cleanTrash(user);
 
         //then
         List<TrashUser> all = trashUserRepository.findAll();
         assertEquals(1, all.size());
         assertEquals(user, all.get(0).getUser());
+        assertEquals(20, userPointDto.getAddPoint());
+        assertEquals(20, userPointDto.getAfterPoint());
     }
 
     @Test
