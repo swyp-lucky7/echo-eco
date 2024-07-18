@@ -10,13 +10,18 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.config.exception.AlreadyCleanTrashException;
 import teamseven.echoeco.trash.domain.TrashUser;
+import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.character.domain.Environment;
 import teamseven.echoeco.config.QuerydslConfiguration;
 import teamseven.echoeco.config.exception.NotAdminSettingException;
+import teamseven.echoeco.user.domain.Dto.UserPointDto;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.domain.UserPoint;
+import teamseven.echoeco.user.repository.UserPointRepository;
 import teamseven.echoeco.user.repository.UserRepository;
+import teamseven.echoeco.user.service.UserPointService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,10 +39,13 @@ class TrashUserServiceTest {
     private UserRepository userRepository;
 
     private TrashUserService trashUserService;
+    @Autowired
+    private UserPointRepository userPointRepository;
 
     @BeforeEach
     void setUp() {
-        trashUserService = new TrashUserService(trashUserRepository);
+        UserPointService userPointService = new UserPointService(userPointRepository);
+        trashUserService = new TrashUserService(trashUserRepository, userPointService);
     }
 
     @Test
@@ -45,6 +53,8 @@ class TrashUserServiceTest {
     void givenAlreadyTrashClean_whenCleanTrash_ThenError() {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
 
         TrashUser trashUser = TrashUser.builder().user(user).build();
         trashUserRepository.save(trashUser);
@@ -61,6 +71,8 @@ class TrashUserServiceTest {
     void givenFirstUser_whenCleanTrash_ThenSuccess() throws AlreadyCleanTrashException {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
 
         //when
         trashUserService.cleanTrash(user);
@@ -76,6 +88,8 @@ class TrashUserServiceTest {
     void givenYesterdayClean_whenCleanTrash_ThenSuccess() throws AlreadyCleanTrashException {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
 
         TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
         trashUserRepository.save(trashUser);
@@ -87,6 +101,28 @@ class TrashUserServiceTest {
         List<TrashUser> all = trashUserRepository.findAll();
         assertEquals(1, all.size());
         assertEquals(user, all.get(0).getUser());
+    }
+
+    @Test
+    @DisplayName("청소가 잘되었을 때 20 포인트가 올라가야 한다.")
+    void givenUserPoint_whenCleanTrash_ThenAdd20Point() throws AlreadyCleanTrashException {
+        User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+
+        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        trashUserRepository.save(trashUser);
+
+        //when
+        UserPointDto userPointDto = trashUserService.cleanTrash(user);
+
+        //then
+        List<TrashUser> all = trashUserRepository.findAll();
+        assertEquals(1, all.size());
+        assertEquals(user, all.get(0).getUser());
+        assertEquals(20, userPointDto.getAddPoint());
+        assertEquals(20, userPointDto.getAfterPoint());
     }
 
     @Test
@@ -177,5 +213,36 @@ class TrashUserServiceTest {
 
         //then
         assertEquals(Environment.CLEAN, environment);
+    }
+
+    @Test
+    @DisplayName("쓰레기를 치웠으면 isClean 은 true 여야한다.")
+    void givenAlreadyTrashClear_whenTrashStatus_ThenTrue() {
+        User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
+        userRepository.save(user);
+
+        TrashUser trashUser = TrashUser.builder().user(user).build();
+        trashUserService.save(trashUser);
+
+        //when
+        TrashStatusDto trashStatusDto = trashUserService.trashStatus(user);
+
+        //then
+        assertEquals(true, trashStatusDto.getIsClean());
+    }
+    @Test
+    @DisplayName("쓰레기를 치우지 않았으면 isClean 은 false 여야한다.")
+    void givenNotTrashClear_whenTrashStatus_ThenFalse() {
+        User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
+        userRepository.save(user);
+
+        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        trashUserService.save(trashUser);
+
+        //when
+        TrashStatusDto trashStatusDto = trashUserService.trashStatus(user);
+
+        //then
+        assertEquals(false, trashStatusDto.getIsClean());
     }
 }

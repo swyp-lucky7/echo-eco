@@ -46,6 +46,10 @@ const createHelper = {
             let index = document.querySelectorAll('.description-checkbox').length + 1;
             document.querySelector('#descriptionInputBox').insertAdjacentHTML('beforeend', createHelper.stepDescriptionInput(index, ''));
         });
+        document.querySelector('#addCompleteButton').addEventListener('click', () => {
+            let index = document.querySelectorAll('.complete-checkbox').length + 1;
+            document.querySelector('#completeInputBox').insertAdjacentHTML('beforeend', createHelper.stepCompleteMessagesInput(index, ''));
+        });
 
         document.querySelector('#removeBtn').addEventListener('click', () => {
             let removeIndexList = [];
@@ -67,6 +71,26 @@ const createHelper = {
             document.querySelector('#descriptionInputBox').innerHTML = html;
         });
 
+        document.querySelector('#removeCompleteBtn').addEventListener('click', () => {
+            let removeIndexList = [];
+            document.querySelectorAll('.complete-checkbox:checked').forEach(checkbox => {
+                removeIndexList.push(checkbox.getAttribute('data-index'));
+            });
+            removeIndexList.forEach(index => document.querySelector(`#completeCheckbox${index}`).remove());
+
+            let remainValueList = [];
+            document.querySelectorAll('.complete-checkbox').forEach(checkbox => {
+                let index = checkbox.getAttribute('data-index');
+                remainValueList.push(document.querySelector(`#completeInput${index}`).value);
+            });
+
+            let html = '';
+            for (const index in remainValueList) {
+                html += createHelper.stepCompleteMessagesInput(Number(index) + 1, remainValueList[index]);
+            }
+            document.querySelector('#completeInputBox').innerHTML = html;
+        });
+
         document.querySelector('#upload').addEventListener('change', () => {
             createHelper.fileUpload('upload', 'uploadImage');
         });
@@ -81,14 +105,20 @@ const createHelper = {
         document.querySelectorAll('.description-checkbox-input').forEach(el => {
             description.push({"step": el.value});
         });
+
+        const completeMessages = [];
+        document.querySelectorAll('.complete-checkbox-input').forEach(el => {
+            completeMessages.push({"step": el.value});
+        });
         let params = {
             "name": document.querySelector('#characterName').value,
             "type": document.querySelector('#characterType').value,
             "descriptions": JSON.stringify(description),
             "maxLevel": document.querySelector('#maxLevel').value,
             "isPossible": document.querySelector('#isPossible').value,
-            "pickImage": document.querySelector('#uploadImage').src,
+            "image": document.querySelector('#uploadImage').src,
             "frameImage": document.querySelector('#frameUploadImage').src,
+            "completeMessages": JSON.stringify(completeMessages),
         };
         if (createHelper.isUpdateMode === true) {
             params['id'] = createHelper.id;
@@ -109,6 +139,20 @@ const createHelper = {
                 </div>
             `;
     },
+
+    stepCompleteMessagesInput(index, value) {
+        return `
+                <div class="row demo-vertical-spacing mb-3" id="completeCheckbox${index}">
+                    <div class="input-group">
+                        <span class="input-group-text">${index}</span>
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0 complete-checkbox" data-index="${index}" type="checkbox" aria-label="Checkbox for following text input">
+                        </div>
+                        <input type="text" class="form-control complete-checkbox-input" aria-label="Text input with checkbox" id="completeInput${index}" value="${value}">
+                    </div>
+                </div>
+            `;
+    },
     initUpdate() {
         const descriptions = JSON.parse(document.querySelector('#descriptionFrame').getAttribute('data-json'));
         let html = '';
@@ -117,19 +161,28 @@ const createHelper = {
             html += createHelper.stepDescriptionInput(index++, description.step);
         }
         document.querySelector('#descriptionInputBox').innerHTML = html;
+
+        //
+        const completeMessages = JSON.parse(document.querySelector('#completeFrame').getAttribute('data-json'));
+        html = '';
+        index = 0;
+        for (const completeMessage of completeMessages) {
+            html += createHelper.stepCompleteMessagesInput(index++, completeMessage.step);
+        }
+        document.querySelector('#completeInputBox').innerHTML = html;
     },
 
     valid(params) {
-        const pickUrl = new URL(params['pickImage']);
+        const pickUrl = new URL(params['image']);
         if (pickUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
             alert("pick 이미지를 업로드해주세요.");
             return false;
         }
-        const frameUrl = new URL(params['frameImage']);
-        if (frameUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
-            alert("frame 이미지를 업로드해주세요.");
-            return false;
-        }
+        // const frameUrl = new URL(params['frameImage']);
+        // if (frameUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
+        //     alert("frame 이미지를 업로드해주세요.");
+        //     return false;
+        // }
         if (params['name'] === '') {
             alert("이름을 입력해주세요");
             return false;
