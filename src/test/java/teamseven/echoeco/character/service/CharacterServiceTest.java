@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.repository.BackgroundRepository;
 import teamseven.echoeco.character.domain.dto.CharacterCompleteMessagesDto;
+import teamseven.echoeco.character.domain.dto.CharacterPickListDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.background.service.BackgroundService;
 import teamseven.echoeco.trash.service.TrashUserService;
@@ -82,7 +83,7 @@ class CharacterServiceTest {
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
                 .frameImage("http://")
-                .pickImage("http://")
+                .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
                 .completeMessages("")
@@ -103,7 +104,7 @@ class CharacterServiceTest {
         saveDefaultCharacter();
 
         //when
-        List<CharacterResponse> characterResponses = characterService.pickList(null);
+        List<CharacterPickListDto> characterResponses = characterService.pickList(null);
         assertEquals(2, characterResponses.size());
         assertEquals("볼리베어", characterResponses.get(0).getName());
     }
@@ -114,17 +115,17 @@ class CharacterServiceTest {
         saveDefaultCharacter();
 
         //when
-        List<CharacterResponse> trueResponse = characterService.pickList(true);
-        List<CharacterResponse> falseResponse = characterService.pickList(false);
+        List<CharacterPickListDto> trueResponse = characterService.pickList(true);
+        List<CharacterPickListDto> falseResponse = characterService.pickList(false);
 
         //then
         assertEquals(1, trueResponse.size());
         assertEquals("볼리베어", trueResponse.get(0).getName());
-        assertTrue(trueResponse.get(0).isPossible());
+        assertTrue(trueResponse.get(0).getIsPossible());
 
         assertEquals(1, falseResponse.size());
         assertEquals("식물", falseResponse.get(0).getName());
-        assertFalse(falseResponse.get(0).isPossible());
+        assertFalse(falseResponse.get(0).getIsPossible());
     }
 
     @Test
@@ -264,7 +265,7 @@ class CharacterServiceTest {
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
                 .frameImage("http://")
-                .pickImage("http://")
+                .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
                 .isPossible(true)
@@ -298,7 +299,7 @@ class CharacterServiceTest {
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
                 .frameImage("http://")
-                .pickImage("http://")
+                .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
                 .isPossible(true)
@@ -308,7 +309,7 @@ class CharacterServiceTest {
                 .name("식물")
                 .type(CharacterType.PLANT)
                 .frameImage("http://")
-                .pickImage("http://")
+                .image("http://")
                 .maxLevel(25)
                 .descriptions("꽃")
                 .isPossible(false)

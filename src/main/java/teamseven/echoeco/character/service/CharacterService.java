@@ -5,23 +5,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.background.domain.Background;
 import teamseven.echoeco.background.service.BackgroundService;
-import teamseven.echoeco.character.domain.dto.CharacterCompleteMessagesDto;
-import teamseven.echoeco.character.domain.dto.CharacterTrashDto;
-import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
-import teamseven.echoeco.trash.service.TrashUserService;
-import teamseven.echoeco.character.domain.*;
 import teamseven.echoeco.character.domain.Character;
-import teamseven.echoeco.character.domain.dto.CharacterResponse;
-import teamseven.echoeco.character.domain.dto.CharacterUserResponse;
+import teamseven.echoeco.character.domain.CharacterDetail;
+import teamseven.echoeco.character.domain.CharacterUser;
+import teamseven.echoeco.character.domain.Environment;
+import teamseven.echoeco.character.domain.dto.*;
 import teamseven.echoeco.character.repository.CharacterRepository;
 import teamseven.echoeco.character.repository.CharacterUserRepository;
 import teamseven.echoeco.config.exception.NotAdminSettingException;
 import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
-import teamseven.echoeco.user.domain.Dto.UserPointDto;
+import teamseven.echoeco.trash.service.TrashUserService;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.UserPoint;
 import teamseven.echoeco.user.service.UserPointService;
-import teamseven.echoeco.user.service.UserService;
 
 import java.util.List;
 
@@ -52,7 +48,7 @@ public class CharacterService {
         characterRepository.deleteById(id);
     }
 
-    public List<CharacterResponse> pickList(Boolean isPossible) {
+    public List<CharacterPickListDto> pickList(Boolean isPossible) {
         return characterRepository.searchPickList(isPossible);
     }
 

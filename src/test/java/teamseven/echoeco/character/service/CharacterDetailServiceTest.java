@@ -48,7 +48,7 @@ class CharacterDetailServiceTest {
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
                 .frameImage("http://")
-                .pickImage("http://")
+                .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
                 .completeMessages("")

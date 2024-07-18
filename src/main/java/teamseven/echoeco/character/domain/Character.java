@@ -36,7 +36,10 @@ public class Character {
     private boolean isPossible = true;
 
     @Column(nullable = false)
-    private String pickImage;
+    private String image;
+
+    @Builder.Default
+    private String speechBubble = "";
 
     @Column(nullable = false)
     private String frameImage;
@@ -57,7 +60,7 @@ public class Character {
     public static Character empty() {
         return Character.builder()
                 .name("")
-                .pickImage(DEFAULT_IMAGE_URL)
+                .image(DEFAULT_IMAGE_URL)
                 .frameImage(DEFAULT_IMAGE_URL)
                 .descriptions("")
                 .maxLevel(100)
