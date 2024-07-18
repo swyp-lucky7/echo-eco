@@ -6,5 +6,5 @@ import teamseven.echoeco.character.domain.dto.CharacterResponse;
 import java.util.List;
 
 public interface CharacterCustomRepository {
-    List<CharacterResponse> searchPickList(CharacterType type, Boolean isPossible);
+    List<CharacterResponse> searchPickList(Boolean isPossible);
 }

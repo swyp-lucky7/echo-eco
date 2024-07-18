@@ -41,6 +41,9 @@ public class Character {
     @Column(nullable = false)
     private String frameImage;
 
+    @Column(nullable = false)
+    private String completeMessages;
+
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -59,6 +62,7 @@ public class Character {
                 .descriptions("")
                 .maxLevel(100)
                 .isPossible(true)
+                .completeMessages("")
                 .build();
     }
 }

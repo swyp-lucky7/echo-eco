@@ -51,6 +51,7 @@ class CharacterDetailServiceTest {
                 .pickImage("http://")
                 .maxLevel(100)
                 .descriptions("곰")
+                .completeMessages("")
                 .build();
         characterRepository.save(character);
 
