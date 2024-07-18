@@ -74,7 +74,11 @@ public class SecurityConfig
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
                         "/character/**", "/trash/**", "/item/**"
-                ).hasRole(Role.USER.name()))
+                )
+                        //Todo: 배포시 아래 주석 삭제 필요
+                                //.hasRole(Role.USER.name())
+                                .permitAll()
+                )
 
                 // 권한 설정 주석처리. 변경필요.
                 //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
@@ -93,10 +97,11 @@ public class SecurityConfig
                         .successHandler(customSuccessHandler)
                 )
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-
-                .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
-                    response.sendRedirect("/user/login");
-                }));
+// ToDo: 배포시 아래 주석 삭제 필요.
+     //           .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
+      //              response.sendRedirect("/user/login");
+       //         }))
+        ;
 
         // AutoLoginFilter를 SecurityFilterChain에 추가
         http.addFilterAfter(autoLoginFilter, JwtFilter.class);
