@@ -1,5 +1,6 @@
 package teamseven.echoeco.video.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.video.domain.Video;
@@ -9,6 +10,7 @@ import teamseven.echoeco.video.repository.VideoRepository;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class VideoService {
     private final VideoRepository videoRepository;

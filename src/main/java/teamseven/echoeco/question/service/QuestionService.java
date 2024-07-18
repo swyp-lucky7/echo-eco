@@ -1,5 +1,6 @@
 package teamseven.echoeco.question.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.question.domain.Question;
@@ -10,6 +11,7 @@ import teamseven.echoeco.user.domain.User;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
