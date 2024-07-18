@@ -32,7 +32,7 @@ public class CharacterApiController {
     private final UserService userService;
 
     @GetMapping("/character/list")
-    public ApiResponse<List<CharacterResponse>> characterPickList(@RequestParam(required = false, name = "isPossible") Boolean isPossible) {
+    public ApiResponse<List<CharacterPickListDto>> characterPickList(@RequestParam(required = false, name = "isPossible") Boolean isPossible) {
         return ApiResponse.success(characterService.pickList(isPossible));
     }
 

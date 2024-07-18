@@ -116,7 +116,7 @@ const createHelper = {
             "descriptions": JSON.stringify(description),
             "maxLevel": document.querySelector('#maxLevel').value,
             "isPossible": document.querySelector('#isPossible').value,
-            "pickImage": document.querySelector('#uploadImage').src,
+            "image": document.querySelector('#uploadImage').src,
             "frameImage": document.querySelector('#frameUploadImage').src,
             "completeMessages": JSON.stringify(completeMessages),
         };
@@ -173,16 +173,16 @@ const createHelper = {
     },
 
     valid(params) {
-        const pickUrl = new URL(params['pickImage']);
+        const pickUrl = new URL(params['image']);
         if (pickUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
             alert("pick 이미지를 업로드해주세요.");
             return false;
         }
-        const frameUrl = new URL(params['frameImage']);
-        if (frameUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
-            alert("frame 이미지를 업로드해주세요.");
-            return false;
-        }
+        // const frameUrl = new URL(params['frameImage']);
+        // if (frameUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
+        //     alert("frame 이미지를 업로드해주세요.");
+        //     return false;
+        // }
         if (params['name'] === '') {
             alert("이름을 입력해주세요");
             return false;

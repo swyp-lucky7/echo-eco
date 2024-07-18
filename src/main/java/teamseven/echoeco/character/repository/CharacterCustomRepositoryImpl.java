@@ -5,8 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import teamseven.echoeco.character.domain.CharacterType;
-import teamseven.echoeco.character.domain.dto.CharacterResponse;
-import teamseven.echoeco.character.domain.dto.QCharacterResponse;
+import teamseven.echoeco.character.domain.dto.CharacterPickListDto;
+import teamseven.echoeco.character.domain.dto.QCharacterPickListDto;
 
 import java.util.List;
 
@@ -19,15 +19,14 @@ public class CharacterCustomRepositoryImpl implements CharacterCustomRepository 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CharacterResponse> searchPickList(Boolean isPossible) {
+    public List<CharacterPickListDto> searchPickList(Boolean isPossible) {
         return queryFactory
-                .select(new QCharacterResponse(
+                .select(new QCharacterPickListDto(
                         character.id,
-                        character.type,
                         character.name,
-                        character.descriptions,
-                        character.maxLevel,
-                        character.isPossible
+                        character.speechBubble,
+                        character.isPossible,
+                        character.image
                 ))
                 .from(character)
                 .where(
