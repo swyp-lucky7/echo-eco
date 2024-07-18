@@ -8,11 +8,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import teamseven.echoeco.config.QuerydslConfiguration;
 import teamseven.echoeco.question.domain.Question;
 import teamseven.echoeco.question.domain.QuestionType;
+import teamseven.echoeco.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.question.repository.QuestionRepository;
-import teamseven.echoeco.config.QuerydslConfiguration;
-import teamseven.echoeco.question.service.QuestionService;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.repository.UserRepository;
@@ -133,6 +133,42 @@ class QuestionServiceTest {
         //then
         assertEquals(1, byUser.size());
         assertTrue(byUser.contains(question2));
+    }
+
+    @Test
+    @DisplayName("question update 요청이 오면 업데이트 되어야 한다.")
+    public void givenQuestion_whenUpdateQuestion_thenQuestionUpdated() {
+        User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
+        userRepository.save(user);
+
+        Question question = Question.builder()
+                .questionType(QuestionType.MULTIPLE_CHOICE)
+                .head("header")
+                .name("hi")
+                .body("body")
+                .answer("1")
+                .makeUser(user)
+                .build();
+        questionService.save(question);
+
+        QuestionRequest questionRequest = QuestionRequest.builder()
+                .questionType(QuestionType.MULTIPLE_CHOICE)
+                .head("header2")
+                .name("hi")
+                .body("body2")
+                .answer("2")
+                .build();
+        questionService.update(question.getId(), questionRequest);
+
+        //when
+        Question updatedQuestion = questionService.findById(question.getId());
+
+        //then
+        assertEquals(QuestionType.MULTIPLE_CHOICE, updatedQuestion.getQuestionType());
+        assertEquals("header2", updatedQuestion.getHead());
+        assertEquals("hi", updatedQuestion.getName());
+        assertEquals("body2", updatedQuestion.getBody());
+        assertEquals("2", updatedQuestion.getAnswer());
     }
 
 }

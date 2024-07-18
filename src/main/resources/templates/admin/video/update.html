@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/video/update.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="name" class="col-form-label">이름</label>
+                    <div>
+                        <input class="form-control" type="text" id="name" th:value="${video.name}">
+                    </div>
+                </div>
+            </div>
+            <div class="row demo-vertical-spacing mb-3">
+                <div class="col">
+                    <label for="urlInput" class="col-form-label">URL</label>
+                    <div>
+                        <input class="form-control" type="url" id="urlInput" th:value="${video.url}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="modifyBtn">
+                <strong>저장하기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
