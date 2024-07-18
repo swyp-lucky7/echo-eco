@@ -48,12 +48,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(),attributes.getPicture(), entity.getRole()))
                 .orElseGet(attributes::toEntity);
+        userRepository.save(user);
         UserPoint userPoint = userPointRepository.findByUser(user);
         if (userPoint == null) {
             // user 첫 등록시 userPoint 생성
             userPointRepository.save(UserPoint.fromUser(user));
         }
-        return userRepository.save(user);
+        return user;
     }
 
     public List<User> findUsers() {

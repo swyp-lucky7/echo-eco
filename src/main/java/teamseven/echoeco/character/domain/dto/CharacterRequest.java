@@ -15,9 +15,10 @@ public class CharacterRequest {
     private String descriptions;
     @NotNull
     private int maxLevel;
-    private String pickImage;
+    private String image;
     private String frameImage;
-    private boolean isPossible;
+    private Boolean isPossible;
+    private String completeMessages;
 
     public Character toEntity() {
         return Character.builder()
@@ -26,9 +27,10 @@ public class CharacterRequest {
                 .name(name)
                 .descriptions(descriptions)
                 .maxLevel(maxLevel)
-                .pickImage(pickImage)
+                .image(image)
                 .frameImage(frameImage)
                 .isPossible(isPossible)
+                .completeMessages(completeMessages)
                 .build();
     }
 }
