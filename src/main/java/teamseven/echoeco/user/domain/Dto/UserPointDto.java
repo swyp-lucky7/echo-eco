@@ -8,5 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class UserPointDto {
-    private int userPoint;
+    private int addPoint;
+    private int afterPoint;
 }

@@ -9,6 +9,7 @@ import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
 import teamseven.echoeco.character.domain.Environment;
 import teamseven.echoeco.config.exception.AlreadyCleanTrashException;
+import teamseven.echoeco.user.domain.Dto.UserPointDto;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.UserPoint;
 import teamseven.echoeco.user.service.UserPointService;
@@ -45,7 +46,7 @@ public class TrashUserService {
         return Environment.TRASH;
     }
 
-    public UserPoint cleanTrash(User user) throws AlreadyCleanTrashException {
+    public UserPointDto cleanTrash(User user) throws AlreadyCleanTrashException {
         if (isTodayCleanTrash(user)) {
             throw new AlreadyCleanTrashException();
         }
@@ -54,8 +55,14 @@ public class TrashUserService {
                 .user(user)
                 .build());
 
+        int addTrashPoint = 20;
+
         trashUserRepository.save(trashUser);
-        return userPointService.addUserPoint(user, 20);
+        UserPoint userPoint = userPointService.addUserPoint(user, addTrashPoint);
+        return UserPointDto.builder()
+                .addPoint(addTrashPoint)
+                .afterPoint(userPoint.getUserPoint())
+                .build();
     }
 
     public TrashStatusDto trashStatus(User user) {
