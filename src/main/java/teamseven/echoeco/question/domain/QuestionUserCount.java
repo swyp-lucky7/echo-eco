@@ -5,12 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDate;
-
-import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
 
 @Entity
 @Getter
@@ -35,12 +32,17 @@ public class QuestionUserCount {
     @Builder.Default
     private LocalDate updatedAt = LocalDate.now();
 
-    public static QuestionUserCount reset() {
+    public static QuestionUserCount create() {
         return QuestionUserCount.builder()
                 .beforeQuestion(null)
                 .remainCount(3)
                 .updatedAt(LocalDate.now())
                 .build();
+    }
+
+    public void reset() {
+        this.remainCount = 3;
+        updatedAt = LocalDate.now();
     }
 
     public void update(Long id) {

@@ -52,4 +52,11 @@ public class Question {
         this.answer = questionRequest.getAnswer();
         this.updatedAt = LocalDateTime.now();
     }
+
+    public QuestionResultStatus isCorrect(String answer) {
+        if (this.answer.equals(answer)) {
+            return QuestionResultStatus.CORRECT;
+        }
+        return QuestionResultStatus.INCORRECT;
+    }
 }

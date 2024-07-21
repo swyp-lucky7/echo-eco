@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.config.exception.NoRemainQuestionException;
 import teamseven.echoeco.question.domain.Question;
+import teamseven.echoeco.question.domain.QuestionResultStatus;
 import teamseven.echoeco.question.domain.QuestionUserCount;
 import teamseven.echoeco.question.domain.dto.QuestionCountDto;
 import teamseven.echoeco.question.domain.dto.QuestionPostDto;
@@ -16,6 +17,7 @@ import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -53,12 +55,10 @@ public class QuestionService {
     }
 
     public QuestionResponse question(User user) throws NoRemainQuestionException {
-        QuestionUserCount questionUserCount = questionUserCountRepository.findByUser_Id(user.getId());
+        Optional<QuestionUserCount> questionUserCountOptional = questionUserCountRepository.findByUser_Id(user.getId());
+        QuestionUserCount questionUserCount = questionUserCountOptional.orElseGet(QuestionUserCount::create);
 
-        LocalDate updateDate = questionUserCount.getUpdatedAt();
-        LocalDate today = LocalDate.now();
-
-        if (!updateDate.isEqual(today)) {
+        if (questionUserCount.getUpdatedAt().equals(LocalDate.now())) {
             questionUserCount.reset();
         }
 
@@ -66,41 +66,36 @@ public class QuestionService {
             throw new NoRemainQuestionException();
         }
 
-        Long beforeQuestion = questionUserCount.getBeforeQuestion();
-        List<Question> questionList;
-        if (beforeQuestion != null) {
-            questionList = questionRepository.findByIdNot(beforeQuestion);
-        }
-        else {
-            questionList = questionRepository.findAll();
-        }
+        long count = questionRepository.count();
+        Long randomIndex = getRandomIndex(count, questionUserCount.getBeforeQuestion());
 
-        Random random = new Random();
-        int randomIndex = random.nextInt(questionList.size());
-        Question question = questionList.get(randomIndex);
+        Optional<Question> questionOptional = questionRepository.findById(randomIndex);
+        Question question = questionOptional.orElseThrow();
+        questionUserCount.update(question.getId());
 
-        Long newBeforeQuestion = question.getId();
-        questionUserCount.update(newBeforeQuestion);
-
+        questionUserCountRepository.save(questionUserCount);
         return QuestionResponse.fromEntity(question);
+    }
+
+    private Long getRandomIndex(long size, Long beforeQuestion) {
+        Random random = new Random();
+        long randomId;
+        do {
+            randomId = random.nextLong(size);
+        } while (randomId != beforeQuestion);
+        return randomId;
     }
 
     public QuestionPostDto questionPost(Long id, String select) {
         Question question = questionRepository.findById(id).orElseThrow();
 
-        String answer;
-        if (select.equals(question.getAnswer())) {
-            answer = "CORRECT";
-        }
-        else {
-            answer = "INCORRECT";
-        }
-
-        return QuestionPostDto.makeQuestionPostDto(answer);
+        QuestionResultStatus questionResultStatus = question.isCorrect(select);
+        return QuestionPostDto.makeQuestionPostDto(questionResultStatus.name());
     }
 
     public QuestionCountDto questionCount(User user) {
-        QuestionUserCount questionUserCount = questionUserCountRepository.findByUser_Id(user.getId());
+        Optional<QuestionUserCount> questionUserCountOptional = questionUserCountRepository.findByUser_Id(user.getId());
+        QuestionUserCount questionUserCount = questionUserCountOptional.orElseGet(QuestionUserCount::create);
         int count = questionUserCount.getRemainCount();
 
         return QuestionCountDto.makeQuestionCountDto(count);
