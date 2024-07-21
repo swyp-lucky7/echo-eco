@@ -4,7 +4,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 const createHelper = {
+    id: -1,
+    isUpdateMode: false,
     init() {
+        const url = window.location.href;
+        const match = url.match(/\/admin\/question\/create\/(\d+)/);
+        if (match && match[1]) {
+            createHelper.id = parseInt(match[1]);
+            createHelper.isUpdateMode = true;
+        }
         createHelper.addEvent();
     },
     addEvent() {
@@ -50,43 +58,30 @@ const createHelper = {
 
         });
 
-        document.querySelector('#saveBtn').addEventListener('click', () => {
-            $.ajax({
-                type: "POST",
-                url: "/admin/question/create",
-                dataType: "json",
-                data: JSON.stringify(createHelper.getParam()),
-                contentType: 'application/json; charset=utf-8',
-                success: function(res) {
-                    alert("성공적으로 생성되었습니다.");
-                    location.href = '/admin/question';
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error:', textStatus, errorThrown);
-                }
-            });
+        document.querySelector('#modifyBtn').addEventListener('click', () => {
+            const params = createHelper.getParam();
+            if (!createHelper.valid(params)) {
+                return;
+            }
+            if(createHelper.isUpdateMode) {
+                const id = createHelper.id;
+                const updateUrl = "/admin/question/create/" + id;
+                $.ajax({
+                    type: "POST",
+                    url: updateUrl,
+                    dataType: "json",
+                    data: JSON.stringify(params),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (res) {
+                        alert("성공적으로 업데이트되었습니다.");
+                        location.href = '/admin/question'
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error:', textStatus, errorThrown);
+                    }
+                });
+            }
         });
-
-    },
-
-    getParam() {
-       let param = {
-           "name": document.querySelector('#questionName').value,
-           "questionType": document.querySelector('#questionType').value,
-           "head": document.querySelector('#questionHead').value,
-           "answer": document.querySelector('#answerInput').value,
-       }
-       if (document.querySelector('#questionType').value === 'MULTIPLE_CHOICE') {
-           const valueList = [];
-           document.querySelectorAll('.multiple-checkbox-input').forEach(el => {
-               valueList.push({"row": el.value});
-           });
-           param['body'] = JSON.stringify(valueList);
-       } else if (document.querySelector('#questionType').value === 'SUBJECTIVE') {
-           param['body'] = document.querySelector('#subjectiveInput').value;
-       }
-
-       return param;
     },
 
     rowMultipleCheckbox(index, value) {
@@ -102,4 +97,40 @@ const createHelper = {
                 </div>
             `;
     },
+
+    getParam() {
+        let params = {
+            "name": document.querySelector('#questionName').value,
+            "questionType": document.querySelector('#questionType').value,
+            "head": document.querySelector('#questionHead').value,
+            "answer": document.querySelector('#answerInput').value,
+        }
+        if (document.querySelector('#questionType').value === 'MULTIPLE_CHOICE') {
+            const valueList = [];
+            document.querySelectorAll('.multiple-checkbox-input').forEach(el => {
+                valueList.push({"row": el.value});
+            });
+            params['body'] = JSON.stringify(valueList);
+        } else if (document.querySelector('#questionType').value === 'SUBJECTIVE') {
+            params['body'] = document.querySelector('#subjectiveInput').value;
+        }
+
+        return params;
+    },
+
+    valid(params) {
+        if (params['name'] === '') {
+            alert("이름을 입력해주세요.");
+            return false;
+        }
+        if (params['head'] === '') {
+            alert("질문을 입력해주세요.");
+            return false;
+        }
+        if (params['answer'] === '') {
+            alert("정답을 입력해주세요.");
+            return false;
+        }
+        return true;
+    }
 }
