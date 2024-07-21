@@ -13,6 +13,7 @@ import teamseven.echoeco.question.domain.Question;
 import teamseven.echoeco.question.domain.QuestionType;
 import teamseven.echoeco.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.question.repository.QuestionRepository;
+import teamseven.echoeco.question.repository.QuestionUserCountRepository;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.repository.UserRepository;
@@ -28,16 +29,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class QuestionServiceTest {
 
+    QuestionService questionService;
     @Autowired
     UserRepository userRepository;
     @Autowired
     QuestionRepository questionRepository;
-
-    QuestionService questionService;
+    @Autowired
+    private QuestionUserCountRepository questionUserCountRepository;
 
     @BeforeEach
     void setUp() {
-        questionService = new QuestionService(questionRepository);
+        questionService = new QuestionService(questionRepository, questionUserCountRepository);
     }
 
     @Test
