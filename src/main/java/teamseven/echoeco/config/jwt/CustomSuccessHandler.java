@@ -44,7 +44,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setMaxAge(60 * 60 * 60);
 //        cookie.setSecure(true); // HTTPS 환경
         cookie.setPath("/");
-        cookie.setDomain("www.naver.com");
+        cookie.setDomain("localhost");
       //  cookie.setHttpOnly(true);
         return cookie;
     }
