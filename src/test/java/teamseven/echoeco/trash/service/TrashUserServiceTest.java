@@ -91,7 +91,7 @@ class TrashUserServiceTest {
         UserPoint userPoint = UserPoint.fromUser(user);
         userPointRepository.save(userPoint);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(LocalDateTime.now().minusDays(1)).build();
         trashUserRepository.save(trashUser);
 
         //when
@@ -111,7 +111,7 @@ class TrashUserServiceTest {
         UserPoint userPoint = UserPoint.fromUser(user);
         userPointRepository.save(userPoint);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(LocalDateTime.now().minusDays(1)).build();
         trashUserRepository.save(trashUser);
 
         //when
@@ -144,7 +144,7 @@ class TrashUserServiceTest {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(LocalDateTime.now().minusDays(1)).build();
         trashUserService.save(trashUser);
 
         //when
@@ -189,7 +189,7 @@ class TrashUserServiceTest {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(LocalDateTime.now().minusDays(1)).build();
         trashUserService.save(trashUser);
 
         //when
@@ -236,7 +236,7 @@ class TrashUserServiceTest {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(LocalDateTime.now().minusDays(1)).build();
         trashUserService.save(trashUser);
 
         //when

@@ -3,7 +3,6 @@ package teamseven.echoeco.trash.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.character.service.CharacterService;
 import teamseven.echoeco.trash.domain.TrashUser;
 import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
@@ -34,7 +33,7 @@ public class TrashUserService {
             return false;
         }
         TrashUser trashUser = optionalTrashUser.get();
-        LocalDate updateDate = trashUser.getUpdated_at().toLocalDate();
+        LocalDate updateDate = trashUser.getUpdatedAt().toLocalDate();
         LocalDate today = LocalDate.now();
         return updateDate.isEqual(today);
     }
