@@ -2,17 +2,16 @@ package teamseven.echoeco.item.domain;
 
 import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import teamseven.echoeco.item.domain.dto.ItemDto;
 
 @Entity
@@ -20,6 +19,7 @@ import teamseven.echoeco.item.domain.dto.ItemDto;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Items")
 public class Item {
 
@@ -45,9 +45,12 @@ public class Item {
     private Boolean isUse;
 
     @Builder.Default
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
+    @LastModifiedDate
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public static Item empty() {
