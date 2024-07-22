@@ -31,6 +31,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("http://localhost:3000");
+                .allowedOrigins("http://localhost:3000", "http://echoeco.shop.s3-website-us-east-1.amazonaws.com");
     }
 }

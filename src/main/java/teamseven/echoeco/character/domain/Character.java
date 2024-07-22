@@ -4,6 +4,9 @@ import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Characters")
+@EntityListeners(AuditingEntityListener.class)
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +52,11 @@ public class Character {
     private String completeMessages;
 
     @Builder.Default
+    @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
+    @LastModifiedDate
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public Character(Long id) {

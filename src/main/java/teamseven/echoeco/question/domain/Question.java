@@ -2,6 +2,9 @@ package teamseven.echoeco.question.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import teamseven.echoeco.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.user.domain.User;
 
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +43,12 @@ public class Question {
     private User makeUser;
 
     @Builder.Default
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
+    @LastModifiedDate
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     public void update(QuestionRequest questionRequest) {
