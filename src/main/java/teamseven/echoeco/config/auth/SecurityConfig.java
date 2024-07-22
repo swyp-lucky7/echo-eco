@@ -14,9 +14,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import teamseven.echoeco.config.jwt.CustomSuccessHandler;
+import teamseven.echoeco.config.jwt.JwtExceptionHandlerFilter;
 import teamseven.echoeco.config.jwt.JwtFilter;
 import teamseven.echoeco.config.jwt.JwtUtil;
-import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.service.CustomOAuth2UserService;
 
 @Configuration
@@ -34,14 +34,14 @@ public class SecurityConfig
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("/vendor/**","/error", "/favicon.ico", "/user/login/**");
+                // 필터(로그인 인증) 없이 사용하는 url 추가 필요
+                .requestMatchers("/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/admin/**", "/character/list", "/user/token/**", "/question", "/");
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-
                 .csrf(AbstractHttpConfigurer::disable)// csrf 비활성화 -> cookie를 사용하지 않으면 꺼도 된다.
                 // (cookie를 사용할 경우 httpOnly(XSS 방어), sameSite(CSRF 방어)로 방어해야 한다.)
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
@@ -97,6 +97,7 @@ public class SecurityConfig
                         .successHandler(customSuccessHandler)
                 )
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionHandlerFilter(), JwtFilter.class)
 // ToDo: 배포시 아래 주석 삭제 필요.
      //           .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
       //              response.sendRedirect("/user/login");

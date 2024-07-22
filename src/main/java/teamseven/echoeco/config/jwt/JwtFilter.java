@@ -2,15 +2,16 @@ package teamseven.echoeco.config.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import teamseven.echoeco.config.exception.InvalidUserException;
 import teamseven.echoeco.user.domain.OAuth2.CustomOauth2User;
 import teamseven.echoeco.user.domain.Dto.UserDto;
 import teamseven.echoeco.user.domain.Role;
@@ -18,7 +19,7 @@ import teamseven.echoeco.user.domain.Role;
 // 쿠키에 있는 JWT 토큰을 세션에 저장
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    public static final String TOKEN_NAME = "Authorization";
+    public static final String TOKEN_NAME = "authorization";
     private static final String REDIRECT_URI_TO_LOGIN = "/user/login";
 
     private final JwtUtil jwtUtil;
@@ -26,45 +27,26 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
+        boolean hasToken = false;
         boolean checkUser = request.getRequestURL().toString().contains("/user/check");
         boolean updateToken = request.getRequestURL().toString().contains("/user/token/update");
 
-
-        if (request.getCookies() == null && !updateToken) {
-            addCheckResultFotUserCheck(request, response, filterChain, checkUser, "쿠키 없음");
-            if (!checkUser) {
-                filterChain.doFilter(request, response);
-   //             response.sendRedirect(REDIRECT_URI_TO_LOGIN);
-            }
-            return;
-        }
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(TOKEN_NAME)) {
-                authorization = cookie.getValue();
+        Iterator<String> headerNameIterator = request.getHeaderNames().asIterator();
+        while (headerNameIterator.hasNext()) {
+            String headerName = headerNameIterator.next();
+            if (headerName.equals(TOKEN_NAME)) {
+                hasToken = true;
             }
         }
 
-        if (authorization == null && !updateToken) {
-            addCheckResultFotUserCheck(request, response, filterChain, checkUser, "토큰 없음");
-            if (!checkUser) {
-                filterChain.doFilter(request, response);
-    //            response.sendRedirect(REDIRECT_URI_TO_LOGIN);
-            }
-            return;
+        if (!hasToken && !updateToken) {
+            throw new InvalidUserException("유저 정보 토큰이 없습니다.");
         }
 
-        String token = authorization;
+        String token = request.getHeader(TOKEN_NAME);
         if (!updateToken) {
             if (jwtUtil.isExpired(token)) {
-                addCheckResultFotUserCheck(request, response, filterChain, checkUser, "토큰 만료");
-                if (!checkUser) {
-                    filterChain.doFilter(request, response);
-      //              response.sendRedirect(REDIRECT_URI_TO_LOGIN);
-                }
-                return;
+                throw new InvalidUserException("토큰이 만료되었습니다.");
             }
         }
 
@@ -81,6 +63,8 @@ public class JwtFilter extends OncePerRequestFilter {
             String name = jwtUtil.getName(token);
             String email = jwtUtil.getEmail(token);
             Role role = jwtUtil.getRole(token);
+
+            request.setAttribute("userName", name);
 
             UserDto userDTO = new UserDto();
             userDTO.setName(name);
