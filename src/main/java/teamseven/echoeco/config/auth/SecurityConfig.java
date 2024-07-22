@@ -1,6 +1,8 @@
 package teamseven.echoeco.config.auth;
 
 import java.util.Collections;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +50,7 @@ public class SecurityConfig
 
                     CorsConfiguration configuration = new CorsConfiguration();
 
-                    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                    configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://echoeco.shop.s3-website-us-east-1.amazonaws.com"));
                     configuration.setAllowedMethods(Collections.singletonList("*"));
                     configuration.setAllowCredentials(true);
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
