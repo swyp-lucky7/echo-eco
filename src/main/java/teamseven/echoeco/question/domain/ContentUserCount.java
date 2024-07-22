@@ -5,11 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDate;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +35,7 @@ public class ContentUserCount {
     @Builder.Default
     private int remainVideoCount = 0;
 
+    @LastModifiedDate
     @Builder.Default
     private LocalDate updatedAt = LocalDate.now();
 
