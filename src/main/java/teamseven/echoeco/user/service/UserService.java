@@ -20,4 +20,8 @@ public class UserService {
         return userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 이메일 입니다."));
     }
+
+    public User findUserByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("잘못된 유저 이메일 입니다."));
+    }
 }
