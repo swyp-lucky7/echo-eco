@@ -32,7 +32,7 @@ public class QuestionApiController {
         return ApiResponse.success(questionPostDto);
     }
 
-    @GetMapping("/content/remaining")
+    @GetMapping("/contents/remaining")
     public ApiResponse<ContentsRemainDto> contentsRemain(Authentication authentication) {
         User user = userService.getUser(authentication);
         return ApiResponse.success(questionService.contentsRemain(user));
