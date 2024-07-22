@@ -2,8 +2,6 @@ package teamseven.echoeco.question.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +9,6 @@ import teamseven.echoeco.question.domain.Question;
 import teamseven.echoeco.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.question.service.QuestionService;
 import teamseven.echoeco.config.ApiResponse;
-import teamseven.echoeco.user.domain.User;
-import teamseven.echoeco.user.repository.UserRepository;
-import teamseven.echoeco.util.GetUserEmail;
 
 import java.util.List;
 import java.util.Map;
@@ -21,10 +16,9 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/question")
-public class QuestionController {
+public class QuestionAdminController {
 
     private final QuestionService questionService;
-    private final UserRepository userRepository;
 
     @GetMapping("")
     public String readPage(Model model) {

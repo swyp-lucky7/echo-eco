@@ -9,13 +9,22 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.config.QuerydslConfiguration;
+import teamseven.echoeco.config.exception.NoRemainVideoException;
+import teamseven.echoeco.question.domain.ContentUserCount;
+import teamseven.echoeco.question.repository.ContentUserCountRepository;
+import teamseven.echoeco.user.domain.Role;
+import teamseven.echoeco.user.domain.User;
+import teamseven.echoeco.user.repository.UserRepository;
 import teamseven.echoeco.video.domain.Video;
+import teamseven.echoeco.video.domain.dto.VideoEndDto;
 import teamseven.echoeco.video.domain.dto.VideoRequest;
+import teamseven.echoeco.video.domain.dto.VideoResponse;
 import teamseven.echoeco.video.repository.VideoRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -25,11 +34,17 @@ public class VideoServiceTest {
 
     @Autowired
     private VideoRepository videoRepository;
+    @Autowired
+    private ContentUserCountRepository contentUserCountRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private VideoService videoService;
 
     @BeforeEach
-    void setUp() { videoService = new VideoService(videoRepository); }
+    void setUp() {
+        videoService = new VideoService(videoRepository, contentUserCountRepository);
+    }
 
     @Test
     @DisplayName("엔티티를 저장할 수 있어야 한다.")
@@ -71,5 +86,126 @@ public class VideoServiceTest {
         //then
         assertEquals("영상2", updatedVideo.getName());
         assertEquals("http://2", updatedVideo.getUrl());
+    }
+
+    @Test
+    @DisplayName("이미 횟수를 소진한 유저가 video 요청이 에러를 반환해야 한다.")
+    void givenAlreadyUseVideo_whenGetVideo_thenError() {
+        User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
+        userRepository.save(user);
+
+        Video video1 = Video.builder().name("영상").url("http://").build();
+        videoRepository.save(video1);
+
+        Video video2= Video.builder().name("영상2").url("http://2").build();
+        videoRepository.save(video2);
+
+        ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(0).build();
+        contentUserCountRepository.save(contentUserCount);
+
+        //when
+        Exception exception = assertThrows(NoRemainVideoException.class, () -> videoService.video(user));
+
+        //then
+        assertEquals("오늘의 영상 횟수가 소진되었습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("첫 유저가 video 요청이 하면 가진 영상중에 랜덤으로 줘야 한다.")
+    void givenFirstUser_whenGetVideo_thenSuccess() throws NoRemainVideoException {
+        User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
+        userRepository.save(user);
+
+        Video video1 = Video.builder()
+                .name("영상")
+                .url("http://")
+                .build();
+        videoRepository.save(video1);
+
+        Video video2= Video.builder()
+                .name("영상2")
+                .url("http://2")
+                .build();
+        videoRepository.save(video2);
+
+        //when
+        VideoResponse video = videoService.video(user);
+
+        //then
+        assertNotNull(video);
+    }
+
+
+    @Test
+    @DisplayName("어제 소진한 유저가 오늘 video 요청이 성공적으로 줘야 한다.")
+    void givenYesterdayUse_whenGetVideo_thenSuccess() throws NoRemainVideoException {
+        User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
+        userRepository.save(user);
+
+        Video video1 = Video.builder()
+                .name("영상")
+                .url("http://")
+                .build();
+        videoRepository.save(video1);
+
+        Video video2= Video.builder()
+                .name("영상2")
+                .url("http://2")
+                .build();
+        videoRepository.save(video2);
+
+        ContentUserCount contentUserCount = ContentUserCount.builder().updatedAt(LocalDate.now().minusDays(1)).user(user).remainQuestionCount(0).remainVideoCount(0).build();
+        contentUserCountRepository.save(contentUserCount);
+
+        //when
+        VideoResponse video = videoService.video(user);
+
+        //then
+        assertNotNull(video);
+    }
+
+    @Test
+    @DisplayName("이미 횟수를 소진한 유저가 video end 를 보내면 에러를 반환해야 한다.")
+    void givenAlreadyUseVideo_whenVideoEnd_thenError() {
+        User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
+        userRepository.save(user);
+
+        Video video1 = Video.builder().name("영상").url("http://").build();
+        videoRepository.save(video1);
+
+        Video video2= Video.builder().name("영상2").url("http://2").build();
+        videoRepository.save(video2);
+
+        ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(0).build();
+        contentUserCountRepository.save(contentUserCount);
+
+        //when
+        Exception exception = assertThrows(NoRemainVideoException.class, () -> videoService.videoEnd(user));
+
+        //then
+        assertEquals("오늘의 영상 횟수가 소진되었습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("정상적으로 비디오를 다 본 경우 문제의 횟수를 다시 리셋 시켜준다.")
+    void givenWatchedVideo_whenVideoEnd_thenResetQuestionCount() throws NoRemainVideoException {
+        User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
+        userRepository.save(user);
+
+        Video video1 = Video.builder().name("영상").url("http://").build();
+        videoRepository.save(video1);
+
+        Video video2= Video.builder().name("영상2").url("http://2").build();
+        videoRepository.save(video2);
+
+        ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(1).build();
+        contentUserCountRepository.save(contentUserCount);
+
+        //when
+        VideoEndDto videoEndDto = videoService.videoEnd(user);
+
+        //then
+        assertEquals(0, contentUserCount.getRemainVideoCount());
+        assertEquals(3, contentUserCount.getRemainQuestionCount());
     }
 }

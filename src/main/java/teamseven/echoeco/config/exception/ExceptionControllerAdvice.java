@@ -27,6 +27,18 @@ public class ExceptionControllerAdvice {
         return ApiResponse.res(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "Not Admin Setting");
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalCallerException.class)
+    public ApiResponse<String> illegalCallerHandler(IllegalCallerException e) {
+        return ApiResponse.res(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "존재 할 수 없는 요청입니다.");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler({NoRemainVideoException.class, NoRemainQuestionException.class})
+    public ApiResponse<String> noRemainException(Exception e) {
+        return ApiResponse.success(e.getMessage());
+    }
+
     // 유저의 캐릭터가 없는 경우 400 에러로 리턴
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
