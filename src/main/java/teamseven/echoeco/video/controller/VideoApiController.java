@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import teamseven.echoeco.config.ApiResponse;
-import teamseven.echoeco.config.exception.NoRemainQuestionException;
 import teamseven.echoeco.config.exception.NoRemainVideoException;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
@@ -27,7 +27,7 @@ public class VideoApiController {
         return ApiResponse.success(videoService.video(user));
     }
 
-    @GetMapping("/video/end")
+    @PostMapping("/video/end")
     public ApiResponse<VideoEndDto> videoEnd(Authentication authentication) throws NoRemainVideoException {
         User user = userService.getUser(authentication);
         return ApiResponse.success(videoService.videoEnd(user));

@@ -2,7 +2,6 @@ package teamseven.echoeco.video.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import teamseven.echoeco.question.domain.dto.QuestionPostDto;
 
 @Data
 @Builder

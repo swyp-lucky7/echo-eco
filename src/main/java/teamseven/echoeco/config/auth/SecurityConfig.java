@@ -73,7 +73,7 @@ public class SecurityConfig
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
-                        "/character/**", "/trash/**", "/item/**"
+                        "/character/**", "/trash/**", "/item/**", "/question/**", "/video/**", "/contents/**"
                 )
                         //Todo: 배포시 아래 주석 삭제 필요
                                 //.hasRole(Role.USER.name())

@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.config.QuerydslConfiguration;
-import teamseven.echoeco.config.exception.NoRemainQuestionException;
 import teamseven.echoeco.config.exception.NoRemainVideoException;
 import teamseven.echoeco.question.domain.ContentUserCount;
 import teamseven.echoeco.question.repository.ContentUserCountRepository;

@@ -9,7 +9,6 @@ import teamseven.echoeco.question.domain.Question;
 import teamseven.echoeco.question.domain.dto.QuestionRequest;
 import teamseven.echoeco.question.service.QuestionService;
 import teamseven.echoeco.config.ApiResponse;
-import teamseven.echoeco.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;
