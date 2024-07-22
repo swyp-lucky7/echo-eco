@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class CharacterDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +37,11 @@ public class CharacterDetail {
     private Environment environment;
 
     @Builder.Default
+    @Column(updatable = false)
+    @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
+    @LastModifiedDate
     private LocalDateTime updatedAt = LocalDateTime.now();
 }
