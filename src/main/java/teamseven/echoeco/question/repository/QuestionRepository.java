@@ -10,8 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-
     public List<Question> findByMakeUser_Id(Long id);
-
-    public List<Question> findByIdNot(Long id);
 }

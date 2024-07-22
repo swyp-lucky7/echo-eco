@@ -9,6 +9,6 @@ public enum QuestionResultStatus {
     CORRECT("correct", "정답"),
     INCORRECT("incorrect", "오답");
 
-    private final String key;
+    private final String name;
     private final String koreaName;
 }

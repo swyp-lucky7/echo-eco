@@ -16,7 +16,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/video")
-public class VideoController {
+public class VideoAdminController {
 
     private final VideoService videoService;
 

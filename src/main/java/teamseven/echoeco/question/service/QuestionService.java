@@ -7,10 +7,7 @@ import teamseven.echoeco.config.exception.NoRemainQuestionException;
 import teamseven.echoeco.question.domain.Question;
 import teamseven.echoeco.question.domain.QuestionResultStatus;
 import teamseven.echoeco.question.domain.QuestionUserCount;
-import teamseven.echoeco.question.domain.dto.QuestionCountDto;
-import teamseven.echoeco.question.domain.dto.QuestionPostDto;
-import teamseven.echoeco.question.domain.dto.QuestionRequest;
-import teamseven.echoeco.question.domain.dto.QuestionResponse;
+import teamseven.echoeco.question.domain.dto.*;
 import teamseven.echoeco.question.repository.QuestionRepository;
 import teamseven.echoeco.question.repository.QuestionUserCountRepository;
 import teamseven.echoeco.user.domain.User;
@@ -62,7 +59,7 @@ public class QuestionService {
             questionUserCount.reset();
         }
 
-        if (questionUserCount.getRemainCount() == 0) {
+        if (questionUserCount.getRemainQuestionCount() == 0) {
             throw new NoRemainQuestionException();
         }
 
@@ -86,18 +83,30 @@ public class QuestionService {
         return randomId;
     }
 
-    public QuestionPostDto questionPost(Long id, String select) {
-        Question question = questionRepository.findById(id).orElseThrow();
+    public QuestionPostDto questionPost(User user, Long id, String select) {
+        Optional<QuestionUserCount> questionUserCountOptional = questionUserCountRepository.findByUser_Id(user.getId());
+        QuestionUserCount questionUserCount = questionUserCountOptional.orElseGet(QuestionUserCount::create);
+        questionUserCount.downRemainQuestionCount();
 
+        Question question = questionRepository.findById(id).orElseThrow();
         QuestionResultStatus questionResultStatus = question.isCorrect(select);
-        return QuestionPostDto.makeQuestionPostDto(questionResultStatus.name());
+
+        return QuestionPostDto.makeQuestionPostDto(questionResultStatus.getName());
     }
+
 
     public QuestionCountDto questionCount(User user) {
         Optional<QuestionUserCount> questionUserCountOptional = questionUserCountRepository.findByUser_Id(user.getId());
         QuestionUserCount questionUserCount = questionUserCountOptional.orElseGet(QuestionUserCount::create);
-        int count = questionUserCount.getRemainCount();
+        int count = questionUserCount.getRemainQuestionCount(); // ?
 
         return QuestionCountDto.makeQuestionCountDto(count);
+    }
+
+    public QuestionRemainDto questionRemain(User user) {
+        Optional<QuestionUserCount> questionUserCountOptional = questionUserCountRepository.findByUser_Id(user.getId());
+        QuestionUserCount questionUserCount = questionUserCountOptional.orElseGet(QuestionUserCount::create);
+
+        return QuestionRemainDto.makeQuestionRemainDto(questionUserCount);
     }
 }

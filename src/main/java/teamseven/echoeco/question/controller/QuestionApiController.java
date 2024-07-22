@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.config.exception.NoRemainQuestionException;
-import teamseven.echoeco.question.domain.dto.QuestionCountDto;
-import teamseven.echoeco.question.domain.dto.QuestionPostDto;
-import teamseven.echoeco.question.domain.dto.QuestionPostRequest;
-import teamseven.echoeco.question.domain.dto.QuestionResponse;
+import teamseven.echoeco.question.domain.dto.*;
 import teamseven.echoeco.question.service.QuestionService;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
@@ -29,8 +26,9 @@ public class QuestionApiController {
     }
 
     @PostMapping("/question/post")
-    public ApiResponse<QuestionPostDto> questionPost(@Valid @RequestBody QuestionPostRequest questionPostRequest) throws Exception {
-        QuestionPostDto questionPostDto = questionService.questionPost(questionPostRequest.getId(), questionPostRequest.getSelect());
+    public ApiResponse<QuestionPostDto> questionPost(@Valid @RequestBody QuestionPostRequest questionPostRequest, Authentication authentication) throws Exception {
+        User user = userService.getUser(authentication);
+        QuestionPostDto questionPostDto = questionService.questionPost(user, questionPostRequest.getId(), questionPostRequest.getSelect());
         return ApiResponse.success(questionPostDto);
     }
 
@@ -38,5 +36,11 @@ public class QuestionApiController {
     public ApiResponse<QuestionCountDto> questionCount(Authentication authentication) {
         User user = userService.getUser(authentication);
         return ApiResponse.success(questionService.questionCount(user));
+    }
+
+    @GetMapping("/question/remain")
+    public ApiResponse<QuestionRemainDto> questionRemain(Authentication authentication) {
+        User user = userService.getUser(authentication);
+        return ApiResponse.success(questionService.questionRemain(user));
     }
 }

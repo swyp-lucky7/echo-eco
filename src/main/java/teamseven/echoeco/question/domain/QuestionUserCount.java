@@ -27,7 +27,10 @@ public class QuestionUserCount {
     private Long beforeQuestion;
 
     @Builder.Default
-    private int remainCount = 0;
+    private int remainQuestionCount = 0;
+
+    @Builder.Default
+    private int remainVideoCount = 0;
 
     @Builder.Default
     private LocalDate updatedAt = LocalDate.now();
@@ -35,19 +38,28 @@ public class QuestionUserCount {
     public static QuestionUserCount create() {
         return QuestionUserCount.builder()
                 .beforeQuestion(null)
-                .remainCount(3)
-                .updatedAt(LocalDate.now())
+                .remainQuestionCount(3)
+                .remainVideoCount(1)
                 .build();
     }
 
     public void reset() {
-        this.remainCount = 3;
-        updatedAt = LocalDate.now();
+        this.remainQuestionCount = 3;
+        this.remainVideoCount = 1;
+        this.updatedAt = LocalDate.now();
     }
 
     public void update(Long id) {
         this.beforeQuestion = id;
-        this.remainCount -= 1;
         this.updatedAt = LocalDate.now();
+    }
+
+    public void downRemainQuestionCount() {
+        this.remainQuestionCount--;
+    }
+
+    public void fillRemainQuestionCount() {
+        this.remainQuestionCount = 3;
+        this.remainVideoCount = 0;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import teamseven.echoeco.config.QuerydslConfiguration;
+import teamseven.echoeco.question.repository.QuestionUserCountRepository;
 import teamseven.echoeco.video.domain.Video;
 import teamseven.echoeco.video.domain.dto.VideoRequest;
 import teamseven.echoeco.video.repository.VideoRepository;
@@ -25,11 +26,13 @@ public class VideoServiceTest {
 
     @Autowired
     private VideoRepository videoRepository;
+    @Autowired
+    private QuestionUserCountRepository questionUserCountRepository;
 
     private VideoService videoService;
 
     @BeforeEach
-    void setUp() { videoService = new VideoService(videoRepository); }
+    void setUp() { videoService = new VideoService(videoRepository, questionUserCountRepository); }
 
     @Test
     @DisplayName("엔티티를 저장할 수 있어야 한다.")
