@@ -26,4 +26,16 @@ public class ExceptionControllerAdvice {
     public ApiResponse<String> NotAdminSettingHandler(NotAdminSettingException e) {
         return ApiResponse.res(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "Not Admin Setting");
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalCallerException.class)
+    public ApiResponse<String> illegalCallerHandler(IllegalCallerException e) {
+        return ApiResponse.res(HttpStatus.BAD_REQUEST.value(), e.getMessage(), "존재 할 수 없는 요청입니다.");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler({NoRemainVideoException.class, NoRemainQuestionException.class})
+    public ApiResponse<String> noRemainException(Exception e) {
+        return ApiResponse.success(e.getMessage());
+    }
 }

@@ -3,8 +3,9 @@ package teamseven.echoeco.video.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import teamseven.echoeco.question.domain.QuestionUserCount;
-import teamseven.echoeco.question.repository.QuestionUserCountRepository;
+import teamseven.echoeco.config.exception.NoRemainVideoException;
+import teamseven.echoeco.question.domain.ContentUserCount;
+import teamseven.echoeco.question.repository.ContentUserCountRepository;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.video.domain.Video;
 import teamseven.echoeco.video.domain.dto.VideoEndDto;
@@ -12,6 +13,7 @@ import teamseven.echoeco.video.domain.dto.VideoRequest;
 import teamseven.echoeco.video.domain.dto.VideoResponse;
 import teamseven.echoeco.video.repository.VideoRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -21,7 +23,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class VideoService {
     private final VideoRepository videoRepository;
-    private final QuestionUserCountRepository questionUserCountRepository;
+    private final ContentUserCountRepository contentUserCountRepository;
 
     public void save(Video video) {
         videoRepository.save(video);
@@ -46,19 +48,35 @@ public class VideoService {
         return video;
     }
 
-    public VideoResponse video() {
+    public VideoResponse video(User user) throws NoRemainVideoException {
+        Optional<ContentUserCount> contentCountOptional = contentUserCountRepository.findByUser_Id(user.getId());
+        ContentUserCount contentUserCount = contentCountOptional.orElseGet(() -> ContentUserCount.create(user));
+
+        if (!contentUserCount.getUpdatedAt().equals(LocalDate.now())) {
+            contentUserCount.reset();
+        }
+
+        if (contentUserCount.getRemainVideoCount() <= 0) {
+            throw new NoRemainVideoException();
+        }
+
         Random random = new Random();
-        long count = videoRepository.count();
-        long randomIndex = random.nextLong(count);
+        List<Long> allIds = videoRepository.findAllIds();
+        long randomIndex = allIds.get(random.nextInt(allIds.size()));
         Video video = videoRepository.findById(randomIndex).orElseThrow();
+
         return VideoResponse.fromEntity(video);
     }
 
-    public VideoEndDto videoEnd(User user) {
-        Optional<QuestionUserCount> questionUserCountOptional = questionUserCountRepository.findByUser_Id(user.getId());
-        QuestionUserCount questionUserCount = questionUserCountOptional.orElseGet(QuestionUserCount::create);
-        questionUserCount.fillRemainQuestionCount();
+    public VideoEndDto videoEnd(User user) throws NoRemainVideoException {
+        Optional<ContentUserCount> contentCountOptional = contentUserCountRepository.findByUser_Id(user.getId());
+        ContentUserCount contentUserCount = contentCountOptional.orElseThrow(() -> new IllegalCallerException("비디오를 한번도 요청하지 않은 유저입니다."));
 
+        if (contentUserCount.getRemainVideoCount() <= 0) {
+            throw new NoRemainVideoException();
+        }
+
+        contentUserCount.watchedVideo();
         return VideoEndDto.makeVideoEndDto();
     }
 }

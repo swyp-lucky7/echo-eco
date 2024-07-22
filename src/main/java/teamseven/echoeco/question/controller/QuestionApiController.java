@@ -32,15 +32,9 @@ public class QuestionApiController {
         return ApiResponse.success(questionPostDto);
     }
 
-    @GetMapping("/question/count")
-    public ApiResponse<QuestionCountDto> questionCount(Authentication authentication) {
+    @GetMapping("/content/remaining")
+    public ApiResponse<ContentsRemainDto> contentsRemain(Authentication authentication) {
         User user = userService.getUser(authentication);
-        return ApiResponse.success(questionService.questionCount(user));
-    }
-
-    @GetMapping("/question/remain")
-    public ApiResponse<QuestionRemainDto> questionRemain(Authentication authentication) {
-        User user = userService.getUser(authentication);
-        return ApiResponse.success(questionService.questionRemain(user));
+        return ApiResponse.success(questionService.contentsRemain(user));
     }
 }

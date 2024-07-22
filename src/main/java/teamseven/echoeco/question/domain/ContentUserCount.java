@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuestionUserCount {
+public class ContentUserCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_user_count_id")
@@ -35,9 +35,10 @@ public class QuestionUserCount {
     @Builder.Default
     private LocalDate updatedAt = LocalDate.now();
 
-    public static QuestionUserCount create() {
-        return QuestionUserCount.builder()
-                .beforeQuestion(null)
+    public static ContentUserCount create(User user) {
+        return ContentUserCount.builder()
+                .user(user)
+                .beforeQuestion(-1L)
                 .remainQuestionCount(3)
                 .remainVideoCount(1)
                 .build();
@@ -54,11 +55,11 @@ public class QuestionUserCount {
         this.updatedAt = LocalDate.now();
     }
 
-    public void downRemainQuestionCount() {
+    public void subtractRemainQuestionCount() {
         this.remainQuestionCount--;
     }
 
-    public void fillRemainQuestionCount() {
+    public void watchedVideo() {
         this.remainQuestionCount = 3;
         this.remainVideoCount = 0;
     }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import teamseven.echoeco.config.ApiResponse;
+import teamseven.echoeco.config.exception.NoRemainQuestionException;
+import teamseven.echoeco.config.exception.NoRemainVideoException;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
 import teamseven.echoeco.video.domain.dto.VideoEndDto;
@@ -20,12 +22,13 @@ public class VideoApiController {
     private final UserService userService;
 
     @GetMapping("/video")
-    public ApiResponse<VideoResponse> video() {
-        return ApiResponse.success(videoService.video());
+    public ApiResponse<VideoResponse> video(Authentication authentication) throws NoRemainVideoException {
+        User user = userService.getUser(authentication);
+        return ApiResponse.success(videoService.video(user));
     }
 
     @GetMapping("/video/end")
-    public ApiResponse<VideoEndDto> videoEnd(Authentication authentication) {
+    public ApiResponse<VideoEndDto> videoEnd(Authentication authentication) throws NoRemainVideoException {
         User user = userService.getUser(authentication);
         return ApiResponse.success(videoService.videoEnd(user));
     }
