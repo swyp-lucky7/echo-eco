@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,10 +39,9 @@ public class ItemApiController {
         return ApiResponse.success(itemService.findByIsUse());
     }
 
-    @GetMapping("/item/detail")
-    public ApiResponse<ItemClickResponse> itemClick(@RequestBody @Valid ItemRequest itemRequest,
+    @GetMapping("/item/{itemId}")
+    public ApiResponse<ItemClickResponse> itemClick(@PathVariable("itemId") Long itemId,
                                                     Authentication authentication) {
-        long itemId = itemRequest.getItemId();
         User user = userService.getUser(authentication);
         ItemClickResponse itemClickResponse = itemService.buyItem(itemId, user);
         return ApiResponse.success(itemClickResponse);

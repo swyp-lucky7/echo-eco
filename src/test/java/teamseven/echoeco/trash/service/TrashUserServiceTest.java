@@ -1,5 +1,6 @@
 package teamseven.echoeco.trash.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,13 +9,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import teamseven.echoeco.character.domain.Environment;
+import teamseven.echoeco.config.QuerydslConfiguration;
 import teamseven.echoeco.config.exception.AlreadyCleanTrashException;
 import teamseven.echoeco.trash.domain.TrashUser;
 import teamseven.echoeco.trash.domain.dto.TrashStatusDto;
 import teamseven.echoeco.trash.repository.TrashUserRepository;
-import teamseven.echoeco.character.domain.Environment;
-import teamseven.echoeco.config.QuerydslConfiguration;
-import teamseven.echoeco.config.exception.NotAdminSettingException;
 import teamseven.echoeco.user.domain.Dto.UserPointDto;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
@@ -91,7 +91,7 @@ class TrashUserServiceTest {
         UserPoint userPoint = UserPoint.fromUser(user);
         userPointRepository.save(userPoint);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(getYesterday()).build();
         trashUserRepository.save(trashUser);
 
         //when
@@ -111,7 +111,7 @@ class TrashUserServiceTest {
         UserPoint userPoint = UserPoint.fromUser(user);
         userPointRepository.save(userPoint);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(getYesterday()).build();
         trashUserRepository.save(trashUser);
 
         //when
@@ -144,7 +144,7 @@ class TrashUserServiceTest {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(getYesterday()).build();
         trashUserService.save(trashUser);
 
         //when
@@ -189,7 +189,7 @@ class TrashUserServiceTest {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(getYesterday()).build();
         trashUserService.save(trashUser);
 
         //when
@@ -236,7 +236,7 @@ class TrashUserServiceTest {
         User user = User.builder().name("user1").email("email1").picture("picture1").role(Role.ADMIN).build();
         userRepository.save(user);
 
-        TrashUser trashUser = TrashUser.builder().user(user).updated_at(LocalDateTime.now().minusDays(1)).build();
+        TrashUser trashUser = TrashUser.builder().user(user).updatedAt(getYesterday()).build();
         trashUserService.save(trashUser);
 
         //when
@@ -245,4 +245,9 @@ class TrashUserServiceTest {
         //then
         assertEquals(false, trashStatusDto.getIsClean());
     }
+
+    private static @NotNull LocalDateTime getYesterday() {
+        return LocalDateTime.now().minusDays(1);
+    }
+
 }
