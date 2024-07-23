@@ -28,12 +28,17 @@ const createHelper = {
                 }
             });
         });
+
+        document.querySelector('#fileInput').addEventListener('change', () => {
+            createHelper.fileUpload('fileInput');
+        });
+
     },
 
     getParam() {
         let params = {
             "name": document.querySelector('#name').value,
-            "url": document.querySelector('#urlInput').value
+            "url": document.querySelector('#fileInput').src
         }
 
         return params;
@@ -45,9 +50,30 @@ const createHelper = {
             return false;
         }
         if (params['url'] === '') {
-            alert("URL을 입력해주세요.");
+            alert("파일을 업로드해주세요.");
             return false;
         }
         return true;
+    },
+
+    fileUpload(fileInputId) {
+        const fileInput = document.querySelector(`#${fileInputId}`);
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/file/upload",
+            data: formData,
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            cache: false,
+            success(res) {
+                console.log("Upload successfully.");
+            },
+            error(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        });
     }
 }
