@@ -24,7 +24,7 @@ public class CharacterCustomRepositoryImpl implements CharacterCustomRepository 
                 .select(new QCharacterPickListDto(
                         character.id,
                         character.name,
-                        character.speechBubble,
+                        character.descriptions,
                         character.isPossible,
                         character.image
                 ))

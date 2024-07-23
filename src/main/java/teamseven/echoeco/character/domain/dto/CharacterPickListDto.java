@@ -11,16 +11,15 @@ import lombok.Data;
 public class CharacterPickListDto {
     private Long id;
     private String name;
-    @Builder.Default
-    private String speechBubble = "안녕 난 폴라야";
+    private String descriptions;
     private Boolean isPossible;
     private String image;
 
     @QueryProjection
-    public CharacterPickListDto(Long id, String name, String speechBubble, boolean isPossible, String image) {
+    public CharacterPickListDto(Long id, String name, String descriptions, boolean isPossible, String image) {
         this.id = id;
         this.name = name;
-        this.speechBubble = speechBubble;
+        this.descriptions = descriptions;
         this.isPossible = isPossible;
         this.image = image;
     }
