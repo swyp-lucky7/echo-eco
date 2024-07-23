@@ -27,7 +27,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String email = userInfo.getEmail();
         // Todo
         // expiredMs 수정 필요
-        String token = jwtUtil.createJwt(name, role, email, 60 * 60 * 1000L);
+        String token = jwtUtil.createJwt(name, role, email, 24 * 60 * 60 * 1000L);
 
         userJWTService.saveOrUpdateUserJwt(token, email);
         response.addHeader(JwtFilter.TOKEN_NAME, token);
