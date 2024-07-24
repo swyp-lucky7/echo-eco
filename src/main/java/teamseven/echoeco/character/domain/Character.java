@@ -30,6 +30,7 @@ public class Character {
     @Column(nullable = false)
     private String name;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String descriptions;
 
     @Column(nullable = false)
