@@ -17,9 +17,9 @@ const createHelper = {
                 type: "POST",
                 url: "/admin/video/create",
                 dataType: "json",
-                data: JSON.stringify(createHelper.getParam()),
+                data: JSON.stringify(params),
                 contentType: 'application/json; charset=utf-8',
-                success: function(res) {
+                success: function() {
                     alert("성공적으로 생성되었습니다.");
                     location.href = '/admin/video'
                 },
@@ -29,7 +29,7 @@ const createHelper = {
             });
         });
 
-        document.querySelector('#fileInput').addEventListener('click', () => {
+        document.querySelector('#fileInput').addEventListener('change', () => {
             createHelper.fileUpload('fileInput');
         });
 
@@ -69,7 +69,7 @@ const createHelper = {
             contentType: false,
             cache: false,
             success(res) {
-                console.log("Upload successfully.");
+                document.querySelector(`#${fileInputId}`).src = res.data;
             },
             error(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR, textStatus, errorThrown);
