@@ -4,8 +4,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import teamseven.echoeco.gifticon.domain.dto.GifticonAdminResponse;
-import teamseven.echoeco.gifticon.domain.dto.QGifticonAdminResponse;
+import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
+import teamseven.echoeco.gifticon.domain.dto.QGifticonUserAdminResponse;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class GifticonCustomRepositoryImpl implements GifticonCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<GifticonAdminResponse> search(String email, Boolean isSend) {
+    public List<GifticonUserAdminResponse> search(String email, Boolean isSend) {
         return queryFactory
-                .select(new QGifticonAdminResponse(
+                .select(new QGifticonUserAdminResponse(
                         gifticonUser.id,
                         gifticonUser.user.email,
                         gifticonUser.name,

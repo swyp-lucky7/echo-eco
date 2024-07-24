@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class GifticonAdminSendRequest {
+public class GifticonUserAdminSendRequest {
     @NotNull
     private String userEmail;
 

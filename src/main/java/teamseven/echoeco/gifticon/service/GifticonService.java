@@ -4,8 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.gifticon.domain.GifticonUser;
-import teamseven.echoeco.gifticon.domain.dto.GifticonAdminResponse;
-import teamseven.echoeco.gifticon.domain.dto.GifticonAdminSendRequest;
+import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
+import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
 import teamseven.echoeco.gifticon.repository.GifticonRepository;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
@@ -20,11 +20,11 @@ public class GifticonService {
     private final GifticonRepository gifticonRepository;
     private final UserService userService;
 
-    public List<GifticonAdminResponse> search(String userEmail, Boolean isSend) {
+    public List<GifticonUserAdminResponse> search(String userEmail, Boolean isSend) {
         return gifticonRepository.search(userEmail, isSend);
     }
 
-    public void send(GifticonAdminSendRequest request, User admin) {
+    public void send(GifticonUserAdminSendRequest request, User admin) {
         String userEmail = request.getUserEmail();
         User user = userService.findUserByEmail(userEmail);
 

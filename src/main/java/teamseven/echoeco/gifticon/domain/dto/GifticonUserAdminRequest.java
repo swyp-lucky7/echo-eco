@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class GifticonAdminRequest {
+public class GifticonUserAdminRequest {
     private String userEmail;
     private Boolean isSend;
 }

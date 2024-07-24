@@ -4,11 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import teamseven.echoeco.config.ApiResponse;
-import teamseven.echoeco.gifticon.domain.dto.GifticonAdminRequest;
-import teamseven.echoeco.gifticon.domain.dto.GifticonAdminResponse;
-import teamseven.echoeco.gifticon.domain.dto.GifticonAdminSendRequest;
+import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminRequest;
+import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
+import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
 import teamseven.echoeco.gifticon.service.GifticonService;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
@@ -23,19 +24,19 @@ public class GifticonAdminController {
     private final UserService userService;
 
     @GetMapping("")
-    public String read() {
+    public String read(Model model) {
         return "admin/gifticon/read";
     }
 
     @GetMapping("/search")
     @ResponseBody
-    public ApiResponse<List<GifticonAdminResponse>> search(@ModelAttribute GifticonAdminRequest gifticonAdminRequest) {
-        return ApiResponse.success(gifticonService.search(gifticonAdminRequest.getUserEmail(), gifticonAdminRequest.getIsSend()));
+    public ApiResponse<List<GifticonUserAdminResponse>> search(@ModelAttribute GifticonUserAdminRequest gifticonUserAdminRequest) {
+        return ApiResponse.success(gifticonService.search(gifticonUserAdminRequest.getUserEmail(), gifticonUserAdminRequest.getIsSend()));
     }
 
     @PostMapping("/send")
     @ResponseBody
-    public ApiResponse<String> send(@Valid @RequestBody GifticonAdminSendRequest request,
+    public ApiResponse<String> send(@Valid @RequestBody GifticonUserAdminSendRequest request,
                                     Authentication authentication) {
         User admin = userService.getUser(authentication);
         gifticonService.send(request, admin);
