@@ -64,5 +64,17 @@ public class JwtUtil {
                 .compact();
     }
 
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            System.out.println("Token expired");
+            return false;
+        } catch (Exception e) {
+            System.out.println("Token invalid");
+            return false;
+        }
+    }
 
 }
