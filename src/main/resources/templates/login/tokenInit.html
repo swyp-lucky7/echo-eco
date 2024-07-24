@@ -1,0 +1,12 @@
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        localStorage.setItem('jwt', token);
+
+        if (token) {
+            localStorage.setItem('jwt', token); // JWT를 localStorage에 저장
+            window.location.href = '/admin'; // 초기 페이지로 리다이렉트
+        }
+    });
+</script>

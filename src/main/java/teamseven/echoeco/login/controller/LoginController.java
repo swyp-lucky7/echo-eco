@@ -17,4 +17,9 @@ public class LoginController {
     public String login() {
         return "login/loginPage";
     }
+
+    @GetMapping("/token/init")
+    public String tokenInit() {
+        return "login/tokenInit";
+    }
 }
