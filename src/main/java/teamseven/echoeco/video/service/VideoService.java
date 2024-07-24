@@ -59,6 +59,7 @@ public class VideoService {
         if (contentUserCount.getRemainVideoCount() <= 0) {
             throw new NoRemainVideoException();
         }
+        contentUserCountRepository.save(contentUserCount);
 
         Random random = new Random();
         List<Long> allIds = videoRepository.findAllIds();
