@@ -15,10 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import teamseven.echoeco.config.jwt.CustomSuccessHandler;
-import teamseven.echoeco.config.jwt.JwtExceptionHandlerFilter;
-import teamseven.echoeco.config.jwt.JwtFilter;
-import teamseven.echoeco.config.jwt.JwtUtil;
+import teamseven.echoeco.config.jwt.*;
+import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.service.CustomOAuth2UserService;
 
 @Configuration
@@ -38,7 +36,7 @@ public class SecurityConfig
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 // 필터(로그인 인증) 없이 사용하는 url 추가 필요
                 // /token/init 은 삭제 X
-                .requestMatchers("/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/admin/**", "/character/list", "/user/token/**", "/token/init");
+                .requestMatchers("/static/**", "/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/character/list", "/user/token/**", "/token/init");
     }
 
     @Bean
@@ -67,12 +65,12 @@ public class SecurityConfig
 //                .headers(headerConfig -> headerConfig.frameOptions(
 //                        FrameOptionsConfig::disable // X-Frame-Options 비활성화
 //                ))
-                .sessionManagement(c ->
-                        c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용하지 않음
+//                .sessionManagement(c ->
+//                        c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용하지 않음
 
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/file/**",
-                                "/admin/**", "/user/**"  // 임시로 permitAll 로 열어둠. 변경필요함.
+                                 "/user/**"  // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
@@ -84,8 +82,8 @@ public class SecurityConfig
                 )
 
                 // 권한 설정 주석처리. 변경필요.
-                //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                //       .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
+                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                       .requestMatchers("/admin/**").hasRole(Role.ADMIN.name()))
                 //.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                 //        .requestMatchers("").hasRole(Role.USER.name()))
                 .logout((logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
@@ -100,6 +98,7 @@ public class SecurityConfig
                         .successHandler(customSuccessHandler)
                 )
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtCookieFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtExceptionHandlerFilter(), JwtFilter.class)
 // ToDo: 배포시 아래 주석 삭제 필요.
      //           .exceptionHandling(ex -> ex.accessDeniedHandler((request, response, accessDeniedException) -> {
