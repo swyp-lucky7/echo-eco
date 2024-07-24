@@ -37,7 +37,8 @@ public class SecurityConfig
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 // 필터(로그인 인증) 없이 사용하는 url 추가 필요
-                .requestMatchers("/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/admin/**", "/character/list", "/user/token/**", "/");
+                // /token/init 은 삭제 X
+                .requestMatchers("/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/admin/**", "/character/list", "/user/token/**", "/token/init");
     }
 
     @Bean

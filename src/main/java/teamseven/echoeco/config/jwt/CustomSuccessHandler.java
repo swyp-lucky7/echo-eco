@@ -3,18 +3,27 @@ package teamseven.echoeco.config.jwt;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import teamseven.echoeco.user.domain.Dto.UserDto;
 import teamseven.echoeco.user.domain.OAuth2.Oauth2UserImpl;
+import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.service.UserJWTService;
+
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Value("${admin.page.domain}")
+    private String adminPageDomain;
+
+    @Value("${front.server.domain}")
+    private String frontServerDomain;
 
     private final JwtUtil jwtUtil;
     private final UserJWTService userJWTService;
@@ -32,11 +41,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         userJWTService.saveOrUpdateUserJwt(token, email);
         response.addHeader(JwtFilter.TOKEN_NAME, token);
 
+//        headers.add("Access-Control-Expose-Headers", "token");
 //        response.addCookie(createCookie("Authorization", token));
-//        response.addHeader("Authorization", token);
         // Todo
         // 프론트 서버로 변경 필요, 유저 동물생성 유무에 따라 캐릭터선택 or 스테이지로 변경 필요
-        response.sendRedirect("http://localhost:3000/loginwait?useremail=" + email);
+        if (userInfo.getRole() == Role.ADMIN) {
+            response.sendRedirect(adminPageDomain + "/token/init?token=" + token);
+        } else {
+            response.sendRedirect(frontServerDomain + "/loginwait?useremail=" + email);
+        }
     }
 
 //    private Cookie createCookie(String key, String value) {
