@@ -41,7 +41,7 @@ const createHelper = {
             }
         });
 
-        document.querySelector('#fileInput').addEventListener('change', () => {
+        document.querySelector('#fileInput').addEventListener('load', () => {
             createHelper.fileUpload('fileInput');
         });
     },

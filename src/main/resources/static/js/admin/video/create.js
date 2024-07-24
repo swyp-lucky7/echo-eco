@@ -29,7 +29,7 @@ const createHelper = {
             });
         });
 
-        document.querySelector('#fileInput').addEventListener('change', () => {
+        document.querySelector('#fileInput').addEventListener('click', () => {
             createHelper.fileUpload('fileInput');
         });
 
