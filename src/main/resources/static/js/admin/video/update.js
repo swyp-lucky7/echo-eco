@@ -41,7 +41,7 @@ const createHelper = {
             }
         });
 
-        document.querySelector('#fileInput').addEventListener('load', () => {
+        document.querySelector('#fileInput').addEventListener('change', () => {
             createHelper.fileUpload('fileInput');
         });
     },
@@ -80,7 +80,7 @@ const createHelper = {
             contentType: false,
             cache: false,
             success(res) {
-                console.log("Upload successfully.");
+                document.querySelector(`#${fileInputId}`).src = res.data;
             },
             error(jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR, textStatus, errorThrown);
