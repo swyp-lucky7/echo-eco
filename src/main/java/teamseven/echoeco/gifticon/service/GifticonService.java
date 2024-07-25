@@ -11,6 +11,7 @@ import teamseven.echoeco.character.repository.CharacterUserRepository;
 import teamseven.echoeco.character.service.CharacterService;
 import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.gifticon.domain.GifticonUser;
+import teamseven.echoeco.gifticon.domain.dto.GifticonCheckResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonDetailResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
@@ -72,6 +73,18 @@ public class GifticonService {
                 .build();
 
         gifticonRepository.save(gifticonUser);
+    }
+
+    public GifticonCheckResponse alreadyExistCheck(User user) throws NotFoundCharacterUserException {
+        CharacterUser characterUser = characterUserRepository.findByUserWithUse(user);
+        if (characterUser == null) {
+            throw new NotFoundCharacterUserException();
+        }
+
+        Optional<GifticonUser> byCharacterUser = gifticonRepository.findByCharacterUser(characterUser);
+        return GifticonCheckResponse.builder()
+                .isPost(byCharacterUser.isPresent())
+                .build();
     }
 
     private String getEmailBody(String productName, String number) {

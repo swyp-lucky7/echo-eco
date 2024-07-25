@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
+import teamseven.echoeco.gifticon.domain.dto.GifticonCheckResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonPostRequest;
 import teamseven.echoeco.gifticon.service.GifticonService;
 import teamseven.echoeco.user.domain.User;
@@ -25,5 +26,9 @@ public class GifticonApiController {
         return ApiResponse.success("ok");
     }
 
-//    @GetMapping("/")
+    @GetMapping("/gifticon/check")
+    public ApiResponse<GifticonCheckResponse> check(Authentication authentication) throws NotFoundCharacterUserException {
+        User user = userService.getUser(authentication);
+        return ApiResponse.success(gifticonService.alreadyExistCheck(user));
+    }
 }
