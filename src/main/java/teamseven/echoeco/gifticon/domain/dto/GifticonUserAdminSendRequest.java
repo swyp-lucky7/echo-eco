@@ -10,7 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class GifticonUserAdminSendRequest {
     @NotNull
-    private String userEmail;
+    private Long id;
 
     @NotNull
     private String number;

@@ -1,5 +1,6 @@
 package teamseven.echoeco.gifticon.service;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,7 @@ import teamseven.echoeco.gifticon.domain.dto.GifticonDetailResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
 import teamseven.echoeco.gifticon.repository.GifticonRepository;
+import teamseven.echoeco.mail.service.MailService;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
 
@@ -22,21 +24,23 @@ import java.util.Optional;
 @Transactional
 public class GifticonService {
     private final GifticonRepository gifticonRepository;
+    private final MailService mailService;
     private final UserService userService;
 
     public List<GifticonUserAdminResponse> search(String userEmail, Boolean isSend) {
         return gifticonRepository.search(userEmail, isSend);
     }
 
-    public void send(String email, String number, User admin) {
-        User user = userService.findUserByEmail(email);
+    public void send(Long id, String number, User admin) throws MessagingException {
+        Optional<GifticonUser> byId = gifticonRepository.findById(id);
+        GifticonUser gifticonUser = byId.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
 
-        Optional<GifticonUser> gifticonUserOptional = gifticonRepository.findByUserAndIsSend(user, false);
-        if (gifticonUserOptional.isEmpty()) {
-            throw new IllegalArgumentException("요청하신 유저는 기프티콘 받을 조건이 되지 않았습니다.");
+        if (gifticonUser.getIsSend()) {
+            throw new IllegalArgumentException("해당 유저는 이미 받은 유저입니다.");
         }
 
-        GifticonUser gifticonUser = gifticonUserOptional.get();
+        mailService.sendEmailWithAttachment(gifticonUser.getEmail(), "Echoeco 기프티콘", getEmailBody(gifticonUser.getName(), number));
+
         gifticonUser.sendGift(number, admin);
         gifticonRepository.save(gifticonUser);
     }
@@ -46,6 +50,14 @@ public class GifticonService {
         GifticonUser gifticonUser = byId.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
 
         return GifticonDetailResponse.create(gifticonUser);
+    }
+
+    public String getEmailBody(String productName, String number) {
+        return "Echoeco 의 동물을 끝까지 키워주셔서 감사합니다. 감사의 의미로 " + productName + " 기프티콘을 전송해드립니다. \n" +
+                "\n" +
+                "기프티콘 넘버: " + number + "\n" +
+                "\n" +
+                "기프티콘 관련 문의 이메일: pkt0758@gmail.com";
     }
 
 }

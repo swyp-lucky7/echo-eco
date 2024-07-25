@@ -1,5 +1,6 @@
 package teamseven.echoeco.gifticon.controller;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -38,9 +39,9 @@ public class GifticonAdminController {
     @PostMapping("/send")
     @ResponseBody
     public ApiResponse<String> send(@Valid @RequestBody GifticonUserAdminSendRequest request,
-                                    Authentication authentication) {
+                                    Authentication authentication) throws MessagingException {
         User admin = userService.getUser(authentication);
-        gifticonService.send(request.getUserEmail(), request.getNumber(), admin);
+        gifticonService.send(request.getId(), request.getNumber(), admin);
         return ApiResponse.success("ok");
     }
 

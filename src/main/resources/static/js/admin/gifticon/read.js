@@ -72,6 +72,7 @@ const readHelper = {
                     btn.addEventListener('click', () => {
                         let trNode = btn.parentNode.parentNode;
                         const row = JSON.parse(trNode.getAttribute('data-row'));
+                        document.querySelector('#sendId').value = row.id;
                         document.querySelector('#modalUserEmail').value = row.userEmail;
                         document.querySelector('#modalName').value = row.name;
                     });
@@ -145,7 +146,7 @@ const readHelper = {
 
     getSendParams() {
         return {
-            "userEmail": document.querySelector('#modalUserEmail').value,
+            "id": document.querySelector("#sendId").value,
             "number": document.querySelector('#modalNumber').value
         }
     },

@@ -32,6 +32,8 @@ public class GifticonUser {
 
     @Builder.Default
     private String name = "백다방 아메리카노";
+
+    private String email;
     
     private String number;
 
