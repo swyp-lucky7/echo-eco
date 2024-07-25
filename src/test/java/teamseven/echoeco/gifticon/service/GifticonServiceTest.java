@@ -117,11 +117,11 @@ class GifticonServiceTest {
         gifticonRepository.save(gifticonUser2);
 
         //when
-        List<GifticonUserAdminResponse> search = gifticonService.search("email1", null);
+        List<GifticonUserAdminResponse> search = gifticonService.search(user.getEmail(), null);
 
         //then
         assertEquals(1, search.size());
-        assertEquals(user.getId(), search.get(0).getId());
+        assertEquals(gifticonUser1.getId(), search.get(0).getId());
     }
 
     @Test
@@ -179,7 +179,7 @@ class GifticonServiceTest {
 
         //then
         assertEquals(1, search.size());
-        assertEquals(user.getId(), search.get(0).getId());
+        assertEquals(gifticonUser1.getId(), search.get(0).getId());
     }
 
     @Test

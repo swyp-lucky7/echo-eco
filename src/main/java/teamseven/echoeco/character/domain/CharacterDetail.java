@@ -30,7 +30,7 @@ public class CharacterDetail {
     @Column(nullable = false)
     private int level;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
