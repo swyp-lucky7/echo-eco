@@ -88,9 +88,9 @@ public class GifticonService {
     }
 
     private String getEmailBody(String productName, String number) {
-        return "Echoeco 의 동물을 끝까지 키워주셔서 감사합니다. 감사의 의미로 " + productName + " 기프티콘을 전송해드립니다. \n" +
+        return "선택하신 동물을 끝까지 책임지고 키워주셔서 감사합니다! 감사의 마음을 담아 " + productName + " 기프티콘을 선물 드립니다. \n" +
                 "\n" +
-                "기프티콘 넘버: " + number + "\n" +
+                "기프티콘 넘버:    " + number + "\n" +
                 "\n" +
                 "기프티콘 관련 문의 이메일: pkt0758@gmail.com";
     }
