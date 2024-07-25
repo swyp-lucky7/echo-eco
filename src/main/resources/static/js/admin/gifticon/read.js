@@ -134,7 +134,7 @@ const readHelper = {
             data: JSON.stringify(params),
             contentType: 'application/json; charset=utf-8',
             success: function(res) {
-                alert("성공적으로 삭제되었습니다.");
+                alert("성공적으로 전송되었습니다.");
                 location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -148,20 +148,5 @@ const readHelper = {
             "userEmail": document.querySelector('#modalUserEmail').value,
             "number": document.querySelector('#modalNumber').value
         }
-    },
-
-    pullToken() {
-        $.ajax({
-            type: "get",
-            url: `/user/token/${}`,
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function (res) {
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-            }
-        });
     },
 }

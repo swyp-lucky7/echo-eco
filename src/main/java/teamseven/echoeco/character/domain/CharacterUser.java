@@ -2,13 +2,19 @@ package teamseven.echoeco.character.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import teamseven.echoeco.user.domain.User;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class CharacterUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +35,14 @@ public class CharacterUser {
     private String name;
 
     private Boolean isUse;
+
+    @CreatedDate
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @LastModifiedDate
+    @Builder.Default
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     public void addLevel(int level) {
         this.level += level;

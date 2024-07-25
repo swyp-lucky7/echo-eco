@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import teamseven.echoeco.config.ApiResponse;
+import teamseven.echoeco.gifticon.domain.dto.GifticonDetailResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminRequest;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
@@ -39,7 +40,14 @@ public class GifticonAdminController {
     public ApiResponse<String> send(@Valid @RequestBody GifticonUserAdminSendRequest request,
                                     Authentication authentication) {
         User admin = userService.getUser(authentication);
-        gifticonService.send(request, admin);
+        gifticonService.send(request.getUserEmail(), request.getNumber(), admin);
         return ApiResponse.success("ok");
+    }
+
+    @GetMapping("/{id}")
+    public String detail(@PathVariable(name = "id") Long id, Model model) {
+        GifticonDetailResponse detail = gifticonService.detail(id);
+        model.addAttribute("detail", detail);
+        return "admin/gifticon/detail";
     }
 }

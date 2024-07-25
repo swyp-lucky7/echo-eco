@@ -22,11 +22,11 @@ public class GifticonUser {
     @Column(name = "gifticon_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_user_id")
     private CharacterUser characterUser;
 
