@@ -40,13 +40,13 @@ public class Character {
     @Builder.Default
     private boolean isPossible = true;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String image;
 
     @Builder.Default
     private String speechBubble = "";
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String frameImage;
 
     @Column(nullable = false)

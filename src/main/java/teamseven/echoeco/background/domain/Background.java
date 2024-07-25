@@ -25,7 +25,7 @@ public class Background {
 
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String image;
 
     @Enumerated(EnumType.STRING)
