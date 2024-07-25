@@ -30,7 +30,7 @@ const createHelper = {
                     dataType: "json",
                     data: JSON.stringify(params),
                     contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
+                    success: function () {
                         alert("성공적으로 업데이트되었습니다.");
                         location.href = '/admin/video'
                     },
@@ -73,7 +73,7 @@ const createHelper = {
         formData.append('file', fileInput.files[0]);
         $.ajax({
             type: "POST",
-            url: "/file/upload",
+            url: "/admin/file/upload",
             data: formData,
             enctype: "multipart/form-data",
             processData: false,
