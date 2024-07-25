@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}" lang="">
+<th:block layout:fragment="script">
+    <script th:src="@{/js/admin/gifticon/detail.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="card mb-4">
+        <h5 class="card-header">유저</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="userName" class="form-label">유저 이름</label>
+                <input class="form-control" type="text" id="userName" th:value="${detail.userName}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="userEmail" class="form-label">유저 이메일</label>
+                <input class="form-control" type="text" id="userEmail" th:value="${detail.userEmail}" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <h5 class="card-header">캐릭터</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="characterName" class="form-label">캐릭터 이름</label>
+                <input class="form-control" type="text" id="characterName" th:value="${detail.characterName}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="characterMaxLevel" class="form-label">캐릭터 마지막 레벨</label>
+                <input class="form-control" type="text" id="characterMaxLevel" th:value="${detail.characterMaxLevel}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="characterNowLevel" class="form-label">캐릭터 현재 레벨</label>
+                <input class="form-control" type="text" id="characterNowLevel" th:value="${detail.characterNowLevel}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="characterUserCreatedAt" class="form-label">캐릭터 만들어진 시간</label>
+                <input class="form-control" type="text" id="characterUserCreatedAt" th:value="${detail.characterUserCreatedAt}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="periodOfRaising" class="form-label">캐릭터 끝까지 키우는데 걸린 시간</label>
+                <input class="form-control" type="text" id="periodOfRaising" th:value="${detail.periodOfRaising} + ' 일'" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <h5 class="card-header">기프티콘</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="gifticonName" class="form-label">기프티콘 상품 이름</label>
+                <input class="form-control" type="text" id="gifticonName" th:value="${detail.gifticonName}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="number" class="form-label">기프티콘 넘버</label>
+                <input class="form-control" type="text" id="number" th:value="${detail.number}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="isSend" class="form-label">보냄 여부</label>
+                <input class="form-control" type="text" id="isSend" th:value="${detail.isSend}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="sendAdminName" class="form-label">보낸 어드민</label>
+                <input class="form-control" type="text" id="sendAdminName" th:value="${detail.sendAdminName}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="sentAt" class="form-label">보낸 시간</label>
+                <input class="form-control" type="text" id="sentAt" th:value="${detail.sentAt}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="createdAt" class="form-label">생성된 시간</label>
+                <input class="form-control" type="text" id="createdAt" th:value="${detail.createdAt}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="updatedAt" class="form-label">업데이트된 시간</label>
+                <input class="form-control" type="text" id="updatedAt" th:value="${detail.updatedAt}" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-vertical-spacing">
+        <div class="col">
+            <button type="button" class="btn btn-primary" id="backBtn">
+                <strong>되돌아가기</strong>
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -23,7 +23,7 @@ public class ContentUserCount {
     @Column(name = "question_user_count_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -30,7 +30,7 @@ const createHelper = {
                     dataType: "json",
                     data: JSON.stringify(params),
                     contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
+                    success: function () {
                         alert("성공적으로 업데이트되었습니다.");
                         location.href = '/admin/video'
                     },
@@ -40,12 +40,16 @@ const createHelper = {
                 });
             }
         });
+
+        document.querySelector('#fileInput').addEventListener('change', () => {
+            createHelper.fileUpload('fileInput');
+        });
     },
 
     getParam() {
         let params = {
             "name": document.querySelector('#name').value,
-            "url": document.querySelector('#urlInput').value
+            "url": document.querySelector('#fileInput').src
         }
 
         return params;
@@ -57,9 +61,30 @@ const createHelper = {
             return false;
         }
         if (params['url'] === '') {
-            alert("URL을 입력해주세요.");
+            alert("파일을 업로드해주세요.");
             return false;
         }
         return true;
+    },
+
+    fileUpload(fileInputId) {
+        const fileInput = document.querySelector(`#${fileInputId}`);
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/admin/file/upload",
+            data: formData,
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            cache: false,
+            success(res) {
+                document.querySelector(`#${fileInputId}`).src = res.data;
+            },
+            error(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        });
     }
 }
