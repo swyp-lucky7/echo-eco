@@ -65,8 +65,8 @@ public class SecurityConfig
 //                .headers(headerConfig -> headerConfig.frameOptions(
 //                        FrameOptionsConfig::disable // X-Frame-Options 비활성화
 //                ))
-//                .sessionManagement(c ->
-//                        c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용하지 않음
+                .sessionManagement(c ->
+                        c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 사용하지 않음
 
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/file/**",
@@ -74,7 +74,7 @@ public class SecurityConfig
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
-                        "/character/**", "/trash/**", "/item/**", "/question/**", "/video/**", "/contents/**"
+                        "/character/**", "/trash/**", "/item/**", "/question/**", "/video/**", "/contents/**", "/gifticon/**"
                 )
                         //Todo: 배포시 아래 주석 삭제 필요
                                 //.hasRole(Role.USER.name())
