@@ -21,7 +21,7 @@ import java.io.IOException;
 
 
 @RequiredArgsConstructor
-@RequestMapping("/file")
+@RequestMapping("/admin/file")
 @RestController
 public class S3Controller {
     private final AmazonS3 amazonS3;
