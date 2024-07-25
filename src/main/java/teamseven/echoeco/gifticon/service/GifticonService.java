@@ -7,7 +7,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.CharacterUser;
+import teamseven.echoeco.character.repository.CharacterUserRepository;
+import teamseven.echoeco.character.service.CharacterService;
+import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.gifticon.domain.GifticonUser;
+import teamseven.echoeco.gifticon.domain.dto.GifticonCheckResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonDetailResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
@@ -25,7 +29,7 @@ import java.util.Optional;
 public class GifticonService {
     private final GifticonRepository gifticonRepository;
     private final MailService mailService;
-    private final UserService userService;
+    private final CharacterUserRepository characterUserRepository;
 
     public List<GifticonUserAdminResponse> search(String userEmail, Boolean isSend) {
         return gifticonRepository.search(userEmail, isSend);
@@ -52,10 +56,41 @@ public class GifticonService {
         return GifticonDetailResponse.create(gifticonUser);
     }
 
-    public String getEmailBody(String productName, String number) {
-        return "Echoeco 의 동물을 끝까지 키워주셔서 감사합니다. 감사의 의미로 " + productName + " 기프티콘을 전송해드립니다. \n" +
+    public void post(String email, User user) throws NotFoundCharacterUserException {
+        CharacterUser characterUser = characterUserRepository.findByUserWithUse(user);
+        if (characterUser == null) {
+            throw new NotFoundCharacterUserException();
+        }
+        Character character = characterUser.getCharacter();
+        if (characterUser.getLevel() < character.getMaxLevel()) {
+            throw new IllegalCallerException("해당 유저의 레벨이 만렙보다 작습니다.");
+        }
+
+        GifticonUser gifticonUser = GifticonUser.builder()
+                .user(user)
+                .characterUser(characterUser)
+                .email(email)
+                .build();
+
+        gifticonRepository.save(gifticonUser);
+    }
+
+    public GifticonCheckResponse alreadyExistCheck(User user) throws NotFoundCharacterUserException {
+        CharacterUser characterUser = characterUserRepository.findByUserWithUse(user);
+        if (characterUser == null) {
+            throw new NotFoundCharacterUserException();
+        }
+
+        Optional<GifticonUser> byCharacterUser = gifticonRepository.findByCharacterUser(characterUser);
+        return GifticonCheckResponse.builder()
+                .isPost(byCharacterUser.isPresent())
+                .build();
+    }
+
+    private String getEmailBody(String productName, String number) {
+        return "선택하신 동물을 끝까지 책임지고 키워주셔서 감사합니다! 감사의 마음을 담아 " + productName + " 기프티콘을 선물 드립니다. \n" +
                 "\n" +
-                "기프티콘 넘버: " + number + "\n" +
+                "기프티콘 넘버:    " + number + "\n" +
                 "\n" +
                 "기프티콘 관련 문의 이메일: pkt0758@gmail.com";
     }

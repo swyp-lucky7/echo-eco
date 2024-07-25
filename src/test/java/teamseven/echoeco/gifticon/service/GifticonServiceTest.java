@@ -18,7 +18,9 @@ import teamseven.echoeco.character.domain.CharacterUser;
 import teamseven.echoeco.character.repository.CharacterRepository;
 import teamseven.echoeco.character.repository.CharacterUserRepository;
 import teamseven.echoeco.config.QuerydslConfiguration;
+import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.gifticon.domain.GifticonUser;
+import teamseven.echoeco.gifticon.domain.dto.GifticonCheckResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
 import teamseven.echoeco.gifticon.repository.GifticonRepository;
 import teamseven.echoeco.mail.service.MailService;
@@ -29,6 +31,7 @@ import teamseven.echoeco.user.repository.UserRepository;
 import teamseven.echoeco.user.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -45,8 +48,6 @@ class GifticonServiceTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserPointRepository userPointRepository;
-    @Autowired
     private CharacterUserRepository characterUserRepository;
     @Autowired
     private CharacterRepository characterRepository;
@@ -62,8 +63,7 @@ class GifticonServiceTest {
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
 
         mailService = new MailService(javaMailSender);
-        UserService userService = new UserService(userRepository, userPointRepository);
-        gifticonService = new GifticonService(gifticonRepository, mailService, userService);
+        gifticonService = new GifticonService(gifticonRepository, mailService, characterUserRepository);
     }
 
     @Test
@@ -286,6 +286,104 @@ class GifticonServiceTest {
         assertEquals("123", gifticonUser.getNumber());
     }
 
+    @Test
+    @DisplayName("유저가 post 할때 사용하고 있는 캐릭터가 없으면 에러를 반환해야 한다.")
+    void givenNoCharacterUser_whenPost_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        saveDefaultCharacter();
+
+        //when
+        Exception exception = assertThrows(NotFoundCharacterUserException.class, () -> gifticonService.post(user.getEmail(), user));
+
+        //then
+        assertEquals("해당 유저가 사용하고 있는 캐릭터가 없습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저가 post 할때 사용하고 있는 캐릭터의 레벨이 만렙보다 작으면 에러를 반환해야 한다.")
+    void givenCharacterLevelLowThenMaxLevel_whenPost_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        List<Character> characters = saveDefaultCharacter();
+        CharacterUser characterUser1 = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(characters.get(0).getMaxLevel() - 1).build();
+        characterUserRepository.save(characterUser1);
+
+        //when
+        Exception exception = assertThrows(IllegalCallerException.class, () -> gifticonService.post(user.getEmail(), user));
+
+        //then
+        assertEquals("해당 유저의 레벨이 만렙보다 작습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저가 post 하면 잘 저장이 되어야 한다.")
+    void givenCorrectCondition_whenPost_thenSave() throws NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        List<Character> characters = saveDefaultCharacter();
+        CharacterUser characterUser1 = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(characters.get(0).getMaxLevel()).build();
+        characterUserRepository.save(characterUser1);
+
+        //when
+        gifticonService.post("aa@aaa.com", user);
+        Optional<GifticonUser> byCharacterUser = gifticonRepository.findByCharacterUser(characterUser1);
+        GifticonUser gifticonUser = byCharacterUser.orElseGet(() -> GifticonUser.builder().build());
+
+        //then
+        assertEquals(user, gifticonUser.getUser());
+        assertEquals(characterUser1, gifticonUser.getCharacterUser());
+        assertEquals(false, gifticonUser.getIsSend());
+        assertEquals("aa@aaa.com", gifticonUser.getEmail());
+    }
+
+    @Test
+    @DisplayName("유저가 기프티콘 이메일 보냈는지 체크할때 사용하고 있는 캐릭터가 없으면 에러를 반환해야 한다.")
+    void givenNoCharacterUser_whenCheck_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        saveDefaultCharacter();
+
+        //when
+        Exception exception = assertThrows(NotFoundCharacterUserException.class, () -> gifticonService.alreadyExistCheck(user));
+
+        //then
+        assertEquals("해당 유저가 사용하고 있는 캐릭터가 없습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저가 기프티콘 이메일 보냈는지 체크할때 기프티콘 정보가 없으면 false 를 반환해야 한다.")
+    void givenNoGiftInfo_whenCheck_thenFalse() throws NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        List<Character> characters = saveDefaultCharacter();
+        CharacterUser characterUser1 = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(characters.get(0).getMaxLevel()).build();
+        characterUserRepository.save(characterUser1);
+
+        //when
+        GifticonCheckResponse gifticonCheckResponse = gifticonService.alreadyExistCheck(user);
+
+        //then
+        assertFalse(gifticonCheckResponse.getIsPost());
+    }
+
+    @Test
+    @DisplayName("유저가 기프티콘 이메일 보냈는지 체크할때 기프티콘 정보가 있으면 true 를 반환해야 한다.")
+    void givenGiftInfo_whenCheck_thenTrue() throws NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        saveDefaultCharacter();
+        List<Character> characters = saveDefaultCharacter();
+        CharacterUser characterUser1 = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(characters.get(0).getMaxLevel()).build();
+        characterUserRepository.save(characterUser1);
+        gifticonService.post(user.getEmail(), user);
+
+        //when
+        GifticonCheckResponse gifticonCheckResponse = gifticonService.alreadyExistCheck(user);
+
+        //then
+        assertTrue(gifticonCheckResponse.getIsPost());
+    }
 
 
     private List<Character> saveDefaultCharacter() {
