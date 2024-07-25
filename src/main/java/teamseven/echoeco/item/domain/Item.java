@@ -39,7 +39,7 @@ public class Item {
     @Column(nullable = false)
     private int levelUp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String imageUrl;
 
     private Boolean isUse;

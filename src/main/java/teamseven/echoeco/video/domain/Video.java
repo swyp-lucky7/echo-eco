@@ -18,7 +18,7 @@ public class Video {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String url;
 
     public void update(VideoRequest videoRequest) {
