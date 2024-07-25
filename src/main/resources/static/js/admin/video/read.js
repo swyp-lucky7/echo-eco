@@ -24,9 +24,9 @@ const readHelper = {
                 for (const row of res.data) {
                     html += `
                     <tr>
-                        <td><strong>${row.name}</strong></td>
+                        <td class="text-nowrap"><strong>${row.name}</strong></td>
                         <td>${row.url}</td>
-                        <td>
+                        <td class="text-nowrap">
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"  aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded"></i>
