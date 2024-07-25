@@ -45,8 +45,6 @@ class GifticonServiceTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserPointRepository userPointRepository;
-    @Autowired
     private CharacterUserRepository characterUserRepository;
     @Autowired
     private CharacterRepository characterRepository;
@@ -62,8 +60,7 @@ class GifticonServiceTest {
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
 
         mailService = new MailService(javaMailSender);
-        UserService userService = new UserService(userRepository, userPointRepository);
-        gifticonService = new GifticonService(gifticonRepository, mailService, userService);
+        gifticonService = new GifticonService(gifticonRepository, mailService, characterUserRepository);
     }
 
     @Test
