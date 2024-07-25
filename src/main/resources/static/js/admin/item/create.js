@@ -92,7 +92,7 @@ const backgroundCreate = {
         formData.append('file', fileInput.files[0]);
         $.ajax({
             type: "POST",
-            url: "/file/upload",
+            url: "/admin/file/upload",
             data: formData,
             enctype: "multipart/form-data",
             processData: false,
