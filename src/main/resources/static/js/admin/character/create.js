@@ -117,7 +117,6 @@ const createHelper = {
             "maxLevel": document.querySelector('#maxLevel').value,
             "isPossible": document.querySelector('#isPossible').value,
             "image": document.querySelector('#uploadImage').src,
-            "frameImage": document.querySelector('#frameUploadImage').src,
             "completeMessages": JSON.stringify(completeMessages),
         };
         if (createHelper.isUpdateMode === true) {
@@ -178,11 +177,6 @@ const createHelper = {
             alert("pick 이미지를 업로드해주세요.");
             return false;
         }
-        // const frameUrl = new URL(params['frameImage']);
-        // if (frameUrl.pathname === '/images/vendor/icons/unicons/chart.png') {
-        //     alert("frame 이미지를 업로드해주세요.");
-        //     return false;
-        // }
         if (params['name'] === '') {
             alert("이름을 입력해주세요");
             return false;
