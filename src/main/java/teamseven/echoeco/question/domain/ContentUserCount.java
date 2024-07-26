@@ -5,14 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import teamseven.echoeco.user.domain.User;
 
 import java.time.LocalDate;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,9 +32,8 @@ public class ContentUserCount {
     @Builder.Default
     private int remainVideoCount = 0;
 
-    @LastModifiedDate
     @Builder.Default
-    private LocalDate updatedAt = LocalDate.now();
+    private LocalDate resetAt = LocalDate.now();
 
     public static ContentUserCount create(User user) {
         return ContentUserCount.builder()
@@ -51,12 +47,11 @@ public class ContentUserCount {
     public void reset() {
         this.remainQuestionCount = 3;
         this.remainVideoCount = 1;
-        this.updatedAt = LocalDate.now();
+        this.resetAt = LocalDate.now();
     }
 
     public void update(Long id) {
         this.beforeQuestion = id;
-        this.updatedAt = LocalDate.now();
     }
 
     public void subtractRemainQuestionCount() {

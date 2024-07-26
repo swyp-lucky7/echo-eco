@@ -48,7 +48,7 @@ public class Background {
                 .name("")
                 .image(DEFAULT_IMAGE_URL)
                 .environment(Environment.CLEAN)
-                .level(0)
+                .level(1)
                 .build();
     }
 }

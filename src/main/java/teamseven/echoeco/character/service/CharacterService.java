@@ -62,7 +62,7 @@ public class CharacterService {
                 .name("")
                 .character(character)
                 .user(user)
-                .level(0)
+                .level(1)
                 .isUse(true)
                 .build();
         characterUserRepository.save(characterUser);
