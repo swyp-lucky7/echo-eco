@@ -94,10 +94,6 @@ const createHelper = {
         document.querySelector('#upload').addEventListener('change', () => {
             createHelper.fileUpload('upload', 'uploadImage');
         });
-
-        document.querySelector('#frameUpload').addEventListener('change', () => {
-            createHelper.fileUpload('frameUpload', 'frameUploadImage');
-        });
     },
 
     getParam() {
