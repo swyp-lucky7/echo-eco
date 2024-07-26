@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class CharacterDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "character_image_id")
+    @Column(name = "character_detail_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

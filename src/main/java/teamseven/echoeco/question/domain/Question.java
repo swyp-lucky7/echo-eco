@@ -38,10 +38,6 @@ public class Question {
     @Column(nullable = false)
     private String answer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User makeUser;
-
     @Builder.Default
     @CreatedDate
     @Column(updatable = false)

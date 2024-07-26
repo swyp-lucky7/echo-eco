@@ -43,12 +43,6 @@ public class Character {
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String image;
 
-    @Builder.Default
-    private String speechBubble = "";
-
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
-    private String frameImage;
-
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String completeMessages;
 
@@ -68,7 +62,6 @@ public class Character {
         return Character.builder()
                 .name("")
                 .image(DEFAULT_IMAGE_URL)
-                .frameImage(DEFAULT_IMAGE_URL)
                 .descriptions("")
                 .maxLevel(100)
                 .isPossible(true)

@@ -38,10 +38,6 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    public List<Question> findByUser(User user) {
-        return questionRepository.findByMakeUser_Id(user.getId());
-    }
-
     public void delete(Long id) {
         questionRepository.deleteById(id);
     }
