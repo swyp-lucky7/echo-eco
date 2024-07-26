@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class ContentUserCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "question_user_count_id")
+    @Column(name = "content_user_count_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
