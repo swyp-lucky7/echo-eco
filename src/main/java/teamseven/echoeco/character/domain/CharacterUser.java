@@ -47,4 +47,8 @@ public class CharacterUser {
     public void addLevel(int level) {
         this.level += level;
     }
+
+    public void complete() {
+        this.isUse = false;
+    }
 }

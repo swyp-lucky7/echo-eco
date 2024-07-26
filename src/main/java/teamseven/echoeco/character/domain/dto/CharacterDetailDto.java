@@ -1,14 +1,18 @@
 package teamseven.echoeco.character.domain.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.CharacterDetail;
 import teamseven.echoeco.character.domain.Environment;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CharacterDetailDto {
     private Long id;
     @NotNull

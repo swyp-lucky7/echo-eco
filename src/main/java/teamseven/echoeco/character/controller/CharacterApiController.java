@@ -46,6 +46,13 @@ public class CharacterApiController {
         return ApiResponse.success(characterService.characterUser(user));
     }
 
+    @PostMapping("/character/complete")
+    public ApiResponse<String> complete(Authentication authentication) throws NotFoundCharacterUserException {
+        User user = userService.getUser(authentication);
+        characterService.complete(user);
+        return ApiResponse.success("ok");
+    }
+
     @GetMapping("/character/complete/messages")
     public ApiResponse<CharacterCompleteMessagesDto> completeMessages(Authentication authentication) throws NotFoundCharacterUserException {
         String userEmail = GetUserEmail.get(authentication);

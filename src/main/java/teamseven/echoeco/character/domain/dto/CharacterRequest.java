@@ -2,10 +2,12 @@ package teamseven.echoeco.character.domain.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.CharacterType;
 
 @Data
+@NoArgsConstructor
 public class CharacterRequest {
     private Long id;
     @NotNull
