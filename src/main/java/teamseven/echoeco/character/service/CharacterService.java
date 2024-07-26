@@ -120,4 +120,19 @@ public class CharacterService {
         characterUserRepository.save(characterUser);
         return characterUser;
     }
+
+    public void complete(User user) throws NotFoundCharacterUserException {
+        CharacterUser characterUser = characterUserRepository.findByUserWithUse(user);
+        if (characterUser == null) {
+            throw new NotFoundCharacterUserException();
+        }
+
+        Character character = characterUser.getCharacter();
+        if (characterUser.getLevel() < character.getMaxLevel()) {
+            throw new IllegalCallerException("해당 유저의 레벨이 만렙보다 작습니다.");
+        }
+
+        characterUser.complete();
+        characterUserRepository.save(characterUser);
+    }
 }
