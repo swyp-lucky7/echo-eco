@@ -270,7 +270,7 @@ class QuestionServiceTest {
         Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
         questionRepository.save(question1);
 
-        ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(1).updatedAt(LocalDate.now().minusDays(1)).build();
+        ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(1).resetAt(LocalDate.now().minusDays(1)).build();
         contentUserCountRepository.save(contentUserCount);
 
         //when
@@ -367,7 +367,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        ContentUserCount contentUserCount = ContentUserCount.builder().updatedAt(LocalDate.now().minusDays(1)).user(user).remainQuestionCount(0).remainVideoCount(0).build();
+        ContentUserCount contentUserCount = ContentUserCount.builder().resetAt(LocalDate.now().minusDays(1)).user(user).remainQuestionCount(0).remainVideoCount(0).build();
         contentUserCountRepository.save(contentUserCount);
 
         //when

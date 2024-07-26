@@ -49,7 +49,7 @@ public class Character {
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String frameImage;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String completeMessages;
 
     @Builder.Default
