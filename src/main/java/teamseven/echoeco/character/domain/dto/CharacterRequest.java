@@ -18,7 +18,6 @@ public class CharacterRequest {
     @NotNull
     private int maxLevel;
     private String image;
-    private String frameImage;
     private Boolean isPossible;
     private String completeMessages;
 
@@ -30,7 +29,6 @@ public class CharacterRequest {
                 .descriptions(descriptions)
                 .maxLevel(maxLevel)
                 .image(image)
-                .frameImage(frameImage)
                 .isPossible(isPossible)
                 .completeMessages(completeMessages)
                 .build();

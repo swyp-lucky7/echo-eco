@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    List<Question> findByMakeUser_Id(Long id);
-
     @Query("SELECT q.id FROM Question q")
     List<Long> findAllIds();
 }

@@ -67,7 +67,6 @@ class QuestionServiceTest {
                 .name("hi")
                 .body("body")
                 .answer("1")
-                .makeUser(user)
                 .build();
 
         //when
@@ -93,7 +92,6 @@ class QuestionServiceTest {
                 .name("hi")
                 .body("body1")
                 .answer("1")
-                .makeUser(user)
                 .build();
         Question question2 = Question.builder()
                 .questionType(QuestionType.MULTIPLE_CHOICE)
@@ -101,7 +99,6 @@ class QuestionServiceTest {
                 .name("hi")
                 .body("body2")
                 .answer("2")
-                .makeUser(user)
                 .build();
         questionService.save(question1);
         questionService.save(question2);
@@ -114,42 +111,6 @@ class QuestionServiceTest {
         assertTrue(answer.contains(question1));
         assertTrue(answer.contains(question2));
     }
-
-    @Test
-    @DisplayName("자신이 만든 question 을 요청하면 자신이 만든 question 만 응답해야 한다")
-    public void givenQuestion_whenFindQuestionWithUser_thenReturnQuestion() {
-        User user1 = new User("name1", "email1@aaa.com", "aa", Role.USER);
-        userRepository.save(user1);
-        User user2 = new User("name2", "email2@aaa.com", "bb", Role.USER);
-        userRepository.save(user2);
-
-        Question question1 = Question.builder()
-                .questionType(QuestionType.MULTIPLE_CHOICE)
-                .head("header1")
-                .name("hi")
-                .body("body1")
-                .answer("1")
-                .makeUser(user1)
-                .build();
-        Question question2 = Question.builder()
-                .questionType(QuestionType.MULTIPLE_CHOICE)
-                .head("header2")
-                .name("hi")
-                .body("body2")
-                .answer("2")
-                .makeUser(user2)
-                .build();
-        questionService.save(question1);
-        questionService.save(question2);
-
-        //when
-        List<Question> byUser = questionService.findByUser(user2);
-
-        //then
-        assertEquals(1, byUser.size());
-        assertTrue(byUser.contains(question2));
-    }
-
     @Test
     @DisplayName("question update 요청이 오면 업데이트 되어야 한다.")
     public void givenQuestion_whenUpdateQuestion_thenQuestionUpdated() {
@@ -162,7 +123,6 @@ class QuestionServiceTest {
                 .name("hi")
                 .body("body")
                 .answer("1")
-                .makeUser(user)
                 .build();
         questionService.save(question);
 
@@ -192,7 +152,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question);
 
         ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(1).build();
@@ -211,7 +171,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question);
 
         //when
@@ -227,7 +187,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question);
 
         ContentUserCount contentUserCount = ContentUserCount.builder().beforeQuestion(question.getId()).user(user).remainQuestionCount(3).remainVideoCount(1).build();
@@ -246,9 +206,9 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question1);
-        Question question2 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head2").name("hi2").body("body2").answer("2").makeUser(user).build();
+        Question question2 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head2").name("hi2").body("body2").answer("2").build();
         questionRepository.save(question2);
 
         ContentUserCount contentUserCount = ContentUserCount.builder().beforeQuestion(question2.getId()).user(user).remainQuestionCount(3).remainVideoCount(1).build();
@@ -267,7 +227,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question1);
 
         ContentUserCount contentUserCount = ContentUserCount.builder().user(user).remainQuestionCount(0).remainVideoCount(1).resetAt(LocalDate.now().minusDays(1)).build();
@@ -299,7 +259,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question1);
 
         ContentUserCount contentUserCount = ContentUserCount.builder().beforeQuestion(question1.getId()).user(user).remainQuestionCount(0).remainVideoCount(1).build();
@@ -318,7 +278,7 @@ class QuestionServiceTest {
         User user = new User("name1", "email1@aaa.com", "aa", Role.USER);
         userRepository.save(user);
 
-        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").makeUser(user).build();
+        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer("1").build();
         questionRepository.save(question1);
 
         ContentUserCount contentUserCount = ContentUserCount.create(user);
@@ -343,7 +303,7 @@ class QuestionServiceTest {
         userRepository.save(user);
 
         String answer = "1";
-        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer(answer).makeUser(user).build();
+        Question question1 = Question.builder().questionType(QuestionType.MULTIPLE_CHOICE).head("head1").name("hi").body("body1").answer(answer).build();
         questionRepository.save(question1);
 
         ContentUserCount contentUserCount = ContentUserCount.create(user);
