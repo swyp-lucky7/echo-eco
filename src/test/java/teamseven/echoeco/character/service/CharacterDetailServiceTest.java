@@ -47,7 +47,6 @@ class CharacterDetailServiceTest {
         Character character = Character.builder()
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
-                .frameImage("http://")
                 .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")

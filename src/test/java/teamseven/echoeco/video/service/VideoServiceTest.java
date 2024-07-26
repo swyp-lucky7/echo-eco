@@ -154,7 +154,7 @@ public class VideoServiceTest {
                 .build();
         videoRepository.save(video2);
 
-        ContentUserCount contentUserCount = ContentUserCount.builder().updatedAt(LocalDate.now().minusDays(1)).user(user).remainQuestionCount(0).remainVideoCount(0).build();
+        ContentUserCount contentUserCount = ContentUserCount.builder().resetAt(LocalDate.now().minusDays(1)).user(user).remainQuestionCount(0).remainVideoCount(0).build();
         contentUserCountRepository.save(contentUserCount);
 
         //when

@@ -77,7 +77,6 @@ class CharacterServiceTest {
         Character character = Character.builder()
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
-                .frameImage("http://")
                 .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
@@ -259,7 +258,6 @@ class CharacterServiceTest {
         Character character1 = Character.builder()
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
-                .frameImage("http://")
                 .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
@@ -286,14 +284,66 @@ class CharacterServiceTest {
 
         JSONObject jsonObject2 =  (JSONObject) jsonArray.get(1);
         assertEquals("축하2", jsonObject2.get("step"));
+    }
 
+    @Test
+    @DisplayName("유저가 캐릭터를 완료했다고 보냈을때 사용하고 있는 캐릭터가 없으면 에러를 내야 한다.")
+    void givenNoCharacter_whenComplete_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(false).level(0).build();
+        characterUserRepository.save(characterUser);
+
+        //when
+        NotFoundCharacterUserException exception = assertThrows(NotFoundCharacterUserException.class, () -> characterService.complete(user));
+
+        //then
+        assertEquals("해당 유저가 사용하고 있는 캐릭터가 없습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저가 캐릭터를 완료했다고 보냈을때 사용하고 있는 캐릭터의 레벨이 맥스 레벨보다 작으면 에러를 내야 한다.")
+    void givenCharacterLevelLowerThanMaxLevel_whenComplete_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(true).level(0).build();
+        characterUserRepository.save(characterUser);
+
+        //when
+        IllegalCallerException exception = assertThrows(IllegalCallerException.class, () -> characterService.complete(user));
+
+        //then
+        assertEquals("해당 유저의 레벨이 만렙보다 작습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저가 캐릭터를 완료했다고 보냈을때 isUse 가 false 되어야 한다.")
+    void givenCorrectCondition_whenComplete_thenIsUseFalse() throws NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(true).level(character.getMaxLevel()).build();
+        characterUserRepository.save(characterUser);
+
+        //when
+        characterService.complete(user);
+
+        //then
+        assertFalse(characterUser.getIsUse());
     }
 
     private List<Character> saveDefaultCharacter() {
         Character character1 = Character.builder()
                 .name("볼리베어")
                 .type(CharacterType.ANIMAL)
-                .frameImage("http://")
                 .image("http://")
                 .maxLevel(100)
                 .descriptions("곰")
@@ -303,7 +353,6 @@ class CharacterServiceTest {
         Character character2 = Character.builder()
                 .name("식물")
                 .type(CharacterType.PLANT)
-                .frameImage("http://")
                 .image("http://")
                 .maxLevel(25)
                 .descriptions("꽃")

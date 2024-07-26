@@ -52,7 +52,7 @@ public class VideoService {
         Optional<ContentUserCount> contentCountOptional = contentUserCountRepository.findByUser_Id(user.getId());
         ContentUserCount contentUserCount = contentCountOptional.orElseGet(() -> ContentUserCount.create(user));
 
-        if (!contentUserCount.getUpdatedAt().equals(LocalDate.now())) {
+        if (!contentUserCount.getResetAt().equals(LocalDate.now())) {
             contentUserCount.reset();
         }
 
