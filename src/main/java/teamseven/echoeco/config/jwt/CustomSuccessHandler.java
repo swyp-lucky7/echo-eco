@@ -25,6 +25,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${front.server.domain}")
     private String frontServerDomain;
 
+    @Value("${front.server.local.domain}")
+    private String frontServerLocalDomain;
+
     private final JwtUtil jwtUtil;
     private final UserJWTService userJWTService;
     // 로그인 성공 시 호출
@@ -43,11 +46,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 //        headers.add("Access-Control-Expose-Headers", "token");
 //        response.addCookie(createCookie("Authorization", token));
-        // Todo
-        // 프론트 서버로 변경 필요, 유저 동물생성 유무에 따라 캐릭터선택 or 스테이지로 변경 필요
         if (userInfo.getRole() == Role.ADMIN) {
             response.sendRedirect(adminPageDomain + "/token/init?token=" + token);
-        } else {
+        }
+        // localhost 에서 요청시 localhost 로 리다이렉션
+        else if (request.getRequestURL().toString().contains("localhost")){
+            response.sendRedirect(frontServerLocalDomain + "/loginwait?useremail=" + email);
+        }
+        else {
             response.sendRedirect(frontServerDomain + "/loginwait?useremail=" + email);
         }
     }
