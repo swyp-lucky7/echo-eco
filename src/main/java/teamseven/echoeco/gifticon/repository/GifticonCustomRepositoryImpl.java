@@ -22,7 +22,7 @@ public class GifticonCustomRepositoryImpl implements GifticonCustomRepository {
         return queryFactory
                 .select(new QGifticonUserAdminResponse(
                         gifticonUser.id,
-                        gifticonUser.user.email,
+                        gifticonUser.email,
                         gifticonUser.name,
                         gifticonUser.isSend
                 ))
