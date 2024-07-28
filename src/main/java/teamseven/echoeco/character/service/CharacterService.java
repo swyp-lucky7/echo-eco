@@ -115,7 +115,7 @@ public class CharacterService {
     }
 
     public CharacterUser addUserCharacter(User user, int level) {
-        CharacterUser characterUser = characterUserRepository.findByUser(user);
+        CharacterUser characterUser = characterUserRepository.findByUserWithUse(user);
         characterUser.addLevel(level);
         characterUserRepository.save(characterUser);
         return characterUser;
