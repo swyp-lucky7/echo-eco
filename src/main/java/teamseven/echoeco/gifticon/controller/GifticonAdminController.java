@@ -7,11 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonDetailResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminRequest;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
-import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminSendRequest;
 import teamseven.echoeco.gifticon.service.GifticonService;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.service.UserService;
@@ -38,10 +38,11 @@ public class GifticonAdminController {
 
     @PostMapping("/send")
     @ResponseBody
-    public ApiResponse<String> send(@Valid @RequestBody GifticonUserAdminSendRequest request,
+    public ApiResponse<String> send(@RequestParam("id") Long id,
+                                    @RequestPart("file") MultipartFile file,
                                     Authentication authentication) throws MessagingException {
         User admin = userService.getUser(authentication);
-        gifticonService.send(request.getId(), request.getNumber(), admin);
+        gifticonService.send(id, admin, file);
         return ApiResponse.success("ok");
     }
 

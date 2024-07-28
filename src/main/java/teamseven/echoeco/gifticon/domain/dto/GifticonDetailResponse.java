@@ -12,6 +12,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static teamseven.echoeco.config.Constants.DEFAULT_IMAGE_URL;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class GifticonDetailResponse {
     private long periodOfRaising;
 
     private String gifticonName;
-    private String number;
+    private String imageUrl;
     private Boolean isSend;
     private String sendAdminName;
     private String sentAt;
@@ -59,7 +61,7 @@ public class GifticonDetailResponse {
                     .characterNowLevel(characterUser.getLevel())
                     .characterUserCreatedAt(characterUser.getCreatedAt().format(formatter))
                     .gifticonName(gifticonUser.getName())
-                    .number(gifticonUser.getNumber())
+                    .imageUrl(gifticonUser.getImageUrl())
                     .isSend(gifticonUser.getIsSend())
                     .sendAdminName(gifticonUser.getSendAdminName())
                     .sentAt(gifticonUser.getSentAt().format(formatter))
@@ -75,7 +77,7 @@ public class GifticonDetailResponse {
                     .characterNowLevel(characterUser.getLevel())
                     .characterUserCreatedAt(characterUser.getCreatedAt().format(formatter))
                     .gifticonName("")
-                    .number("")
+                    .imageUrl(DEFAULT_IMAGE_URL)
                     .isSend(gifticonUser.getIsSend())
                     .sendAdminName("")
                     .sentAt("")

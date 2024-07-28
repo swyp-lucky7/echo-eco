@@ -55,8 +55,10 @@
                 <input class="form-control" type="text" id="gifticonName" th:value="${detail.gifticonName}" readonly>
             </div>
             <div class="mb-3">
-                <label for="number" class="form-label">기프티콘 넘버</label>
-                <input class="form-control" type="text" id="number" th:value="${detail.number}" readonly>
+                <span class="col-form-label">보낸 이미지</span>
+                <div class="d-flex align-items-start align-items-sm-center gap-4">
+                    <img th:src="${detail.imageUrl}" alt class="w-px-40 h-auto rounded-circle"/>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="isSend" class="form-label">보냄 여부</label>
