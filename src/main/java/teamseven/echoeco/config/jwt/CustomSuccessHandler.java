@@ -25,9 +25,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${front.server.domain}")
     private String frontServerDomain;
 
-    @Value("${front.server.local.domain}")
-    private String frontServerLocalDomain;
-
     private final JwtUtil jwtUtil;
     private final UserJWTService userJWTService;
     // 로그인 성공 시 호출
