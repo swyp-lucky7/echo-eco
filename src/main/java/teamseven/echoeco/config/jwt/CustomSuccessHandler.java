@@ -48,14 +48,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        response.addCookie(createCookie("Authorization", token));
         if (userInfo.getRole() == Role.ADMIN) {
             response.sendRedirect(adminPageDomain + "/token/init?token=" + token);
-        }
-        // localhost 에서 요청시 localhost 로 리다이렉션
-        else
-            if (request.getRequestURL().toString().contains("localhost"))
-            {
-            response.sendRedirect(frontServerLocalDomain + "/loginwait?useremail=" + email);
-        }
-        else {
+        } else {
             response.sendRedirect(frontServerDomain + "/loginwait?useremail=" + email);
         }
     }
