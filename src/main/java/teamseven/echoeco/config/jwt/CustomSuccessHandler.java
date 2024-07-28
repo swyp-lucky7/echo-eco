@@ -50,12 +50,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             response.sendRedirect(adminPageDomain + "/token/init?token=" + token);
         }
         // localhost 에서 요청시 localhost 로 리다이렉션
-        else if (request.getRequestURL().toString().contains("localhost")){
+        else
+            //if (request.getRequestURL().toString().contains("localhost"))
+            {
             response.sendRedirect(frontServerLocalDomain + "/loginwait?useremail=" + email);
         }
-        else {
-            response.sendRedirect(frontServerDomain + "/loginwait?useremail=" + email);
-        }
+      //  else {
+     //       response.sendRedirect(frontServerDomain + "/loginwait?useremail=" + email);
+      //  }
     }
 
 //    private Cookie createCookie(String key, String value) {
