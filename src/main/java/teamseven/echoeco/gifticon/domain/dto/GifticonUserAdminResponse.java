@@ -16,7 +16,7 @@ public class GifticonUserAdminResponse {
     public static GifticonUserAdminResponse fromEntity(GifticonUser gifticonUser) {
         return GifticonUserAdminResponse.builder()
                 .id(gifticonUser.getId())
-                .userEmail(gifticonUser.getUser().getEmail())
+                .userEmail(gifticonUser.getEmail())
                 .name(gifticonUser.getName())
                 .isSend(gifticonUser.getIsSend())
                 .build();
