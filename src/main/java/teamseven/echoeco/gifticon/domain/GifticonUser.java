@@ -35,7 +35,7 @@ public class GifticonUser {
 
     private String email;
     
-    private String number;
+    private String imageUrl;
 
     @Builder.Default
     private Boolean isSend = false;
@@ -52,8 +52,8 @@ public class GifticonUser {
     @LastModifiedDate
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public void sendGift(String number, User sendUser) {
-        this.number = number;
+    public void sendGift(String imageUrl, User sendUser) {
+        this.imageUrl = imageUrl;
         this.sendAdminName = sendUser.getName();
         this.isSend = true;
         this.sentAt = LocalDateTime.now();

@@ -1,17 +1,24 @@
 package teamseven.echoeco.gifticon.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.CharacterType;
 import teamseven.echoeco.character.domain.CharacterUser;
@@ -19,6 +26,7 @@ import teamseven.echoeco.character.repository.CharacterRepository;
 import teamseven.echoeco.character.repository.CharacterUserRepository;
 import teamseven.echoeco.config.QuerydslConfiguration;
 import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
+import teamseven.echoeco.file.service.FileService;
 import teamseven.echoeco.gifticon.domain.GifticonUser;
 import teamseven.echoeco.gifticon.domain.dto.GifticonCheckResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
@@ -26,16 +34,18 @@ import teamseven.echoeco.gifticon.repository.GifticonRepository;
 import teamseven.echoeco.mail.service.MailService;
 import teamseven.echoeco.user.domain.Role;
 import teamseven.echoeco.user.domain.User;
-import teamseven.echoeco.user.repository.UserPointRepository;
 import teamseven.echoeco.user.repository.UserRepository;
-import teamseven.echoeco.user.service.UserService;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -55,15 +65,25 @@ class GifticonServiceTest {
     private GifticonService gifticonService;
 
     private MailService mailService;
+    @Mock
+    private AmazonS3 amazonS3;
+
+    @InjectMocks
+    private FileService fileService;
+
+    private MockMultipartFile multipartFile;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws MalformedURLException {
         MimeMessage mimeMessage = new MimeMessage((Session)null);
         JavaMailSender javaMailSender = mock(JavaMailSender.class);
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
+        multipartFile = new MockMultipartFile("file", "test.txt", "text/plain", "Hello, World!".getBytes());
 
         mailService = new MailService(javaMailSender);
-        gifticonService = new GifticonService(gifticonRepository, mailService, characterUserRepository);
+        gifticonService = new GifticonService(gifticonRepository, mailService, characterUserRepository, fileService);
+
+        when(amazonS3.getUrl(any(), any())).thenReturn(new URL("http://mock-s3-url/test.txt"));
     }
 
     @Test
@@ -214,7 +234,7 @@ class GifticonServiceTest {
 
     @Test
     @DisplayName("운영자가 send 했을때 id 가 없으면 에러가 발생해야 한다.")
-    void givenNoCorrectIdCondition_whenSend_thenError() {
+    void givenNoCorrectIdCondition_whenSend_thenError() throws IOException {
         User user = new User("user1", "email1", "picture1", Role.USER);
         userRepository.save(user);
 
@@ -230,7 +250,7 @@ class GifticonServiceTest {
         gifticonRepository.save(gifticonUser);
 
         //when
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> gifticonService.send(gifticonUser.getId() + 100L, "123", admin));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> gifticonService.send(gifticonUser.getId() + 100L, admin, multipartFile));
 
         //then
         assertEquals("존재하지 않는 id 입니다.", exception.getMessage());
@@ -238,7 +258,7 @@ class GifticonServiceTest {
 
     @Test
     @DisplayName("운영자가 send 했을때 이미 받았으면 에러가 발생해야 한다.")
-    void givenNoCorrectCondition_whenSend_thenError() {
+    void givenNoCorrectCondition_whenSend_thenError() throws IOException {
         User user = new User("user1", "email1", "picture1", Role.USER);
         userRepository.save(user);
 
@@ -254,7 +274,7 @@ class GifticonServiceTest {
         gifticonRepository.save(gifticonUser);
 
         //when
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> gifticonService.send(gifticonUser.getId(), "123", admin));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> gifticonService.send(gifticonUser.getId(), admin, multipartFile));
 
         //then
         assertEquals("해당 유저는 이미 받은 유저입니다.", exception.getMessage());
@@ -262,7 +282,7 @@ class GifticonServiceTest {
 
     @Test
     @DisplayName("운영자가 send 했을때 정상적으로 저장이 잘되어야 한다.")
-    void givenCorrectCondition_whenSend_thenSuccess() throws MessagingException {
+    void givenCorrectCondition_whenSend_thenSuccess() throws MessagingException, IOException {
         User user = new User("user1", "email1", "picture1", Role.USER);
         userRepository.save(user);
 
@@ -278,12 +298,12 @@ class GifticonServiceTest {
         gifticonRepository.save(gifticonUser);
 
         //when
-        gifticonService.send(gifticonUser.getId(), "123", admin);
+        gifticonService.send(gifticonUser.getId(), admin, multipartFile);
 
         //then
         assertEquals(true, gifticonUser.getIsSend());
         assertEquals(admin.getName(), gifticonUser.getSendAdminName());
-        assertEquals("123", gifticonUser.getNumber());
+        assertEquals("http://mock-s3-url/test.txt", gifticonUser.getImageUrl());
     }
 
     @Test

@@ -24,7 +24,7 @@ const readHelper = {
         });
 
         document.querySelector('#modalSendBtn').addEventListener('click', () => {
-            readHelper.sendNumber();
+            readHelper.sendGifticon();
         });
     },
 
@@ -115,25 +115,24 @@ const readHelper = {
         return params;
     },
 
-    sendNumber() {
-        const params = readHelper.getSendParams();
-        if (params['userEmail'] === '') {
-            alert("이메일이 비워져 있습니다.");
+    sendGifticon() {
+        const formData = readHelper.getSendParams();
+        if (formData.get('file') === '') {
+            alert("기프티콘 파일이 비워져 있습니다.");
             return;
         }
-        if (params['number'] === '') {
-            alert("기프티콘 넘버가 비워져 있습니다.");
+        if (!confirm("정말 보내시겠습니까?")) {
             return;
         }
-        if (!confirm("해당하는 유저와 기프티콘 넘버가 맞나요?")) {
-            return;
-        }
+
         $.ajax({
             type: "POST",
             url: "/admin/gifticon/send",
-            dataType: "json",
-            data: JSON.stringify(params),
-            contentType: 'application/json; charset=utf-8',
+            data: formData,
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            cache: false,
             success: function(res) {
                 alert("성공적으로 전송되었습니다.");
                 location.reload();
@@ -145,9 +144,9 @@ const readHelper = {
     },
 
     getSendParams() {
-        return {
-            "id": document.querySelector("#sendId").value,
-            "number": document.querySelector('#modalNumber').value
-        }
+        const formData = new FormData();
+        formData.append("id", document.querySelector("#sendId").value);
+        formData.append("file", document.querySelector('#modalFile').files[0]);
+        return formData;
     },
 }
