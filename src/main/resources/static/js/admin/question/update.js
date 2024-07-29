@@ -1,19 +1,18 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("DOM fully loaded and parsed");
-    createHelper.init();
+    updateHelper.init();
 });
 
-const createHelper = {
+const updateHelper = {
     id: -1,
-    isUpdateMode: false,
     init() {
         const url = window.location.href;
         const match = url.match(/\/admin\/question\/create\/(\d+)/);
         if (match && match[1]) {
-            createHelper.id = parseInt(match[1]);
-            createHelper.isUpdateMode = true;
+            updateHelper.id = parseInt(match[1]);
+            updateHelper.updateInit();
         }
-        createHelper.addEvent();
+        updateHelper.addEvent();
     },
     addEvent() {
         document.querySelector('#questionType').addEventListener('change', () => {
@@ -34,7 +33,7 @@ const createHelper = {
 
         document.querySelector('#addButton').addEventListener('click', () => {
             let index = document.querySelectorAll('.multiple-checkbox').length + 1;
-            document.querySelector('#multipleChoiceBox').insertAdjacentHTML('beforeend', createHelper.rowMultipleCheckbox(index, ''));
+            document.querySelector('#multipleChoiceBox').insertAdjacentHTML('beforeend', updateHelper.rowMultipleCheckbox(index, ''));
         });
 
         document.querySelector('#removeBtn').addEventListener('click', () => {
@@ -52,35 +51,33 @@ const createHelper = {
 
             let html = '';
             for (const index in remainValueList) {
-                html += createHelper.rowMultipleCheckbox(Number(index) + 1, remainValueList[index]);
+                html += updateHelper.rowMultipleCheckbox(Number(index) + 1, remainValueList[index]);
             }
             document.querySelector('#multipleChoiceBox').innerHTML = html;
 
         });
 
         document.querySelector('#modifyBtn').addEventListener('click', () => {
-            const params = createHelper.getParam();
-            if (!createHelper.valid(params)) {
+            const params = updateHelper.getParam();
+            if (!updateHelper.valid(params)) {
                 return;
             }
-            if(createHelper.isUpdateMode) {
-                const id = createHelper.id;
-                const updateUrl = "/admin/question/create/" + id;
-                $.ajax({
-                    type: "POST",
-                    url: updateUrl,
-                    dataType: "json",
-                    data: JSON.stringify(params),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
-                        alert("성공적으로 업데이트되었습니다.");
-                        location.href = '/admin/question'
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error:', textStatus, errorThrown);
-                    }
-                });
-            }
+            const id = updateHelper.id;
+            const updateUrl = `/admin/question/create/${id}`;
+            $.ajax({
+                type: "POST",
+                url: updateUrl,
+                dataType: "json",
+                data: JSON.stringify(params),
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    alert("성공적으로 업데이트되었습니다.");
+                    location.href = '/admin/question'
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', textStatus, errorThrown);
+                }
+            });
         });
     },
 
@@ -132,5 +129,32 @@ const createHelper = {
             return false;
         }
         return true;
-    }
+    },
+
+    updateInit() {
+        const questionType = document.querySelector('#questionType').value;
+        switch (questionType) {
+            case "MULTIPLE_CHOICE":
+                document.querySelector('#multipleChoiceDiv').style.display = '';
+                document.querySelector('#subjectiveDiv').style.display = 'none';
+
+                const body = JSON.parse(document.querySelector('#multipleChoiceBox').getAttribute('data-json'));
+
+                let html = '';
+                for (let i = 0; i < body.length; i++) {
+                    html += updateHelper.rowMultipleCheckbox(i + 1, body[i].row);
+                }
+                document.querySelector('#multipleChoiceBox').innerHTML = html;
+                break;
+            case "SUBJECTIVE":
+                document.querySelector('#multipleChoiceDiv').style.display = 'none';
+                document.querySelector('#subjectiveDiv').style.display = '';
+
+                let subjectiveBody = document.querySelector('#subjectiveInput').getAttribute('data-body');
+                document.querySelector('#subjectiveInput').innerText = subjectiveBody;
+                break;
+            default:
+                break;
+        }
+    },
 }

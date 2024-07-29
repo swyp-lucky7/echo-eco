@@ -20,7 +20,7 @@
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
                     <label for="questionType" class="form-label">타입</label>
-                    <select id="questionType" class="form-select">
+                    <select id="questionType" class="form-select" th:field="*{question.questionType}">
                         <option value="MULTIPLE_CHOICE" selected>객관식</option>
                         <option value="SUBJECTIVE">주관식</option>
                     </select>
@@ -48,7 +48,7 @@
             </div>
             <div id="multipleChoiceDiv">
                 <p class="col-form-label">객관식</p>
-                <div id="multipleChoiceBox">
+                <div id="multipleChoiceBox" th:data-json="${question.body}">
 
                 </div>
                 <div class="row demo-vertical-spacing mb-3">
@@ -60,13 +60,13 @@
             <div class="row demo-vertical-spacing mb-3" id="subjectiveDiv" style="display: none">
                 <div class="col">
                     <label for="subjectiveInput" class="form-label">주관식</label>
-                    <textarea class="form-control" id="subjectiveInput" rows="3"></textarea>
+                    <textarea class="form-control" id="subjectiveInput" rows="3" th:data-body="${question.body}"></textarea>
                 </div>
             </div>
             <div class="row demo-vertical-spacing mb-3">
                 <div class="col">
                     <label for="answerInput" class="form-label">정답</label>
-                    <textarea class="form-control" id="answerInput" rows="3" th:value="${question.answer}"></textarea>
+                    <textarea class="form-control" id="answerInput" rows="3" th:text="${question.answer}"></textarea>
                 </div>
             </div>
         </div>
