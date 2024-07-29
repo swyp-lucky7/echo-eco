@@ -43,8 +43,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 //        headers.add("Access-Control-Expose-Headers", "token");
 //        response.addCookie(createCookie("Authorization", token));
-        // Todo
-        // 프론트 서버로 변경 필요, 유저 동물생성 유무에 따라 캐릭터선택 or 스테이지로 변경 필요
         if (userInfo.getRole() == Role.ADMIN) {
             response.sendRedirect(adminPageDomain + "/token/init?token=" + token);
         } else {

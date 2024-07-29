@@ -9,23 +9,23 @@ import teamseven.echoeco.gifticon.domain.GifticonUser;
 @Builder
 public class GifticonUserAdminResponse {
     private Long id;
-    private String userEmail;
+    private String email;
     private String name;
     private Boolean isSend;
 
     public static GifticonUserAdminResponse fromEntity(GifticonUser gifticonUser) {
         return GifticonUserAdminResponse.builder()
                 .id(gifticonUser.getId())
-                .userEmail(gifticonUser.getUser().getEmail())
+                .email(gifticonUser.getEmail())
                 .name(gifticonUser.getName())
                 .isSend(gifticonUser.getIsSend())
                 .build();
     }
 
     @QueryProjection
-    public GifticonUserAdminResponse(Long id, String userEmail, String name, Boolean isSend) {
+    public GifticonUserAdminResponse(Long id, String email, String name, Boolean isSend) {
         this.id = id;
-        this.userEmail = userEmail;
+        this.email = email;
         this.name = name;
         this.isSend = isSend;
     }

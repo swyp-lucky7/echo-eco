@@ -31,6 +31,7 @@ public class GifticonDetailResponse {
     private String gifticonName;
     private String imageUrl;
     private Boolean isSend;
+    private String email;
     private String sendAdminName;
     private String sentAt;
     private String createdAt;
@@ -63,6 +64,7 @@ public class GifticonDetailResponse {
                     .gifticonName(gifticonUser.getName())
                     .imageUrl(gifticonUser.getImageUrl())
                     .isSend(gifticonUser.getIsSend())
+                    .email(gifticonUser.getEmail())
                     .sendAdminName(gifticonUser.getSendAdminName())
                     .sentAt(gifticonUser.getSentAt().format(formatter))
                     .createdAt(gifticonUser.getCreatedAt().format(formatter))
@@ -79,6 +81,7 @@ public class GifticonDetailResponse {
                     .gifticonName("")
                     .imageUrl(DEFAULT_IMAGE_URL)
                     .isSend(gifticonUser.getIsSend())
+                    .email("")
                     .sendAdminName("")
                     .sentAt("")
                     .createdAt(gifticonUser.getCreatedAt().format(formatter))

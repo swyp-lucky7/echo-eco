@@ -41,7 +41,7 @@ const readHelper = {
                 for (const row of res.data) {
                     html += `
                     <tr data-row='${JSON.stringify(row)}'>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong>${row.userEmail}</strong></td>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i><strong>${row.email}</strong></td>
                         <td>${row.name}</td>
                         <td><span class="badge bg-label-primary me-1">${sendKoreaName(row.isSend)}</span></td>
                         <td>
@@ -73,7 +73,7 @@ const readHelper = {
                         let trNode = btn.parentNode.parentNode;
                         const row = JSON.parse(trNode.getAttribute('data-row'));
                         document.querySelector('#sendId').value = row.id;
-                        document.querySelector('#modalUserEmail').value = row.userEmail;
+                        document.querySelector('#modalEmail').value = row.email;
                         document.querySelector('#modalName').value = row.name;
                     });
                 });
@@ -104,9 +104,9 @@ const readHelper = {
 
     getParams: function () {
         let params = {}
-        let userEmail = document.querySelector('#emailSearch').value;
-        if (userEmail !== '') {
-            params['userEmail'] = userEmail;
+        let email = document.querySelector('#emailSearch').value;
+        if (email !== '') {
+            params['email'] = email;
         }
         let chkList = document.querySelectorAll('.isSend:checked');
         if (chkList.length === 1) {
