@@ -143,7 +143,6 @@ const detailHelper = {
             contentType: 'application/json; charset=utf-8',
             data: {"id": detailHelper.characterId},
             success(res) {
-                console.log(res);
                 document.querySelector('#characterTBody').innerHTML = detailHelper.createTableRows(res.data);
             },
             error(jqXHR, textStatus, errorThrown) {
