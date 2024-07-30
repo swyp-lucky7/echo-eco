@@ -28,12 +28,12 @@ public class TrashUserService {
     }
 
     public boolean isTodayCleanTrash(User user) {
-        Optional<TrashUser> optionalTrashUser = trashUserRepository.findByUser_Id(user.getId());
+        Optional<TrashUser> optionalTrashUser = trashUserRepository.findByUser(user);
         if (optionalTrashUser.isEmpty()) {
             return false;
         }
         TrashUser trashUser = optionalTrashUser.get();
-        LocalDate updateDate = trashUser.getUpdatedAt().toLocalDate();
+        LocalDate updateDate = trashUser.getCleanedAt().toLocalDate();
         LocalDate today = LocalDate.now();
         return updateDate.isEqual(today);
     }
@@ -49,14 +49,15 @@ public class TrashUserService {
         if (isTodayCleanTrash(user)) {
             throw new AlreadyCleanTrashException();
         }
-        Optional<TrashUser> optionalTrashUser = trashUserRepository.findByUser_Id(user.getId());
+        Optional<TrashUser> optionalTrashUser = trashUserRepository.findByUser(user);
         TrashUser trashUser = optionalTrashUser.orElseGet(() -> TrashUser.builder()
                 .user(user)
                 .build());
 
-        int addTrashPoint = 20;
-
+        trashUser.clean();
         trashUserRepository.save(trashUser);
+
+        int addTrashPoint = 20;
         UserPoint userPoint = userPointService.addUserPoint(user, addTrashPoint);
         return UserPointDto.builder()
                 .addPoint(addTrashPoint)
