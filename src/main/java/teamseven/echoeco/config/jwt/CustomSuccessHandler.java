@@ -46,7 +46,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if (userInfo.getRole() == Role.ADMIN) {
             response.sendRedirect(adminPageDomain + "/token/init?token=" + token);
         } else {
-            response.sendRedirect( "http://localhost:3000/loginwait?token=" + token);
+            response.sendRedirect( frontServerDomain + "/loginwait?token=" + token);
         }
     }
 
