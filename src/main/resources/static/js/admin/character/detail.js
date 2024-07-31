@@ -236,5 +236,5 @@ const detailHelper = {
 
 environment = {
     "TRASH": "쓰레기",
-    "CLEAN": "꺠긋"
+    "CLEAN": "깨끗"
 }
