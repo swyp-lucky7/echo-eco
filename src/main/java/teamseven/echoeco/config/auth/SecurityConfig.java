@@ -36,7 +36,7 @@ public class SecurityConfig
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 // 필터(로그인 인증) 없이 사용하는 url 추가 필요
                 // /token/init 은 삭제 X
-                .requestMatchers("/static/**", "/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/character/list", "/user/token/**", "/token/init");
+                .requestMatchers("/static/**", "/vendor/**","/error", "/favicon.ico", "/user/login/**", "/item/list", "/", "/character/list", "/user/token/**", "/token/init", "/users");
     }
 
     @Bean
@@ -70,7 +70,7 @@ public class SecurityConfig
 
                 .authorizeHttpRequests((auth) ->auth
                         .requestMatchers("/", "/user/login", "/file/**",
-                                 "/user/**"  // 임시로 permitAll 로 열어둠. 변경필요함.
+                                 "/user/**", "/users"  // 임시로 permitAll 로 열어둠. 변경필요함.
                         ).permitAll()
                 )
                 .authorizeHttpRequests((auth) -> auth.requestMatchers(
