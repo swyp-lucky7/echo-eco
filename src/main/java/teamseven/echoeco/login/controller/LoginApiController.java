@@ -5,19 +5,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import teamseven.echoeco.config.ApiResponse;
 import teamseven.echoeco.user.domain.Dto.UserCheckDto;
-import teamseven.echoeco.user.domain.Dto.UserTokenResponse;
 import teamseven.echoeco.user.domain.Dto.UserTokenUpdateResultDto;
-import teamseven.echoeco.user.service.UserJWTService;
 
 @Controller
 @RequiredArgsConstructor
 @ResponseBody
 public class LoginApiController {
-    private final UserJWTService userJWTService;
 
 
     @GetMapping("/user/check")
@@ -27,16 +23,6 @@ public class LoginApiController {
         userCheckDto.setDetail((String) request.getAttribute("userCheckDetail"));
 
         return ApiResponse.success(userCheckDto);
-    }
-
-    // JWT 토큰 리턴 API
-    @GetMapping("/user/token/{userEmail}")
-    public ApiResponse<UserTokenResponse> userToken(@PathVariable("userEmail") String userEmail) {
-        String userToken = userJWTService.getUserToken(userEmail);
-        UserTokenResponse userTokenResponse = UserTokenResponse.builder()
-                .authorization(userToken)
-                .build();
-        return ApiResponse.success(userTokenResponse);
     }
 
     @GetMapping("/user/token/update")
