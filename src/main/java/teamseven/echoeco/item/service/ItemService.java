@@ -70,9 +70,11 @@ public class ItemService {
         return ItemClickResponse.makeItemClickResponse(itemResponse, userPoint, available_buy);
     }
 
-    public ItemPickResponse pickItem(ItemResponse itemResponse, User user, Item userItem) {
+    public ItemPickResponse pickItem(Long itemId, User user) {
+        Item userItem = this.findById(itemId);
         UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
         CharacterUser characterUser = characterService.addUserCharacterLevel(user, userItem.getLevelUp());
+        ItemResponse itemResponse = ItemResponse.fromEntity(userItem);
         return ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
     }
 

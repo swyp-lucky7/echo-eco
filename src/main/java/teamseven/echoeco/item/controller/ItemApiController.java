@@ -43,11 +43,9 @@ public class ItemApiController {
     @PostMapping("/item/buy")
     public ApiResponse<ItemPickResponse> itemPick(@RequestBody @Valid ItemRequest itemRequest, Authentication authentication) {
         long itemId = itemRequest.getItemId();
-        Item userItem = itemService.findById(itemId);
-        ItemResponse itemResponse = ItemResponse.fromEntity(userItem);
-
         User user = userService.getUser(authentication);
-        ItemPickResponse itemPickResponse = itemService.pickItem(itemResponse, user, userItem);
+
+        ItemPickResponse itemPickResponse = itemService.pickItem(itemId, user);
         return ApiResponse.success(itemPickResponse);
     }
 
