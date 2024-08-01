@@ -18,6 +18,7 @@ import teamseven.echoeco.character.domain.Character;
 import teamseven.echoeco.character.domain.*;
 import teamseven.echoeco.character.domain.dto.CharacterCompleteMessagesDto;
 import teamseven.echoeco.character.domain.dto.CharacterPickListDto;
+import teamseven.echoeco.character.domain.dto.CharacterTrashDto;
 import teamseven.echoeco.character.domain.dto.CharacterUserResponse;
 import teamseven.echoeco.character.repository.CharacterDetailRepository;
 import teamseven.echoeco.character.repository.CharacterRepository;
@@ -338,6 +339,172 @@ class CharacterServiceTest {
 
         //then
         assertFalse(characterUser.getIsUse());
+    }
+
+    @Test
+    @DisplayName("findAll 하면 모든 데이터를 들고와야 한다.")
+    void givenCharacterData_whenFindAll_thenAllData() {
+        List<Character> characters = saveDefaultCharacter();
+
+        //when
+        List<Character> all = characterService.findAll();
+
+        //then
+        assertEquals(characters.size(), all.size());
+    }
+
+    @Test
+    @DisplayName("findOne 했을 때 데이터가 없으면 에러를 던져야 한다.")
+    void givenNoData_whenFindOne_thenError() {
+        //when
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> characterService.findOne(100000L));
+
+        //then
+        assertEquals("존재하지 않는 id 입니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("findOne 했을때 데이터가 있을 경우 잘 들고와야 한다.")
+    void givenCorrectData_whenFindOne_Success() {
+        List<Character> characters = saveDefaultCharacter();
+
+        //when
+        Character character = characterService.findOne(characters.get(0).getId());
+
+        //then
+        assertEquals(characters.get(0), character);
+    }
+
+    @Test
+    @DisplayName("delete 했을 때 삭제가 잘 되어야 한다.")
+    void givenId_whenDelete_thenSuccess() {
+        List<Character> characters = saveDefaultCharacter();
+        int size = characters.size();
+
+        //when
+        characterService.delete(characters.get(0).getId());
+
+        //then
+        assertEquals(2, size);
+        assertEquals(1, characterRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("character trash 했을때 유저가 가진 정보가 없을땐 에러를 반환해야 한다.")
+    void givenNoData_whenCharacterTrash_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+
+        //when
+        Exception exception = assertThrows(NotFoundCharacterUserException.class, () -> characterService.characterTrash(user));
+
+        //then
+        assertEquals("해당 유저가 사용하고 있는 캐릭터가 없습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("character trash 했을때 어드민에서 설정된 배경이 없으면 에러가 발생해야 한다.")
+    void givenNoBackgroundData_whenCharacterTrash_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(true).level(1).build();
+        characterUserRepository.save(characterUser);
+
+        //when
+        Exception exception = assertThrows(NotAdminSettingException.class, () -> characterService.characterTrash(user));
+
+        //then
+        assertEquals("설정하지 않은 백그라운드 요청이 존재합니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("character trash 했을때 어드민에서 설정된 캐릭터가 없으면 에러가 발생해야 한다.")
+    void givenNoCharacterData_whenCharacterTrash_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(true).level(1).build();
+        characterUserRepository.save(characterUser);
+
+        Background background = Background.builder().image("https://").level(1).environment(Environment.TRASH).build();
+        backgroundRepository.save(background);
+
+
+        //when
+        Exception exception = assertThrows(NotAdminSettingException.class, () -> characterService.characterTrash(user));
+
+        //then
+        assertEquals("설정하지 않은 캐릭터 디테일 요청이 존재합니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("character trash 했을때 캐릭터의 쓰레기 정보를 잘 넘겨줘야 한다.")
+    void givenCorrectData_whenCharacterTrash_thenSuccess() throws NotAdminSettingException, NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        UserPoint userPoint = UserPoint.fromUser(user);
+        userPointRepository.save(userPoint);
+
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(true).level(1).build();
+        characterUserRepository.save(characterUser);
+
+        Background background = Background.builder().image("https://").level(1).environment(Environment.TRASH).build();
+        backgroundRepository.save(background);
+
+        CharacterDetail characterDetail = CharacterDetail.builder().character(characters.get(0)).imageUrl("https://character1").environment(Environment.TRASH).level(1).build();
+        characterDetailRepository.save(characterDetail);
+
+        //when
+        CharacterTrashDto characterTrashDto = characterService.characterTrash(user);
+
+        //then
+        assertEquals(background.getImage(), characterTrashDto.getBackgroundImage());
+        assertEquals(characterDetail.getImageUrl(), characterTrashDto.getCharacterImage());
+    }
+
+    @Test
+    @DisplayName("addUserCharacterLevel 했을때 캐릭터가 존재하지 않으면 에러를 반환해야 한다.")
+    void givenNoCharacterUser_whenAddUserCharacterLevel_thenError() {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+
+        //when
+        Exception exception = assertThrows(NotFoundCharacterUserException.class, () -> characterService.addUserCharacterLevel(user, 1));
+
+        //then
+        assertEquals("해당 유저가 사용하고 있는 캐릭터가 없습니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("addUserCharacterLevel 했을때 캐릭터가 레벨이 올라가야 한다.")
+    void givenUserAndUpLevel_whenAddUserCharacterLevel_thenLevelUp() throws NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.ADMIN);
+        userRepository.save(user);
+        List<Character> characters = saveDefaultCharacter();
+        Character character = characters.get(0);
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(character).isUse(true).level(1).build();
+        characterUserRepository.save(characterUser);
+
+        int before = characterUser.getLevel();
+        int addLevel = 1;
+        //when
+        characterService.addUserCharacterLevel(user, addLevel);
+
+        //then
+        assertEquals(before + addLevel, characterUser.getLevel());
     }
 
     private List<Character> saveDefaultCharacter() {

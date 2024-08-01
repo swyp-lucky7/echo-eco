@@ -43,7 +43,7 @@ public class GifticonDetailResponse {
         LocalDateTime create = LocalDateTime.parse(createdAt, formatter);
         LocalDateTime characterUserCreate = LocalDateTime.parse(characterUserCreatedAt, formatter);
 
-        Duration between = Duration.between(create, characterUserCreate);
+        Duration between = Duration.between(characterUserCreate, create);
         periodOfRaising = between.toDays();
     }
 
@@ -81,7 +81,7 @@ public class GifticonDetailResponse {
                     .gifticonName("")
                     .imageUrl(DEFAULT_IMAGE_URL)
                     .isSend(gifticonUser.getIsSend())
-                    .email("")
+                    .email(gifticonUser.getEmail())
                     .sendAdminName("")
                     .sentAt("")
                     .createdAt(gifticonUser.getCreatedAt().format(formatter))
