@@ -2,6 +2,8 @@ package teamseven.echoeco.item.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.character.domain.CharacterUser;
@@ -19,6 +21,7 @@ import teamseven.echoeco.user.service.UserPointService;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserPointRepository userPointRepository;
