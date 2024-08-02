@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.character.domain.CharacterUser;
 import teamseven.echoeco.character.service.CharacterService;
+import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.item.domain.Item;
 import teamseven.echoeco.item.domain.dto.ItemClickResponse;
 import teamseven.echoeco.item.domain.dto.ItemDto;
@@ -70,7 +71,7 @@ public class ItemService {
         return ItemClickResponse.makeItemClickResponse(itemResponse, userPoint, available_buy);
     }
 
-    public ItemPickResponse pickItem(ItemResponse itemResponse, User user, Item userItem) {
+    public ItemPickResponse pickItem(ItemResponse itemResponse, User user, Item userItem) throws NotFoundCharacterUserException {
         UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
         CharacterUser characterUser = characterService.addUserCharacterLevel(user, userItem.getLevelUp());
         return ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
