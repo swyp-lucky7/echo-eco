@@ -29,6 +29,7 @@ import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.file.service.FileService;
 import teamseven.echoeco.gifticon.domain.GifticonUser;
 import teamseven.echoeco.gifticon.domain.dto.GifticonCheckResponse;
+import teamseven.echoeco.gifticon.domain.dto.GifticonDetailResponse;
 import teamseven.echoeco.gifticon.domain.dto.GifticonUserAdminResponse;
 import teamseven.echoeco.gifticon.repository.GifticonRepository;
 import teamseven.echoeco.mail.service.MailService;
@@ -41,6 +42,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -403,6 +405,39 @@ class GifticonServiceTest {
 
         //then
         assertTrue(gifticonCheckResponse.getIsPost());
+    }
+
+    @Test
+    @DisplayName("기프티콘 detail 요청했을때 없는 데이터면 에러를 발생해야 한다.")
+    void givenNoCorrectId_whenDetail_thenError() {
+        //when
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> gifticonService.detail(10000L));
+
+        //then
+        assertEquals("존재하지 않는 id 입니다.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("기프티콘 detail 을 요청했을 때 데이터를 잘 넘겨줘야 한다.")
+    void givenCorrectId_whenDetail_thenSuccess() throws NotFoundCharacterUserException {
+        User user = new User("user1", "email1", "picture1", Role.USER);
+        userRepository.save(user);
+        saveDefaultCharacter();
+        List<Character> characters = saveDefaultCharacter();
+        CharacterUser characterUser = CharacterUser.builder().user(user).character(characters.get(0)).isUse(true).level(characters.get(0).getMaxLevel()).createdAt(LocalDateTime.now().minusDays(10)).build();
+        characterUserRepository.save(characterUser);
+        String email = "aa@aaa.com";
+        gifticonService.post(email, user);
+
+        GifticonUser gifticonUser = gifticonRepository.findByCharacterUser(characterUser).get();
+
+        //when
+        GifticonDetailResponse detail = gifticonService.detail(gifticonUser.getId());
+
+        //then
+        assertEquals(user.getName(), detail.getUserName());
+        assertEquals(10, detail.getPeriodOfRaising());
+        assertEquals(email, detail.getEmail());
     }
 
 

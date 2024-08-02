@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import teamseven.echoeco.character.domain.CharacterUser;
-import teamseven.echoeco.character.service.CharacterService;
 import teamseven.echoeco.config.ApiResponse;
+import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.item.domain.Item;
 import teamseven.echoeco.item.domain.dto.ItemClickResponse;
 import teamseven.echoeco.item.domain.dto.ItemRequest;
@@ -21,8 +20,6 @@ import teamseven.echoeco.item.domain.dto.ItemPickResponse;
 import teamseven.echoeco.item.domain.dto.ItemResponse;
 import teamseven.echoeco.item.service.ItemService;
 import teamseven.echoeco.user.domain.User;
-import teamseven.echoeco.user.domain.UserPoint;
-import teamseven.echoeco.user.service.UserPointService;
 import teamseven.echoeco.user.service.UserService;
 
 @Controller
@@ -31,8 +28,6 @@ import teamseven.echoeco.user.service.UserService;
 public class ItemApiController {
     private final ItemService itemService;
     private final UserService userService;
-    private final UserPointService userPointService;
-    private final CharacterService characterService;
 
     @GetMapping("/item/list")
     public ApiResponse<List<ItemResponse>> itemList(@RequestParam(required = false, name = "isUse") Boolean isUse) {
@@ -40,24 +35,20 @@ public class ItemApiController {
     }
 
     @GetMapping("/item/{itemId}")
-    public ApiResponse<ItemClickResponse> itemClick(@PathVariable("itemId") Long itemId,
-                                                    Authentication authentication) {
+    public ApiResponse<ItemClickResponse> itemClick(@PathVariable("itemId") Long itemId, Authentication authentication) {
         User user = userService.getUser(authentication);
-        ItemClickResponse itemClickResponse = itemService.buyItem(itemId, user);
+        ItemClickResponse itemClickResponse = itemService.clickItem(itemId, user);
         return ApiResponse.success(itemClickResponse);
     }
 
     @PostMapping("/item/buy")
-    public ApiResponse<ItemPickResponse> itemPick(@RequestBody @Valid ItemRequest itemRequest,
-                                                  Authentication authentication) {
+    public ApiResponse<ItemPickResponse> itemPick(@RequestBody @Valid ItemRequest itemRequest, Authentication authentication) throws NotFoundCharacterUserException {
         long itemId = itemRequest.getItemId();
         Item userItem = itemService.findById(itemId);
         ItemResponse itemResponse = ItemResponse.fromEntity(userItem);
 
         User user = userService.getUser(authentication);
-        UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
-        CharacterUser characterUser = characterService.addUserCharacter(user, userItem.getLevelUp());
-        ItemPickResponse itemPickResponse = ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
+        ItemPickResponse itemPickResponse = itemService.pickItem(itemResponse, user, userItem);
         return ApiResponse.success(itemPickResponse);
     }
 

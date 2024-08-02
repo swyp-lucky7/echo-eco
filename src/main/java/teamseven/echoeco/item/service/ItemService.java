@@ -4,20 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import teamseven.echoeco.character.domain.CharacterUser;
+import teamseven.echoeco.character.service.CharacterService;
+import teamseven.echoeco.config.exception.NotFoundCharacterUserException;
 import teamseven.echoeco.item.domain.Item;
 import teamseven.echoeco.item.domain.dto.ItemClickResponse;
 import teamseven.echoeco.item.domain.dto.ItemDto;
+import teamseven.echoeco.item.domain.dto.ItemPickResponse;
 import teamseven.echoeco.item.domain.dto.ItemResponse;
 import teamseven.echoeco.item.repository.ItemRepository;
 import teamseven.echoeco.user.domain.User;
 import teamseven.echoeco.user.domain.UserPoint;
 import teamseven.echoeco.user.repository.UserPointRepository;
+import teamseven.echoeco.user.service.UserPointService;
 
 @Service
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserPointRepository userPointRepository;
+    private final UserPointService userPointService;
+    private final CharacterService characterService;
 
     public List<Item> findAllItems() {
         return itemRepository.findAll();
@@ -52,7 +59,7 @@ public class ItemService {
         return itemResponses;
     }
 
-    public ItemClickResponse buyItem(Long itemId, User user) {
+    public ItemClickResponse clickItem(Long itemId, User user) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이템 아이디 입니다."));
 
@@ -63,4 +70,11 @@ public class ItemService {
 
         return ItemClickResponse.makeItemClickResponse(itemResponse, userPoint, available_buy);
     }
+
+    public ItemPickResponse pickItem(ItemResponse itemResponse, User user, Item userItem) throws NotFoundCharacterUserException {
+        UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
+        CharacterUser characterUser = characterService.addUserCharacterLevel(user, userItem.getLevelUp());
+        return ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
+    }
+
 }

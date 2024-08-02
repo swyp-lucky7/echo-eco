@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import teamseven.echoeco.user.domain.Dto.UserDto;
 import teamseven.echoeco.user.domain.OAuth2.Oauth2UserImpl;
 import teamseven.echoeco.user.domain.Role;
-import teamseven.echoeco.user.service.UserJWTService;
 
 import java.io.IOException;
 
@@ -26,7 +25,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private String frontServerDomain;
 
     private final JwtUtil jwtUtil;
-    private final UserJWTService userJWTService;
     // 로그인 성공 시 호출
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -38,7 +36,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // expiredMs 수정 필요
         String token = jwtUtil.createJwt(name, role, email, 24 * 60 * 60 * 1000L);
 
-        userJWTService.saveOrUpdateUserJwt(token, email);
         response.addHeader(JwtFilter.TOKEN_NAME, token);
 
 //        headers.add("Access-Control-Expose-Headers", "token");

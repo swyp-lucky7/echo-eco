@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'jacoco'
 }
 
 group = 'teamseven'
@@ -93,4 +94,39 @@ tasks.register('generateQueryDSL', JavaCompile) {
 
 clean {
 	delete fileTree("build/generated")
+}
+
+jacoco {
+	toolVersion = "0.8.8"
+}
+
+def jacocoIncludePatterns = [
+		"**/service/**"
+]
+
+test {
+	finalizedBy jacocoTestReport // 테스트가 끝난 후 jacocoTestReport를 실행합니다.
+}
+
+
+jacocoTestReport {
+	dependsOn test // jacocoTestReport는 테스트 이후에 실행됩니다.
+	reports {
+		xml.required = false
+		csv.required = false
+		html.required = true
+
+		html.destination file(layout.buildDirectory.dir("jacocoHtml"))
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(
+			files(classDirectories.files.collect {
+				fileTree(dir: it, includes: [
+						"**/service/**"
+				])
+			})
+		)
+	}
+
 }
