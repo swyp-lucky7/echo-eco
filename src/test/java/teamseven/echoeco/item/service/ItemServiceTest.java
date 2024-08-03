@@ -100,7 +100,6 @@ class ItemServiceTest {
     @DisplayName("아이템 저장 테스트 아이템 저장 후 아이디로 찾으면 같은 이름의 아이템이 찾아진다")
     void saveAndFindTest() {
         itemService.saveItem(item1);
-        System.out.println("itemId1::" + item1.getId());
         Item foundItem = itemService.findById(item1.getId());
         assertThat(foundItem.getName()).isEqualTo(item1.getName());
     }
@@ -110,7 +109,6 @@ class ItemServiceTest {
     void findAllTest() {
         itemService.saveItem(item1);
         itemService.saveItem(item2);
-        System.out.println("itemId2::" + item1.getId());
 
         List<Item> allItems = itemService.findAllItems();
         assertThat(allItems.size()).isEqualTo(2);
@@ -184,7 +182,8 @@ class ItemServiceTest {
     void pickTest() throws NotAdminSettingException, NotFoundCharacterUserException {
         User user = saveAndGetUser(item1.getPrice());
         itemService.saveItem(item1);
-        Character character = Character.builder().image("test").type(CharacterType.ANIMAL).descriptions("test").isPossible(true).maxLevel(100).completeMessages("test").name("test").build();
+        Character character = Character.builder().image("test").type(CharacterType.ANIMAL).descriptions("test")
+                .isPossible(true).maxLevel(100).completeMessages("test").name("test").build();
         characterService.save(character);
         characterService.pick(character.getId(), user);
 
@@ -200,8 +199,10 @@ class ItemServiceTest {
     void pickTest2() throws NotAdminSettingException, NotFoundCharacterUserException {
         User user = saveAndGetUser(item1.getPrice() - 1);
         itemService.saveItem(item1);
-        characterService.save(Character.builder().id(1l).image("test").type(CharacterType.ANIMAL).descriptions("test").isPossible(true).maxLevel(100).completeMessages("test").name("test").build());
-        characterService.pick(1l, user);
+        Character character = Character.builder().image("test").type(CharacterType.ANIMAL).descriptions("test")
+                .isPossible(true).maxLevel(100).completeMessages("test").name("test").build();
+        characterService.save(character);
+        characterService.pick(character.getId(), user);
 
         Assertions.assertThatThrownBy(() -> itemService.pickItem(item1.getId(), user)).isInstanceOf(IllegalArgumentException.class);
     }
