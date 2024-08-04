@@ -6,6 +6,7 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,23 +19,29 @@ public class S3LocalConfig {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final String AWS_REGION = Regions.US_EAST_1.getName();
+    @Value("${cloud.aws.region.static}")
+    private String AWS_REGION;
     private final String AWS_ENDPOINT = "http://127.0.0.1:4566";
 
-    private final String LOCAL_STACK_ACCESS_KEY = "test";
-    private final String LOCAL_STACK_SECRET_KEY = "test";
+    @Value("${cloud.aws.credentials.access-key}")
+    private String accessKey;
+    @Value("${cloud.aws.credentials.secret-key}")
+    private String secretKey;
 
     @Bean
     public AmazonS3 amazonS3() {
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(AWS_ENDPOINT, AWS_REGION);
-        BasicAWSCredentials credentials = new BasicAWSCredentials(LOCAL_STACK_ACCESS_KEY, LOCAL_STACK_SECRET_KEY);
+        BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 
         AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(endpoint)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withPathStyleAccessEnabled(true)
                 .build();
 
-        amazonS3.createBucket(bucket);
+        if (!amazonS3.doesBucketExistV2(bucket)) {
+            amazonS3.createBucket(new CreateBucketRequest(bucket, AWS_REGION));
+        }
         return amazonS3;
     }
 }

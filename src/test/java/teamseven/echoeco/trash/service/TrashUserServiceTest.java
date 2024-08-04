@@ -1,6 +1,5 @@
 package teamseven.echoeco.trash.service;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -246,7 +245,7 @@ class TrashUserServiceTest {
         assertEquals(false, trashStatusDto.getIsClean());
     }
 
-    private static @NotNull LocalDateTime getYesterday() {
+    private static LocalDateTime getYesterday() {
         return LocalDateTime.now().minusDays(1);
     }
 
