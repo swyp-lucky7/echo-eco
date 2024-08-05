@@ -2,6 +2,8 @@ package teamseven.echoeco.item.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamseven.echoeco.character.domain.CharacterUser;
@@ -20,6 +22,7 @@ import teamseven.echoeco.user.service.UserPointService;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserPointRepository userPointRepository;
@@ -71,9 +74,11 @@ public class ItemService {
         return ItemClickResponse.makeItemClickResponse(itemResponse, userPoint, available_buy);
     }
 
-    public ItemPickResponse pickItem(ItemResponse itemResponse, User user, Item userItem) throws NotFoundCharacterUserException {
+    public ItemPickResponse pickItem(Long itemId, User user) throws NotFoundCharacterUserException {
+        Item userItem = this.findById(itemId);
         UserPoint userPoint = userPointService.subtractUserPoint(user, userItem.getPrice());
         CharacterUser characterUser = characterService.addUserCharacterLevel(user, userItem.getLevelUp());
+        ItemResponse itemResponse = ItemResponse.fromEntity(userItem);
         return ItemPickResponse.makeItemPickResponse(itemResponse, userPoint.getUserPoint(), characterUser.getLevel());
     }
 
