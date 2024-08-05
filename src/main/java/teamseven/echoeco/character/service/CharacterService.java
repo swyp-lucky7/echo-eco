@@ -41,7 +41,7 @@ public class CharacterService {
     }
 
     public Character findOne(Long id) {
-        return characterRepository.findById(id).orElseThrow();
+        return characterRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 id 입니다."));
     }
 
     public void delete(Long id) {
@@ -114,8 +114,11 @@ public class CharacterService {
                 .build();
     }
 
-    public CharacterUser addUserCharacterLevel(User user, int level) {
+    public CharacterUser addUserCharacterLevel(User user, int level) throws NotFoundCharacterUserException {
         CharacterUser characterUser = characterUserRepository.findByUserWithUse(user);
+        if (characterUser == null) {
+            throw new NotFoundCharacterUserException();
+        }
         characterUser.addLevel(level);
         characterUserRepository.save(characterUser);
         return characterUser;
