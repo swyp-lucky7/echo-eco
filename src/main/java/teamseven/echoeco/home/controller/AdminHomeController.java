@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-@Slf4j
 public class AdminHomeController {
     @GetMapping("")
     public String home() {
-        log.info("hi");
         return "admin/home";
     }
 }
