@@ -27,7 +27,6 @@ public class SecurityConfig
     private final CustomOAuth2UserService oAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JwtUtil jwtUtil;
-    private final AutoLoginFilter autoLoginFilter;
 
 
     @Bean
@@ -105,9 +104,6 @@ public class SecurityConfig
       //              response.sendRedirect("/user/login");
        //         }))
         ;
-
-        // AutoLoginFilter를 SecurityFilterChain에 추가
-        http.addFilterAfter(autoLoginFilter, JwtFilter.class);
 
         return http.build();
     }
