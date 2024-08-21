@@ -26,7 +26,7 @@ Echo eco 는 환경을 알려라 라는 의미로 앱테크 환경 인식 개선
 문제를 푸는 페이지입니다.<br>
 <br>
 
-</details>
+</details> 
 
 <details> 
 <summary>쓰레기</summary>
