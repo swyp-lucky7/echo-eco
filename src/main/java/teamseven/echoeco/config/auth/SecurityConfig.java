@@ -48,7 +48,7 @@ public class SecurityConfig
 
                     CorsConfiguration configuration = new CorsConfiguration();
 
-                    configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://echoeco.shop.s3-website-us-east-1.amazonaws.com"));
+                    configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://echoeco.shop.s3-website-us-east-1.amazonaws.com", "https://echo-eco.swygbro.com"));
                     configuration.setAllowedMethods(Collections.singletonList("*"));
                     configuration.setAllowCredentials(true);
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
