@@ -37,7 +37,7 @@ Echo eco 는 환경을 알려라 라는 의미로 앱테크 환경 인식 개선
 </details>
 
 <details>
-<summary>상점</summary>
+<summary>상점</summary> 
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/b2dba1c0-62f3-4779-a0b5-ece81fae093b">
 <br>
