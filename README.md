@@ -5,29 +5,29 @@
 https://github.com/user-attachments/assets/ee8e49ce-1e68-4706-8bb2-f89a3908a9f5
 
 <br>
-스위프 5기 7팀에서 개발한 Echo eco 입니다.<br> 
-Echo eco 는 환경을 알려라 라는 의미로 앱테크 환경 인식 개선 프로젝트입니다.<br>  
+스위프 5기 7팀에서 개발한 Echo eco 입니다.<br>
+Echo eco 는 환경을 알려라 라는 의미로 앱테크 환경 인식 개선 프로젝트입니다.<br>
 <br>
 이 프로젝트는 매일 문제와 영상을 통해 포인트를 모으고, 포인트로 상점에서 캐릭터에게 선물을 줌으로써 캐릭터의 레벨을 올릴 수 있습니다.<br>
 캐릭터의 레벨을 끝까지 올리면 유저에게 기프티콘을 선물합니다.<br>
 <br>
 서비스 URL: http://echoeco.shop.s3-website-us-east-1.amazonaws.com
 <br> 
-<br> 
+<br>
 
 # 서비스 기능
 ## 유저 기능
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/f0663154-2dfe-4ef0-b015-730dedf6eca5">
 
-<details>
+<details> 
 <summary>문제</summary>
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/139ee826-ba57-4448-8740-a7800af4ec2a"><br>
 문제를 푸는 페이지입니다.<br>
 <br>
 
-</details>
-
+</details> 
+ 
 <details> 
 <summary>쓰레기</summary>
 
