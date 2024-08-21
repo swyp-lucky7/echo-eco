@@ -12,10 +12,10 @@ Echo eco 는 환경을 알려라 라는 의미로 앱테크 환경 인식 개선
 캐릭터의 레벨을 끝까지 올리면 유저에게 기프티콘을 선물합니다.<br>
 <br>
 서비스 URL: http://echoeco.shop.s3-website-us-east-1.amazonaws.com
-<br> 
+<br>  
 <br> 
 
-# 서비스 기능
+# 서비스 기능 
 ## 유저 기능
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/f0663154-2dfe-4ef0-b015-730dedf6eca5">
 
