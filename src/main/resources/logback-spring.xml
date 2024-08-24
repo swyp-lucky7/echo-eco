@@ -24,7 +24,7 @@
     </springProfile>
 
     <springProfile name="prod">
-        <property name="LOG_PATH" value="/home/ec2-user/project/logs"/>
+        <property name="LOG_PATH" value="/var/jenkins_home/deploy/logs"/>
 
         <root level="ERROR">
             <appender-ref ref="FILE"/>
